@@ -1,4 +1,5 @@
 package noyau;
+import java.text.DecimalFormat;
 import java.util.Random;
 public class Generation {
 	
@@ -19,32 +20,30 @@ public class Generation {
 	    public ListeTaches genererTachesPeriodiques(double up){
 	    	
 	    	
-    	  this.up = up;
-    	
+    	  this.up = up;    	
     	  this.tab = new double[this.nbre];
-	        
-	       up*=Generation.coeff;
-	       
-	        int total=0;
+    	  ListeTaches liste = new ListeTaches();
+
+	      // On augmente le up pour limiter   
+	       up=up*Generation.coeff;
+	      
+	        int total=(int)(up);
 	        for(int i=0;i<nbre-1;i++){
 	            
 	            int min = (int)((up/(nbre-i))*0.5);
 	            int max = (int)((up/(nbre-i))*1.5);
 	            int rdm = entier(min,max);
-	            up = (up-rdm);
-	            total+=rdm;
-	            this.tab[i] = Math.floor(rdm/Generation.coeff);
-	            System.out.println( this.tab[i]);
+	            up = (up-rdm);	           
+	           
+	           
+	            this.tab[i] = 1.0*(((double)rdm/(double)total));
+	           
 	            
 	        }
 	        
-	        this.tab[nbre-1] = Math.floor(up/Generation.coeff);
-	        
-	        
-	        total+=up;
-	        System.out.println("total"+total);
+	        this.tab[nbre-1] = 1.0*(((double)(total-up)/(double)total));
+	    
 	    	
-	    	ListeTaches liste = new ListeTaches();
 	    	
 	    	
 	    	for(int i=0;i<this.nbre;i++){
