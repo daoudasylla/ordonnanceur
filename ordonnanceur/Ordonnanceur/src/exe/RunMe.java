@@ -62,7 +62,7 @@ public class RunMe {
 		
 		
 		
-		
+		/*
 			
 		
 		
@@ -86,6 +86,7 @@ public class RunMe {
 			
 			
 		}
+		*/
 		} catch( IOException e ) {
 			System.out.println("Erreur lors de la lecture des données");
 		} 
