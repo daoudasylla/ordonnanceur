@@ -48,14 +48,14 @@ public class Generation {
 	    	
 	    	for(int i=0;i<this.nbre;i++){
 	    		
-	    		Periodique t = new Periodique();
+	    		
 	    		// Definition du Ci
 	    		int Ci= (int) Math.floor(Math.random()*10);
 	    		// Definition du Pi
 	    		int Pi = (int) Math.floor(Ci/tab[i]);
-	    		
-	    		t.setC(Ci);
-	    		t.setP(Pi);
+	    		Periodique t = new Periodique(Ci,Pi);
+	    		/*t.setC(Ci);
+	    		t.setP(Pi);*/
 	    		liste.addTache(t);
 	    		System.out.println(t);
 	    	}

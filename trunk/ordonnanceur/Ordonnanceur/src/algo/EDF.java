@@ -1,5 +1,11 @@
 package algo;
 
-public class EDF {
+import noyau.ListeOrdonnee;
+import noyau.ListeTaches;
 
+public class EDF implements Algorithme{
+	public ListeOrdonnee executer(ListeTaches liste)
+	{
+		return null;
+	}
 }
