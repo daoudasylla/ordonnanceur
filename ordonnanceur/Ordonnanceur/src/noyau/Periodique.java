@@ -16,6 +16,13 @@ public class Periodique extends Tache{
 	public void setP(int p) {
 		this.p = p;
 	}
+
+	
+	public String toString() {
+		
+		return "Ci : "+super.getC()+" | Pi : "+this.p;
+		
+	}
 	
 	
 	

@@ -12,4 +12,6 @@ public abstract class Tache {
 		this.c = c;
 	}
 	
+	abstract public String toString();
+	
 }

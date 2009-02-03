@@ -7,8 +7,8 @@ public class ListeTaches {
 	LinkedList<Tache> listeTaches;
 	
 	
-	public void ListeTaches(){		
-		this.listeTaches = new LinkedList();
+	public ListeTaches(){		
+		this.listeTaches = new LinkedList<Tache>();
 	}
 	
 	public void addTache(Tache task){
@@ -19,4 +19,16 @@ public class ListeTaches {
 		this.listeTaches.remove(task);
 	}	
 	
+	public void reinitialiserListe(){
+		this.listeTaches.clear();
+	}
+	
+	public String toString(){
+		
+		String tmp = new String();
+		for(Tache t : this.listeTaches)
+			tmp += "\n"+t;
+		
+		return tmp;
+	}
 }

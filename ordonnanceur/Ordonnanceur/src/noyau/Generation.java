@@ -10,15 +10,18 @@ public class Generation {
 	    public int entier(int min,int max){
 	        return (int) Math.floor(Math.random()*(max+1-min)+min);
 	    }
-	    /**
-	     * @param args
-	     */
-	    public void Generation(double up,int nbre){
-	        
-	       this.up = up;
-	       this.nbre = nbre;
-	        
-	       this.tab = new double[this.nbre];
+
+		public Generation(int nbre){
+		    this.nbre = nbre;	    
+		}
+		    
+	    
+	    public ListeTaches genererTachesPeriodiques(double up){
+	    	
+	    	
+    	  this.up = up;
+    	
+    	  this.tab = new double[this.nbre];
 	        
 	       up*=Generation.coeff;
 	       
@@ -30,27 +33,21 @@ public class Generation {
 	            int rdm = entier(min,max);
 	            up = (up-rdm);
 	            total+=rdm;
-	            tab[i] = Math.floor(rdm/Generation.coeff);
-	            System.out.println(rdm);
+	            this.tab[i] = Math.floor(rdm/Generation.coeff);
+	            System.out.println( this.tab[i]);
 	            
 	        }
 	        
-	        tab[nbre-1] = Math.floor(up/Generation.coeff);
+	        this.tab[nbre-1] = Math.floor(up/Generation.coeff);
 	        
 	        
 	        total+=up;
 	        System.out.println("total"+total);
-
-	    
-	}
-	    
-	    
-	    public ListeTaches genererTachesPeriodiques(){
 	    	
 	    	ListeTaches liste = new ListeTaches();
 	    	
 	    	
-	    	for(int i=0;i<this.nbre-1;i++){
+	    	for(int i=0;i<this.nbre;i++){
 	    		
 	    		Periodique t = new Periodique();
 	    		// Definition du Ci
