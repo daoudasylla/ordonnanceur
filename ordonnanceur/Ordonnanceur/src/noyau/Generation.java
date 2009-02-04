@@ -41,7 +41,7 @@ public class Generation {
 	            
 	        }
 	        
-	        this.tab[nbre-1] = 1.0*(((double)(total-up)/(double)total));
+	        this.tab[nbre-1] = 1.0*(((double)(up)/(double)total));
 	    
 	    	
 	    	
@@ -50,14 +50,14 @@ public class Generation {
 	    		
 	    		
 	    		// Definition du Ci
-	    		int Ci= (int) Math.floor(Math.random()*10);
+	    		int Ci= (int) Math.floor(Math.random()*10)+1;
 	    		// Definition du Pi
 	    		int Pi = (int) Math.floor(Ci/tab[i]);
 	    		Periodique t = new Periodique(Ci,Pi);
 	    		/*t.setC(Ci);
 	    		t.setP(Pi);*/
-	    		liste.addTache(t);
-	    		System.out.println(t);
+	    		liste.add(t);
+	    		//System.out.println(t);
 	    	}
 	    	
 	    	return liste;

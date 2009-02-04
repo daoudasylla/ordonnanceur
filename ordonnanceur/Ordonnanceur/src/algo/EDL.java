@@ -1,10 +1,12 @@
 package algo;
 
-import noyau.ListeOrdonnee;
+import java.util.LinkedList;
+
+import noyau.Creneau;
 import noyau.ListeTaches;
 
 public class EDL implements Algorithme{
-	public ListeOrdonnee executer(ListeTaches liste)
+	public LinkedList<Creneau> executer(ListeTaches liste)
 	{
 		return null;
 	}
