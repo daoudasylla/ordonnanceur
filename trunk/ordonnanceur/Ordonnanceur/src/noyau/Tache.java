@@ -1,6 +1,6 @@
 package noyau;
 
-public abstract class Tache  implements Creneau{
+public abstract class Tache{
 
 	int c;
 	static private int nextId = 0;
@@ -9,6 +9,7 @@ public abstract class Tache  implements Creneau{
 	public Tache(int c)
 	{
 		this.id = Tache.nextId++;
+		this.c = c;
 	}
 	public int getC() {
 		return c;

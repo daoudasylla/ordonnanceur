@@ -1,11 +1,13 @@
 package noyau;
 
+import java.util.List;
+
 import algo.Algorithme;
 
 public class Ordonnanceur {
 	private ListeTaches liste;
 	private Algorithme algo;
-	private ListeOrdonnee result;
+	private List<Creneau> result;
 	public Ordonnanceur(Algorithme algo,ListeTaches liste){
 		this(algo);
 		this.liste = liste;

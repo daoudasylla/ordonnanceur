@@ -15,10 +15,13 @@ public class RunMe2 {
     public static void main(String[] args) {
         
       ListeTaches liste;
+     
+      for(int i=1;i<40;i++){
       
-      Generation gen = new Generation(5);
-      liste = gen.genererTachesPeriodiques(0.75); 
-
+      Generation gen = new Generation(10);
+      liste = gen.genererTachesPeriodiques(0.5); 
+      System.out.println(liste);
+      }
     }
 
 }

@@ -1,8 +1,10 @@
 package algo;
 
-import noyau.ListeOrdonnee;
+import java.util.LinkedList;
+
+import noyau.Creneau;
 import noyau.ListeTaches;
 
 public interface Algorithme {
-	public ListeOrdonnee executer(ListeTaches liste);
+	public LinkedList<Creneau> executer(ListeTaches liste);
 }
