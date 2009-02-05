@@ -9,5 +9,7 @@ public class EDL implements Algorithme{
 	public LinkedList<Creneau> executer(ListeTaches liste)
 	{
 		return null;
+		//Vraiment vraiment, très nulllllllll !!!
+		//Noooooooooooooooooooobs
 	}
 }
