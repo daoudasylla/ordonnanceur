@@ -18,10 +18,12 @@ public class RunMe2 {
      
       for(int i=1;i<40;i++){
       
+
       Generation gen = new Generation(10);
       liste = gen.genererTachesPeriodiques(0.5); 
       System.out.println(liste);
       }
+
     }
 
 }
