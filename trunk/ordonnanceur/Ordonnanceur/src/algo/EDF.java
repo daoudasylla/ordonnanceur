@@ -9,6 +9,5 @@ public class EDF implements Algorithme{
 	public LinkedList<Creneau> executer(ListeTaches liste)
 	{
 		return null;
-		///Vraiment null
 	}
 }
