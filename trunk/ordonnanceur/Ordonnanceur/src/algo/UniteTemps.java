@@ -15,7 +15,7 @@ public class UniteTemps {
 	private int idUnite;
 	public UniteTemps(int idUnite)
 	{
-		this.idTache = 0;
+		this.idTache = 0; // Si 0 alors la tache est un temps creux
 		this.idUnite = idUnite;
 		this.periodes = new LinkedList<Tache>();
 	}
@@ -40,10 +40,10 @@ public class UniteTemps {
 	}
 	public String toString()
 	{
-		String temp = "unite: "+this.idUnite+"\nidTache: "+this.idTache+"\nPériodes: ";
-		Iterator<Tache> it = this.periodes.iterator();
-		while(it.hasNext())
-			temp+= it.next()+" ";
+		String temp = "unite: "+this.idUnite+" | idTache: "+this.idTache+" | Périodes: ";
+		
+		for(Tache t : this.periodes)		
+		temp+= t.getId()+" ";
 		
 		return temp;
 	}

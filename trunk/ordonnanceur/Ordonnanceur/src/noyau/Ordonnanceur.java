@@ -3,11 +3,12 @@ package noyau;
 import java.util.List;
 
 import algo.Algorithme;
+import algo.UniteTemps;
 
 public class Ordonnanceur {
 	private ListeTaches liste;
 	private Algorithme algo;
-	private List<Creneau> result;
+	private List<UniteTemps> result;
 
 	//private int ppcm;
 	public Ordonnanceur(Algorithme algo,ListeTaches liste){

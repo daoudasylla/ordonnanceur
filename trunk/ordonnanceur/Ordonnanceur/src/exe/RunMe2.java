@@ -3,6 +3,7 @@ package exe;
 import java.util.Random;
 
 import algo.Algorithme;
+import algo.EDF;
 import algo.RM;
 
 import noyau.Generation;
@@ -20,7 +21,7 @@ public class RunMe2 {
     public static void main(String[] args) {
         
       ListeTaches liste;
-     
+     /*
       for(int i=1;i<40;i++){
       
 
@@ -32,7 +33,17 @@ public class RunMe2 {
       liste2.add(new Periodique(2,6,6));
       liste2.add(new Periodique(2,8,8));
       liste2.add(new Periodique(2,12,12));
-      Ordonnanceur o = new Ordonnanceur(new RM(24),liste2);
+      Ordonnanceur o = new Ordonnanceur(new RM(24),liste2);*/
+      ListeTaches liste2 = new ListeTaches();
+     /* liste2.add(new Periodique(1,4,4));
+      liste2.add(new Periodique(2,6,6));
+      liste2.add(new Periodique(3,8,8));
+      */
+      liste2.add(new Periodique(1,20,8));
+      liste2.add(new Periodique(4,10,10));
+      liste2.add(new Periodique(2,5,4));
+      Ordonnanceur o = new Ordonnanceur(new EDF(24),liste2);
+      
       o.ordonnancer();
       
     }

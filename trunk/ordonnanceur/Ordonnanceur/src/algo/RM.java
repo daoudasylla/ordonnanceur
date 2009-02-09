@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
 
-import noyau.Creneau;
 import noyau.ListeTaches;
 import noyau.Periodique;
 import noyau.Tache;
@@ -47,7 +46,7 @@ public class RM implements Algorithme{
 			}
 		}
 	}
-	public LinkedList<Creneau> executer(ListeTaches liste)
+	public LinkedList<UniteTemps> executer(ListeTaches liste)
 	{
 		this.liste = liste;
 		UniteTemps uniteCourante = null;
