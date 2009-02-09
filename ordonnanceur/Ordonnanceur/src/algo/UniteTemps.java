@@ -9,8 +9,10 @@ public class UniteTemps {
 	private List<Integer> periodes;
 	//l'id de la tache qui occupera cette unité de temps
 	private int idTache;
-	public UniteTemps()
+	private int idUnite;
+	public UniteTemps(int idUnite)
 	{
+		this.idUnite = idUnite;
 		this.periodes = new LinkedList<Integer>();
 	}
 	public int getIdTache() {
