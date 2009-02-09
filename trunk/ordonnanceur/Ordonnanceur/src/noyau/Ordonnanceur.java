@@ -8,11 +8,12 @@ public class Ordonnanceur {
 	private ListeTaches liste;
 	private Algorithme algo;
 	private List<Creneau> result;
+
 	private int ppcm;
 	public Ordonnanceur(Algorithme algo,ListeTaches liste,int ppcm){
 		this(algo,ppcm);
 		this.liste = liste;
-		
+
 	}
 	public Ordonnanceur(Algorithme algo,int ppcm){
 		this.algo = algo;

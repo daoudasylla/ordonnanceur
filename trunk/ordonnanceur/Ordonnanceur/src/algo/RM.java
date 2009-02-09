@@ -10,6 +10,7 @@ import noyau.Tache;
 
 public class RM implements Algorithme{
 	private int[] ordonnancement;
+
 	private boolean[][] periodes;
 	private ListeTaches liste;
 	private int ppcm;
@@ -45,6 +46,7 @@ public class RM implements Algorithme{
 		this.liste = liste;
 		this.periodes = new boolean[ppcm][this.liste.size()];
 		return null;
-	
+
+
 	}
 }

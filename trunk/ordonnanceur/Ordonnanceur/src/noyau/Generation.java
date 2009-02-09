@@ -53,7 +53,7 @@ public class Generation {
 	    		int Ci= (int) Math.floor(Math.random()*10)+1;
 	    		// Definition du Pi
 	    		int Pi = (int) Math.floor(Ci/tab[i]);
-	    		Periodique t = new Periodique(Ci,Pi);
+	    		Periodique t = new Periodique(Ci,Pi,Pi);
 	    		/*t.setC(Ci);
 	    		t.setP(Pi);*/
 	    		liste.add(t);
