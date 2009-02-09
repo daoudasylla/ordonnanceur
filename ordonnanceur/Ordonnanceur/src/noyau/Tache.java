@@ -27,4 +27,10 @@ public abstract class Tache{
 		this.id = id;
 	}
 	
+	public int hashCode() {		
+		return id;
+	}
+	
+	
+	
 }

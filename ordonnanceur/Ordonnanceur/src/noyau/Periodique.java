@@ -35,6 +35,23 @@ public class Periodique extends Tache{
 		
 	}
 	
+
+	
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Periodique other = (Periodique) obj;
+		if (d != other.d)
+			return false;
+		if (p != other.p)
+			return false;
+		return true;
+	}
+	
 	
 	
 	

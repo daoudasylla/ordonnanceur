@@ -26,5 +26,14 @@ public class Ordonnanceur {
 	public void ordonnancer()
 	{
 		this.result = this.algo.executer(this.liste);
+		
+	}
+	
+	public String toString(){
+		String tmp="Affichage du résultat de l'ordonnanceur\n";
+		for(UniteTemps ut : this.result){
+			tmp += ut+"\n";
+		}
+		return tmp;
 	}
 }
