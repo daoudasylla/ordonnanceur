@@ -1,5 +1,6 @@
 package algo;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,6 +16,7 @@ public class EDF implements Algorithme{
 	private List<UniteTemps> ordonnancement;
 	private ListeTaches liste;
 	private int ppcm;
+	private HashMap<Tache,Integer> mapTacheUnitesRestantes;
 	
 	
 	public EDF(int ppcm)
@@ -24,6 +26,7 @@ public class EDF implements Algorithme{
 		for(int i = 0; i < this.ppcm ; i++)
 			this.ordonnancement.add(new UniteTemps(i));
 		this.liste = null;
+		this.mapTacheUnitesRestantes = new HashMap<Tache,Integer>();
 	}
 	
 	/**
@@ -31,13 +34,14 @@ public class EDF implements Algorithme{
 	 */
 	private void calculePeriodes()
 	{
-		Iterator<Tache> it = this.liste.iterator();
+		
 		int periodeTemp, periodeTache;
 		Tache tacheTemp = null;
-		while(it.hasNext())
+		for(Tache t : this.liste)
+		
 		{
 			periodeTemp = 0;
-			tacheTemp = it.next();
+			tacheTemp = t;
 			periodeTache = ((Periodique)tacheTemp).getP();
 			while(periodeTemp < this.ppcm)
 			{
@@ -45,47 +49,77 @@ public class EDF implements Algorithme{
 				//this.periodes[periodeTemp-1][tacheTemp.getId()] = true;
 				periodeTemp += periodeTache;
 			}
+		
+			this.mapTacheUnitesRestantes.put(t, new Integer(0));
 		}
 	}
 	public LinkedList<UniteTemps> executer(ListeTaches liste)
 	{
 		this.liste = liste;
-		UniteTemps uniteCourante = null;
-		Tache tacheEnCours = null;
+		//UniteTemps uniteCourante = null;
+		Periodique tacheEnCours = null;
 		int unitesRestantes = 0; //pour la tache en cours
-		LinkedList<UniteTemps> listeTaches = new LinkedList<UniteTemps>();
+		LinkedList<UniteTemps> listeTaches = new LinkedList<UniteTemps>(); // structure de sortie
 		
 		PriorityQueue<PrioEDF> enAttente = new PriorityQueue<PrioEDF>(); //taches en attentes
 		this.calculePeriodes();
 		
-		for(UniteTemps u : this.ordonnancement)
+		for(UniteTemps uniteCourante : this.ordonnancement)
 		{
-			uniteCourante = u;
+	
+			
 			
 			for(Tache t :uniteCourante.getPeriodes()){
 				enAttente.add(new PrioEDF(((Periodique)t),uniteCourante.getIdUnite()));
+				
+				if(this.mapTacheUnitesRestantes.get(t)>0) System.out.println("erreur impossible de finir la tache : "+t.getId());
+				else mapTacheUnitesRestantes.put(t,t.getC());
 			}
+			
+			// Si une tache en cours doit etre stoppé car réveil d'une tache prio
+			if(tacheEnCours!=null){
+				Periodique tPrio = enAttente.peek().getTache();
+				if(tPrio != null){
+					
+					if((tacheEnCours.getD()-uniteCourante.getIdUnite())>(tPrio.getD()-uniteCourante.getIdUnite())){
+						tacheEnCours = tPrio;
+					}
+				}
+			}
+			
 			//si aucune tache est en cours d'execution on en selectionne une dans la file d'attente
 			if(tacheEnCours == null) {
 				if(enAttente.peek() != null) {// si des taches dans la file d'attente
-					tacheEnCours = enAttente.poll().getTache();
-					unitesRestantes = tacheEnCours.getC();
-				}else {
+					tacheEnCours = enAttente.peek().getTache();					 
+				} else {
+					uniteCourante.setIdTache(0);
+					listeTaches.add(uniteCourante);
+				}
+			}
+			
+			
+			
+			if(tacheEnCours != null) { //si une tache est en cours d'exe
+				uniteCourante.setIdTache(tacheEnCours.getId());
+				
+				listeTaches.add(uniteCourante);
+				
+				unitesRestantes = this.mapTacheUnitesRestantes.get(tacheEnCours)-1;
+				this.mapTacheUnitesRestantes.put(tacheEnCours,unitesRestantes);
+				if(unitesRestantes == 0) {//si c'était la dernière unité de temps
+					enAttente.remove(new PrioEDF(tacheEnCours,uniteCourante.getIdUnite()));
+					tacheEnCours = null;
 					
 				}
 			}
-			if(tacheEnCours != null) { //si une tache est en cours d'exe
-				uniteCourante.setIdTache(tacheEnCours.getId());
-				unitesRestantes--;
-				if(unitesRestantes == 0) {//si c'était la dernière unité de temps
-					tacheEnCours = null;
-				}
-			}
-			System.out.println(uniteCourante);
+			
 		}
 		
-		return null;
+		return listeTaches;
 
 
 	}
+	
+
+	
 }

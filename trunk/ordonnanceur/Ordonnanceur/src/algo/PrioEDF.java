@@ -5,11 +5,11 @@ import noyau.Periodique;
 public class PrioEDF implements Comparable{
 
 	private Periodique tache;
-	private int uniteActuelle;
+	private static int uniteActuelle;
 	
-	public PrioEDF(Periodique tache, int uniteActuelle){
+	public PrioEDF(Periodique tache, int unite){
 		this.tache = tache;
-		this.uniteActuelle = uniteActuelle;
+		PrioEDF.uniteActuelle = unite;
 	}
 	public int compareTo(Object o) {
 		PrioEDF p = (PrioEDF) o;
@@ -20,11 +20,28 @@ public class PrioEDF implements Comparable{
 		return 0;
 	}
 	
+	public int getUniteActuelle() {
+		return uniteActuelle;
+	}
+	public void setUniteActuelle(int uniteActuelle) {
+		this.uniteActuelle = uniteActuelle;
+	}
 	public Periodique getTache() {
 		return tache;
 	}
 	public void setTache(Periodique tache) {
 		this.tache = tache;
 	}
-
+	
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PrioEDF other = (PrioEDF) obj;
+		return (other.tache.equals(this.tache));
+	}
+	
 }
