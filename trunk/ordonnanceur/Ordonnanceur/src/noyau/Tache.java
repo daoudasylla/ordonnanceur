@@ -3,7 +3,7 @@ package noyau;
 public abstract class Tache{
 
 	private int c;
-	static private int nextId = 0;
+	static private int nextId = 1;
 	private int id;
 	
 	public Tache(int c)
