@@ -3,6 +3,7 @@ package algo;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.PriorityQueue;
 
 import noyau.Creneau;
 import noyau.ListeTaches;
@@ -40,7 +41,7 @@ public class RM implements Algorithme{
 			periodeTache = ((Periodique)tacheTemp).getP();
 			while(periodeTemp < this.ppcm)
 			{
-				this.ordonnancement.get(this.ordonnancement.indexOf(new UniteTemps(periodeTemp))).ajouterPeriode(tacheTemp.getId());
+				this.ordonnancement.get(this.ordonnancement.indexOf(new UniteTemps(periodeTemp))).ajouterPeriode(tacheTemp);
 				//this.periodes[periodeTemp-1][tacheTemp.getId()] = true;
 				periodeTemp += periodeTache;
 			}
@@ -49,11 +50,35 @@ public class RM implements Algorithme{
 	public LinkedList<Creneau> executer(ListeTaches liste)
 	{
 		this.liste = liste;
+		UniteTemps uniteCourante = null;
+		Tache tacheEnCours = null;
+		int unitesRestantes = 0; //pour la tache en cours
+		PriorityQueue<PrioRM> enAttente = new PriorityQueue(); //taches en attentes
 		this.calculePeriodes();
 		Iterator<UniteTemps> it = this.ordonnancement.iterator();
 		while(it.hasNext())
 		{
-			System.out.println(it.next());
+			uniteCourante = it.next();
+			Iterator<Tache> it2 = uniteCourante.getPeriodes().iterator();
+			//on regarde si de nouvelles périodes de tache débutes, auquel cas on remplie la file a priorité
+			while(it2.hasNext()) {
+				enAttente.add(new PrioRM(((Periodique)it2.next())));
+			}
+			//si aucune tache est en cours d'execution on en selectionne une dans la file d'attente
+			if(tacheEnCours == null) {
+				if(enAttente.peek() != null) {// si des taches dans la file d'attente
+					tacheEnCours = enAttente.poll().getTache();
+					unitesRestantes = tacheEnCours.getC();
+				}
+			}
+			if(tacheEnCours != null) { //si une tache est en cours d'exe
+				uniteCourante.setIdTache(tacheEnCours.getId());
+				unitesRestantes--;
+				if(unitesRestantes == 0) {//si c'était la dernière unité de temps
+					tacheEnCours = null;
+				}
+			}
+			System.out.println(uniteCourante);
 		}
 		//this.periodes = new boolean[ppcm][this.liste.size()];
 		return null;

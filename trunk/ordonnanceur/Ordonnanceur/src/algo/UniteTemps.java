@@ -4,10 +4,12 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import noyau.Tache;
+
 public class UniteTemps {
 	
 	//la liste des id des taches dont la période commence sur cette unité
-	private List<Integer> periodes;
+	private List<Tache> periodes;
 	//l'id de la tache qui occupera cette unité de temps
 	private int idTache;
 	private int idUnite;
@@ -15,7 +17,7 @@ public class UniteTemps {
 	{
 		this.idTache = 0;
 		this.idUnite = idUnite;
-		this.periodes = new LinkedList<Integer>();
+		this.periodes = new LinkedList<Tache>();
 	}
 	public int getIdTache() {
 		return idTache;
@@ -31,18 +33,21 @@ public class UniteTemps {
 	public int getIdUnite() {
 		return idUnite;
 	}
-	public void ajouterPeriode(int idTache){
-		if(!this.periodes.contains(idTache)){
-			this.periodes.add(idTache);
+	public void ajouterPeriode(Tache tache){
+		if(!this.periodes.contains(tache)){
+			this.periodes.add(tache);
 		}
 	}
 	public String toString()
 	{
 		String temp = "unite: "+this.idUnite+"\nidTache: "+this.idTache+"\nPériodes: ";
-		Iterator<Integer> it = this.periodes.iterator();
+		Iterator<Tache> it = this.periodes.iterator();
 		while(it.hasNext())
 			temp+= it.next()+" ";
 		
 		return temp;
+	}
+	public List<Tache> getPeriodes() {
+		return periodes;
 	}
 }
