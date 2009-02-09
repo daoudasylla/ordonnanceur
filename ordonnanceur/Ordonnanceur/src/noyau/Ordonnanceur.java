@@ -9,15 +9,15 @@ public class Ordonnanceur {
 	private Algorithme algo;
 	private List<Creneau> result;
 
-	private int ppcm;
-	public Ordonnanceur(Algorithme algo,ListeTaches liste,int ppcm){
-		this(algo,ppcm);
+	//private int ppcm;
+	public Ordonnanceur(Algorithme algo,ListeTaches liste){
+		this(algo);
 		this.liste = liste;
 
 	}
-	public Ordonnanceur(Algorithme algo,int ppcm){
+	public Ordonnanceur(Algorithme algo){
 		this.algo = algo;
-		this.ppcm = ppcm;
+		//this.ppcm = ppcm;
 	}
 	public void setListe(ListeTaches liste) {
 		this.liste = liste;

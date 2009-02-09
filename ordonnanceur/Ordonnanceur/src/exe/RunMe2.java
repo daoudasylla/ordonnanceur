@@ -2,8 +2,13 @@ package exe;
 
 import java.util.Random;
 
+import algo.Algorithme;
+import algo.RM;
+
 import noyau.Generation;
 import noyau.ListeTaches;
+import noyau.Ordonnanceur;
+import noyau.Periodique;
 
 
 public class RunMe2 {
@@ -23,7 +28,12 @@ public class RunMe2 {
       liste = gen.genererTachesPeriodiques(0.5); 
       System.out.println(liste);
       }
-
+      ListeTaches liste2 = new ListeTaches();
+      liste2.add(new Periodique(2,6,6));
+      liste2.add(new Periodique(2,8,8));
+      liste2.add(new Periodique(2,12,12));
+      Ordonnanceur o = new Ordonnanceur(new RM(24),liste2);
+      o.ordonnancer();
+      
     }
-
 }
