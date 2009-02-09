@@ -3,11 +3,21 @@ package noyau;
 public class Periodique extends Tache{
 	
 	private int p;
+	private int d;
 	
-	public Periodique(int c, int p) {
+	public Periodique(int c, int p, int d) {
 		super(c);
 		this.p = p;
+		this.d = d;
 		
+	}
+
+	public int getD() {
+		return d;
+	}
+
+	public void setD(int d) {
+		this.d = d;
 	}
 
 	public int getP() {
@@ -21,7 +31,7 @@ public class Periodique extends Tache{
 	
 	public String toString() {
 		
-		return "Ci : "+super.getC()+" | Pi : "+this.p;
+		return "Ci : "+super.getC()+" | Pi : "+this.p+" | Di : "+this.d;
 		
 	}
 	
