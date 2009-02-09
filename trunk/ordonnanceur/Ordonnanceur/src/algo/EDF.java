@@ -13,7 +13,7 @@ import noyau.Tache;
 
 public class EDF implements Algorithme{
 	
-	private List<UniteTemps> ordonnancement;
+	private LinkedList<UniteTemps> ordonnancement;
 	private ListeTaches liste;
 	private int ppcm;
 	private HashMap<Tache,Integer> mapTacheUnitesRestantes;
@@ -59,7 +59,6 @@ public class EDF implements Algorithme{
 		//UniteTemps uniteCourante = null;
 		Periodique tacheEnCours = null;
 		int unitesRestantes = 0; //pour la tache en cours
-		LinkedList<UniteTemps> listeTaches = new LinkedList<UniteTemps>(); // structure de sortie
 		
 		PriorityQueue<PrioEDF> enAttente = new PriorityQueue<PrioEDF>(); //taches en attentes
 		this.calculePeriodes();
@@ -93,7 +92,7 @@ public class EDF implements Algorithme{
 					tacheEnCours = enAttente.peek().getTache();					 
 				} else {
 					uniteCourante.setIdTache(0);
-					listeTaches.add(uniteCourante);
+					
 				}
 			}
 			
@@ -102,7 +101,7 @@ public class EDF implements Algorithme{
 			if(tacheEnCours != null) { //si une tache est en cours d'exe
 				uniteCourante.setIdTache(tacheEnCours.getId());
 				
-				listeTaches.add(uniteCourante);
+				
 				
 				unitesRestantes = this.mapTacheUnitesRestantes.get(tacheEnCours)-1;
 				this.mapTacheUnitesRestantes.put(tacheEnCours,unitesRestantes);
@@ -115,7 +114,7 @@ public class EDF implements Algorithme{
 			
 		}
 		
-		return listeTaches;
+		return this.ordonnancement;
 
 
 	}
