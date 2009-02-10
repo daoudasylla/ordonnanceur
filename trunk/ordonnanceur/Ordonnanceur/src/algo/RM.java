@@ -52,9 +52,11 @@ public class RM implements Algorithme{
 			this.mapTacheUnitesRestantes.put(t, new Integer(0));
 		}
 	}
-	public LinkedList<UniteTemps> executer(ListeTaches liste)
+	public LinkedList<UniteTemps> executer(ListeTaches tachesPeriodiques, ListeTaches tachesAperiodiques)
 	{
-		this.liste = liste;
+		
+		
+		this.liste = tachesPeriodiques;
 		Periodique tacheEnCours = null;
 		int unitesRestantes = 0; //pour la tache en cours
 		PriorityQueue<PrioRM> enAttente = new PriorityQueue<PrioRM>(); //taches en attentes

@@ -11,15 +11,19 @@ public class Background implements Algorithme{
 	private LinkedList<UniteTemps> ordonnancement;
 	private int ppcm;
 	public Background(int ppcm) {
+		
 		this.ppcm = ppcm;
 		this.aperiodique = new ListeTaches();
 	}
-	public LinkedList<UniteTemps> executer(ListeTaches liste)
+	public LinkedList<UniteTemps> executer(ListeTaches tachesPeriodiques, ListeTaches tachesAperiodiques)
 	{
+		
+		
+		
 		ListeTaches periodique = new ListeTaches();
 		Tache aperiodiqueEnCours = null;
 		int tempsRestant = 0; //pour la tache apériodique en cours
-		for(Tache t : liste) {
+		for(Tache t : tachesPeriodiques) {
 			if(t instanceof Periodique) {
 				periodique.add(t);
 			}
@@ -27,7 +31,7 @@ public class Background implements Algorithme{
 				this.aperiodique.add(t);
 		}
 		RM rm = new RM(this.ppcm);
-		this.ordonnancement = rm.executer(periodique);
+		this.ordonnancement = rm.executer(periodique, null);
 		for(UniteTemps u : this.ordonnancement) {
 			if(u.getIdTache() == 0) { // si un temps creux
 				if(aperiodiqueEnCours == null) { //si aucune tache apériodique n'a été mise en standby

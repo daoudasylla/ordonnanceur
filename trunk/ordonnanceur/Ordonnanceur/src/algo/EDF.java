@@ -52,9 +52,11 @@ public class EDF implements Algorithme{
 			this.mapTacheUnitesRestantes.put(t, new Integer(0));
 		}
 	}
-	public LinkedList<UniteTemps> executer(ListeTaches liste)
+	public LinkedList<UniteTemps> executer(ListeTaches tachesPeriodiques, ListeTaches tachesAperiodiques)
 	{
-		this.liste = liste;
+	
+		
+		this.liste = tachesPeriodiques;
 		//UniteTemps uniteCourante = null;
 		Periodique tacheEnCours = null;
 		int unitesRestantes = 0; //pour la tache en cours

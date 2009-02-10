@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import noyau.ListeTaches;
 
-public interface Algorithme {
-	public LinkedList<UniteTemps> executer(ListeTaches liste);
+public interface Algorithme {	
+	
+	public LinkedList<UniteTemps> executer(ListeTaches tachesPeriodiques, ListeTaches tachesAperiodiques);
 }
