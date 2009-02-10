@@ -79,6 +79,7 @@ public class EDF implements Algorithme{
 				if(tPrio != null){
 					
 					if((tacheEnCours.getDi(uniteCourante.getIdUnite())-uniteCourante.getIdUnite())>(tPrio.getDi(uniteCourante.getIdUnite())-uniteCourante.getIdUnite())){
+						System.out.println((tacheEnCours.getD()-uniteCourante.getIdUnite())+">"+(tPrio.getD()-uniteCourante.getIdUnite()));
 						tacheEnCours = tPrio;
 					}
 				}
