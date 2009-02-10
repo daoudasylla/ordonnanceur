@@ -9,6 +9,7 @@ import algo.EDF;
 import algo.RM;
 import algo.UniteTemps;
 
+import noyau.Aperiodique;
 import noyau.Generation;
 import noyau.ListeTaches;
 import noyau.Ordonnanceur;
@@ -34,12 +35,12 @@ public class RunMe2 {
       System.out.println(liste);
       }*/
       ListeTaches liste2 = new ListeTaches();
-     liste2.add(new Periodique(2,6,6));
+     /*liste2.add(new Periodique(2,6,6));
       liste2.add(new Periodique(2,8,8));
       liste2.add(new Periodique(2,12,12));
       Ordonnanceur o = new Ordonnanceur(new RM(24),liste2);
       o.ordonnancer();
-      System.out.println(o);
+      System.out.println(o);*/
      /* liste2.add(new Periodique(3,20,20));
       liste2.add(new Periodique(2,10,10));
       liste2.add(new Periodique(2,5,5));
@@ -60,13 +61,20 @@ public class RunMe2 {
       
       ////////////TEST BACKGROUND/////////////////////
       /*ListeTaches liste2 = new ListeTaches();
-      liste2.add(new Periodique(2,6,6));
+      /*liste2.add(new Periodique(2,6,6));
       liste2.add(new Periodique(2,8,8));
       liste2.add(new Periodique(2,12,12));
+      liste2.add(new Aperiodique(2,7));
+      liste2.add(new Aperiodique(2,5));*/
+      liste2.add(new Periodique(4,10,10));
+      liste2.add(new Periodique(2,6,6));
+      liste2.add(new Aperiodique(1,1));
+      liste2.add(new Aperiodique(2,12));
+       Ordonnanceur o = new Ordonnanceur(new Background(30),liste2);
       //liste2.add(new Aperiodique(2));
-      Ordonnanceur o = new Ordonnanceur(new Background(24),liste2);
+      //Ordonnanceur o = new Ordonnanceur(new Background(24),liste2);
       o.ordonnancer();
-      System.out.println(o);*/
+      System.out.println(o);
       
     }
 }
