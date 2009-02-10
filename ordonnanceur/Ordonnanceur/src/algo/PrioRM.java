@@ -22,5 +22,15 @@ public class PrioRM implements Comparable{
 	public void setTache(Periodique tache) {
 		this.tache = tache;
 	}
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null)
+			return false;
+		if (getClass() != o.getClass())
+			return false;
+		PrioRM other = (PrioRM) o;
+		return (other.tache.equals(this.tache));
+	}
 
 }

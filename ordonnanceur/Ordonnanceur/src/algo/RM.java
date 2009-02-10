@@ -1,5 +1,6 @@
 package algo;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,10 +13,11 @@ import noyau.Tache;
 public class RM implements Algorithme{
 	
 	//private int[] ordonnancement;
-	private List<UniteTemps> ordonnancement;
+	private LinkedList<UniteTemps> ordonnancement;
 	//private boolean[][] periodes;
 	private ListeTaches liste;
 	private int ppcm;
+	private HashMap<Tache,Integer> mapTacheUnitesRestantes;
 	public RM(int ppcm)
 	{
 		this.ppcm = ppcm;
@@ -23,6 +25,7 @@ public class RM implements Algorithme{
 		for(int i = 0; i < this.ppcm ; i++)
 			this.ordonnancement.add(new UniteTemps(i));
 		this.liste = null;
+		this.mapTacheUnitesRestantes = new HashMap<Tache,Integer>();
 	}
 	
 	/**
@@ -30,13 +33,14 @@ public class RM implements Algorithme{
 	 */
 	private void calculePeriodes()
 	{
-		Iterator<Tache> it = this.liste.iterator();
+		
 		int periodeTemp, periodeTache;
 		Tache tacheTemp = null;
-		while(it.hasNext())
+		for(Tache t : this.liste)
+		
 		{
 			periodeTemp = 0;
-			tacheTemp = it.next();
+			tacheTemp = t;
 			periodeTache = ((Periodique)tacheTemp).getP();
 			while(periodeTemp < this.ppcm)
 			{
@@ -44,44 +48,73 @@ public class RM implements Algorithme{
 				//this.periodes[periodeTemp-1][tacheTemp.getId()] = true;
 				periodeTemp += periodeTache;
 			}
+		
+			this.mapTacheUnitesRestantes.put(t, new Integer(0));
 		}
 	}
 	public LinkedList<UniteTemps> executer(ListeTaches liste)
 	{
 		this.liste = liste;
-		UniteTemps uniteCourante = null;
-		Tache tacheEnCours = null;
+		Periodique tacheEnCours = null;
 		int unitesRestantes = 0; //pour la tache en cours
-		PriorityQueue<PrioRM> enAttente = new PriorityQueue(); //taches en attentes
+		PriorityQueue<PrioRM> enAttente = new PriorityQueue<PrioRM>(); //taches en attentes
 		this.calculePeriodes();
-		Iterator<UniteTemps> it = this.ordonnancement.iterator();
-		while(it.hasNext())
+		
+		for(UniteTemps uniteCourante : this.ordonnancement)
 		{
-			uniteCourante = it.next();
-			Iterator<Tache> it2 = uniteCourante.getPeriodes().iterator();
-			//on regarde si de nouvelles périodes de tache débutes, auquel cas on remplie la file a priorité
-			while(it2.hasNext()) {
-				enAttente.add(new PrioRM(((Periodique)it2.next())));
+	
+			
+			
+			for(Tache t :uniteCourante.getPeriodes()){
+				enAttente.add(new PrioRM(((Periodique)t)));
+				
+				if(this.mapTacheUnitesRestantes.get(t)>0) System.out.println("erreur impossible de finir la tache : "+t.getId());
+				else mapTacheUnitesRestantes.put(t,t.getC());
 			}
+			
+			// Si une tache en cours doit etre stoppé car réveil d'une tache prio
+			if(tacheEnCours!=null){
+				Periodique tPrio = enAttente.peek().getTache();
+				if(tPrio != null){
+					
+					if(tacheEnCours.getP() > tPrio.getP()){
+						tacheEnCours = tPrio;
+					}
+				}
+			}
+			
 			//si aucune tache est en cours d'execution on en selectionne une dans la file d'attente
 			if(tacheEnCours == null) {
 				if(enAttente.peek() != null) {// si des taches dans la file d'attente
-					tacheEnCours = enAttente.poll().getTache();
-					unitesRestantes = tacheEnCours.getC();
+					tacheEnCours = enAttente.peek().getTache();					 
+				} else {
+					uniteCourante.setIdTache(0);
+					
 				}
 			}
+			
+			
+			
 			if(tacheEnCours != null) { //si une tache est en cours d'exe
 				uniteCourante.setIdTache(tacheEnCours.getId());
-				unitesRestantes--;
+				
+				
+				
+				unitesRestantes = this.mapTacheUnitesRestantes.get(tacheEnCours)-1;
+				this.mapTacheUnitesRestantes.put(tacheEnCours,unitesRestantes);
 				if(unitesRestantes == 0) {//si c'était la dernière unité de temps
+					enAttente.remove(new PrioRM(tacheEnCours));
 					tacheEnCours = null;
+					
 				}
 			}
-			System.out.println(uniteCourante);
+			
 		}
-		//this.periodes = new boolean[ppcm][this.liste.size()];
-		return null;
+		
+		return this.ordonnancement;
 
 
 	}
+	
+
 }
