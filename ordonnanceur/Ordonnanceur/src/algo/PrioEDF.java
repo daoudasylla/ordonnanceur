@@ -13,11 +13,11 @@ public class PrioEDF implements Comparable{
 	}
 	public int compareTo(Object o) {
 		PrioEDF p = (PrioEDF) o;
-		if((this.tache.getD()-this.uniteActuelle) < (p.getTache().getD()-this.uniteActuelle))
+		if((this.tache.getDi(this.uniteActuelle)-this.uniteActuelle) < (p.getTache().getDi(this.uniteActuelle)-this.uniteActuelle))
 			return -1;
-		else if((this.tache.getD()-this.uniteActuelle) > (p.getTache().getD()-this.uniteActuelle))
+		else if((this.tache.getDi(this.uniteActuelle)-this.uniteActuelle) > (p.getTache().getDi(this.uniteActuelle)-this.uniteActuelle))
 			return 1;
-		return 0;
+		return 1;
 	}
 	
 	public int getUniteActuelle() {
@@ -41,7 +41,7 @@ public class PrioEDF implements Comparable{
 		if (getClass() != obj.getClass())
 			return false;
 		PrioEDF other = (PrioEDF) obj;
-		return (other.tache.equals(this.tache));
+		return (this.tache.equals(other.tache));
 	}
 	
 }
