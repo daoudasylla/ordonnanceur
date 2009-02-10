@@ -1,5 +1,7 @@
 package noyau;
 
+import algo.UniteTemps;
+
 public class Periodique extends Tache{
 	
 	private int p;
@@ -38,22 +40,19 @@ public class Periodique extends Tache{
 
 	
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Periodique other = (Periodique) obj;
-		if (d != other.d)
-			return false;
-		if (p != other.p)
-			return false;
-		return true;
+
+		return super.equals(obj);
+	}
+	public int hashCode() {		
+		return super.getId();
 	}
 	
-	
-	
+	public int getDi(int ut){
+		int Di =0;
+		while(Di<=ut) Di = Di+d;
+		
+		return Di;
+	}
 	
 
 }

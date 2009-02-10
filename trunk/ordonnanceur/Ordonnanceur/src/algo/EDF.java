@@ -48,8 +48,7 @@ public class EDF implements Algorithme{
 				this.ordonnancement.get(this.ordonnancement.indexOf(new UniteTemps(periodeTemp))).ajouterPeriode(tacheTemp);
 				//this.periodes[periodeTemp-1][tacheTemp.getId()] = true;
 				periodeTemp += periodeTache;
-			}
-		
+			}		
 			this.mapTacheUnitesRestantes.put(t, new Integer(0));
 		}
 	}
@@ -63,16 +62,15 @@ public class EDF implements Algorithme{
 		PriorityQueue<PrioEDF> enAttente = new PriorityQueue<PrioEDF>(); //taches en attentes
 		this.calculePeriodes();
 		
+		
 		for(UniteTemps uniteCourante : this.ordonnancement)
 		{
-	
-			
-			
 			for(Tache t :uniteCourante.getPeriodes()){
 				enAttente.add(new PrioEDF(((Periodique)t),uniteCourante.getIdUnite()));
 				
-				if(this.mapTacheUnitesRestantes.get(t)>0) System.out.println("erreur impossible de finir la tache : "+t.getId());
-				else mapTacheUnitesRestantes.put(t,t.getC());
+				if(this.mapTacheUnitesRestantes.get(t)>0) System.out.println("erreur impossible de finir la tache : "+t.getId()+" "+this.mapTacheUnitesRestantes.get(t));
+				else {mapTacheUnitesRestantes.put(t,t.getC());
+				}
 			}
 			
 			// Si une tache en cours doit etre stoppé car réveil d'une tache prio
@@ -80,7 +78,7 @@ public class EDF implements Algorithme{
 				Periodique tPrio = enAttente.peek().getTache();
 				if(tPrio != null){
 					
-					if((tacheEnCours.getD()-uniteCourante.getIdUnite())>(tPrio.getD()-uniteCourante.getIdUnite())){
+					if((tacheEnCours.getDi(uniteCourante.getIdUnite())-uniteCourante.getIdUnite())>(tPrio.getDi(uniteCourante.getIdUnite())-uniteCourante.getIdUnite())){
 						tacheEnCours = tPrio;
 					}
 				}
@@ -100,9 +98,7 @@ public class EDF implements Algorithme{
 			
 			if(tacheEnCours != null) { //si une tache est en cours d'exe
 				uniteCourante.setIdTache(tacheEnCours.getId());
-				
-				
-				
+												
 				unitesRestantes = this.mapTacheUnitesRestantes.get(tacheEnCours)-1;
 				this.mapTacheUnitesRestantes.put(tacheEnCours,unitesRestantes);
 				if(unitesRestantes == 0) {//si c'était la dernière unité de temps
@@ -111,6 +107,9 @@ public class EDF implements Algorithme{
 					
 				}
 			}
+			
+		
+			
 			
 		}
 		
