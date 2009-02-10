@@ -2,8 +2,10 @@ package noyau;
 
 public class AperiodiqueCritique  extends Aperiodique{
 
-	public AperiodiqueCritique(int c) {
-		super(c);
+	private int d;//delai critique
+	public AperiodiqueCritique(int c,int r,int d) {
+		super(c,r);
+		this.d =d;
 	}
 
 }

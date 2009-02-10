@@ -9,17 +9,42 @@ import noyau.Tache;
 public class Background implements Algorithme{
 	private ListeTaches aperiodique;
 	private LinkedList<UniteTemps> ordonnancement;
+	private int ppcm;
+	public Background(int ppcm) {
+		this.ppcm = ppcm;
+		this.aperiodique = new ListeTaches();
+	}
 	public LinkedList<UniteTemps> executer(ListeTaches liste)
 	{
 		ListeTaches periodique = new ListeTaches();
+		Tache aperiodiqueEnCours = null;
+		int tempsRestant = 0; //pour la tache apériodique en cours
 		for(Tache t : liste) {
 			if(t instanceof Periodique) {
 				periodique.add(t);
-				liste.remove(t);
+			}
+			else
+				this.aperiodique.add(t);
+		}
+		RM rm = new RM(this.ppcm);
+		this.ordonnancement = rm.executer(periodique);
+		for(UniteTemps u : this.ordonnancement) {
+			if(u.getIdTache() == 0) { // si un temps creux
+				if(aperiodiqueEnCours == null) { //si aucune tache apériodique n'a été mise en standby
+					if(this.aperiodique.peek() != null) { //et si des taches apériodique sont en attente
+						aperiodiqueEnCours = this.aperiodique.poll();
+						tempsRestant = aperiodiqueEnCours.getC();
+					}
+				}
+				if(aperiodiqueEnCours != null) { // si une tache apériodique à déjà été en partie executée ou vient d'être lancée
+					u.setIdTache(aperiodiqueEnCours.getId());
+					if(--tempsRestant == 0) //si la tache est terminée on la retire
+						aperiodiqueEnCours = null;
+				}
+				
 			}
 		}
-		this.aperiodique = liste;
-		//RM rm = new RM(periodique);
+		
 		return this.ordonnancement;
 	}
 }
