@@ -22,9 +22,8 @@ public class EDF implements Algorithme{
 	public EDF(int ppcm)
 	{
 		this.ppcm = ppcm;
-		this.ordonnancement = new LinkedList<UniteTemps>();
-		for(int i = 0; i < this.ppcm ; i++)
-			this.ordonnancement.add(new UniteTemps(i));
+		this.ordonnancement = null;
+		
 		this.liste = null;
 		this.mapTacheUnitesRestantes = new HashMap<Tache,Integer>();
 	}
@@ -32,42 +31,71 @@ public class EDF implements Algorithme{
 	/**
 	 * Initialise la liste des débuts de période des tâches
 	 */
-	private void calculePeriodes()
+	private void calculePeriodes(ListeTaches liste)
 	{
 		
-		int periodeTemp, periodeTache;
-		Tache tacheTemp = null;
-		for(Tache t : this.liste)
+		// On initialise l'ordonnancement que dans le cas où une liste n'est pas déjà passée
+		if(this.ordonnancement==null)
+		initOrdonnancement();			
 		
-		{
-			periodeTemp = 0;
-			tacheTemp = t;
-			periodeTache = ((Periodique)tacheTemp).getP();
-			while(periodeTemp < this.ppcm)
+		
+			int periodeTemp, periodeTache;
+			Tache tacheTemp = null;
+			for(Tache t : liste)
+			
 			{
-				this.ordonnancement.get(this.ordonnancement.indexOf(new UniteTemps(periodeTemp))).ajouterPeriode(tacheTemp);
-				//this.periodes[periodeTemp-1][tacheTemp.getId()] = true;
-				periodeTemp += periodeTache;
-			}		
-			this.mapTacheUnitesRestantes.put(t, new Integer(0));
-		}
+				
+				periodeTemp = 0;
+				tacheTemp = t;
+				periodeTache = ((Periodique)tacheTemp).getP();
+				while(periodeTemp < this.ppcm)
+				{
+					
+					this.ordonnancement.get(this.ordonnancement.indexOf(new UniteTemps(periodeTemp))).ajouterPeriode(tacheTemp);
+					periodeTemp += periodeTache;
+				}		
+				
+			}
+		
+		
+		initMap(liste);
 	}
+		
+	private void initOrdonnancement(){	
+		//System.out.println("init de l'ordo");
+		this.ordonnancement = new LinkedList<UniteTemps>();
+		for(int i = 0; i < this.ppcm ; i++)
+			this.ordonnancement.add(new UniteTemps(i));
+	}
+	
+	
+	private void initMap(ListeTaches liste){
+		for(Tache t : liste)		
+		this.mapTacheUnitesRestantes.put(t, new Integer(0));		
+	}
+		
 	public LinkedList<UniteTemps> executer(ListeTaches tachesPeriodiques, ListeTaches tachesAperiodiques)
 	{
-	
+			
+		//this.liste = tachesPeriodiques;
+		this.calculePeriodes(tachesPeriodiques);
 		
-		this.liste = tachesPeriodiques;
-		//UniteTemps uniteCourante = null;
+		
+		
+		
 		Periodique tacheEnCours = null;
 		int unitesRestantes = 0; //pour la tache en cours
 		
 		PriorityQueue<PrioEDF> enAttente = new PriorityQueue<PrioEDF>(); //taches en attentes
-		this.calculePeriodes();
 		
-		
+		//System.out.println("debut EDF ---------------------");		
 		for(UniteTemps uniteCourante : this.ordonnancement)
 		{
+			//System.out.println("Unité en cours : "+uniteCourante.getIdUnite());
+			
 			for(Tache t :uniteCourante.getPeriodes()){
+				
+				//System.out.println("ajout en attente de :"+t.getId());
 				enAttente.add(new PrioEDF(((Periodique)t),uniteCourante.getIdUnite()));
 				
 				if(this.mapTacheUnitesRestantes.get(t)>0) System.out.println("erreur impossible de finir la tache : "+t.getId()+" "+this.mapTacheUnitesRestantes.get(t));
@@ -81,7 +109,7 @@ public class EDF implements Algorithme{
 				if(tPrio != null){
 					
 					if((tacheEnCours.getDi(uniteCourante.getIdUnite())-uniteCourante.getIdUnite())>(tPrio.getDi(uniteCourante.getIdUnite())-uniteCourante.getIdUnite())){
-						System.out.println((tacheEnCours.getD()-uniteCourante.getIdUnite())+">"+(tPrio.getD()-uniteCourante.getIdUnite()));
+						//System.out.println((tacheEnCours.getD()-uniteCourante.getIdUnite())+">"+(tPrio.getD()-uniteCourante.getIdUnite()));
 						tacheEnCours = tPrio;
 					}
 				}
@@ -100,18 +128,23 @@ public class EDF implements Algorithme{
 			
 			
 			if(tacheEnCours != null) { //si une tache est en cours d'exe
-				uniteCourante.setIdTache(tacheEnCours.getId());
-												
-				unitesRestantes = this.mapTacheUnitesRestantes.get(tacheEnCours)-1;
-				this.mapTacheUnitesRestantes.put(tacheEnCours,unitesRestantes);
-				if(unitesRestantes == 0) {//si c'était la dernière unité de temps
-					enAttente.remove(new PrioEDF(tacheEnCours,uniteCourante.getIdUnite()));
-					tacheEnCours = null;
-					
+				
+				// Si une tache n'est pas deja affecté (algo EDL)
+				if(uniteCourante.getIdTache()==0){
+					//System.out.println("association tache "+tacheEnCours.getId());
+					uniteCourante.setIdTache(tacheEnCours.getId());
+													
+					unitesRestantes = this.mapTacheUnitesRestantes.get(tacheEnCours)-1;
+					this.mapTacheUnitesRestantes.put(tacheEnCours,unitesRestantes);
+					if(unitesRestantes == 0) {//si c'était la dernière unité de temps
+						enAttente.remove(new PrioEDF(tacheEnCours,uniteCourante.getIdUnite()));
+						tacheEnCours = null;
+						
+					}
 				}
 			}
 			
-		
+		//System.out.println(uniteCourante);
 			
 			
 		}
@@ -120,6 +153,12 @@ public class EDF implements Algorithme{
 
 
 	}
+
+	public void setOrdonnancement(LinkedList<UniteTemps> ordonnancement) {
+		this.ordonnancement = ordonnancement;
+	}
+
+	
 	
 
 	
