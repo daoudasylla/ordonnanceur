@@ -77,6 +77,7 @@ public class RunMe2 {
       //Ordonnanceur o = new Ordonnanceur(new Background(24),liste2);
       o.ordonnancer();
       System.out.println(o);
+      System.out.println(o.tempsReponseAperiodique());
       
     }
 }
