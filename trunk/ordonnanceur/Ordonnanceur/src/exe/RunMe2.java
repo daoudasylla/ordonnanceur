@@ -4,6 +4,7 @@ import java.util.Random;
 
 import algo.Algorithme;
 import algo.Background;
+import algo.EDL;
 import algo.RM;
 import algo.EDF;
 import algo.RM;
@@ -66,11 +67,12 @@ public class RunMe2 {
       liste2.add(new Periodique(2,12,12));
       liste2.add(new Aperiodique(2,7));
       liste2.add(new Aperiodique(2,5));*/
-      liste2.add(new Periodique(4,10,10));
-      liste2.add(new Periodique(2,6,6));
-      liste2.add(new Aperiodique(1,1));
-      liste2.add(new Aperiodique(2,12));
-       Ordonnanceur o = new Ordonnanceur(new Background(30),liste2);
+      liste2.add(new Periodique(3,6,6));
+      liste2.add(new Periodique(2,8,8));
+      liste2.add(new Aperiodique(1,3));
+      liste2.add(new Aperiodique(2,9));
+      liste2.add(new Aperiodique(1,14));
+       Ordonnanceur o = new Ordonnanceur(new EDL(24),liste2);
       //liste2.add(new Aperiodique(2));
       //Ordonnanceur o = new Ordonnanceur(new Background(24),liste2);
       o.ordonnancer();

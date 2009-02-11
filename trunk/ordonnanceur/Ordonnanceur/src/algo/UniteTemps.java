@@ -41,14 +41,14 @@ public class UniteTemps {
 	public String toString()
 	{
 		String temp;
-		if(this.idTache==0) temp = "Temps Creux";
-		else {
+		//if(this.idTache==0) temp = "Temps Creux";
+		//else {
 		
 		 temp = "unite: "+this.idUnite+" | idTache: "+this.idTache+" | Périodes: ";
 		
 		for(Tache t : this.periodes)		
 		temp+= t.getId()+" ";
-		}
+		//}
 		return temp;
 	}
 	public List<Tache> getPeriodes() {
