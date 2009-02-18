@@ -70,11 +70,7 @@ public class Polling implements Algorithme{
 		
 		for(UniteTemps uniteCourante : this.ordonnancement)
 		{
-			//si aucune tache apériodique en attente, on remet a 0 la capacité du serveur
-			if(aperiodiquesEnAttente.size() == 0)
-				this.capaciteServer = 0;
-			else
-				this.capaciteServer--;
+			
 			//on regarde si une demande de tâche apériodique intervient pour cette unité courante
 			for(Tache tApe: this.aperiodiques ) {
 				
@@ -87,13 +83,14 @@ public class Polling implements Algorithme{
 			//on parcours la liste des débuts de périodes
 			for(Tache t :uniteCourante.getPeriodes()){
 				//si la tache t est la tache PS, on charge le serveur
-				if(t.equals(this.tachePS)) {
-					this.capaciteServer = this.tachePS.getC();
-				}
 				enAttente.add(new PrioRM(((Periodique)t)));
 				
-				if(this.mapTacheUnitesRestantes.get(t)>0) System.out.println("erreur impossible de finir la tache : "+t.getId());
-				else mapTacheUnitesRestantes.put(t,t.getC());
+				if(this.mapTacheUnitesRestantes.get(t)>0 && !t.equals(this.tachePS)) System.out.println("erreur impossible de finir la tache : "+t.getId() + " "+uniteCourante);
+				else this.mapTacheUnitesRestantes.put(t,t.getC());
+				if(t.equals(this.tachePS)) {
+					this.capaciteServer = this.tachePS.getC();
+					this.mapTacheUnitesRestantes.put(t,0);
+				}
 			}
 			
 			// Si une tache en cours doit etre stoppé car réveil d'une tache prio
@@ -113,19 +110,29 @@ public class Polling implements Algorithme{
 					
 					//S'il s'agit de la tache PS
 					if(enAttente.peek().getTache().equals(this.tachePS)) {
+						//System.out.println("uc: "+uniteCourante);
 						//si serveur chargé
 						if(this.capaciteServer > 0) {
 							//si tache apé en attente
 							if(aperiodiquesEnAttente.size() > 0) {
 								tacheEnCours = (Periodique)this.tachePS;
-								this.mapTacheUnitesRestantes.put(this.tachePS,aperiodiquesEnAttente.getFirst().getC());
-								System.out.println("C apério : "+aperiodiquesEnAttente.getFirst().getC()+"unité courante:"+uniteCourante);
+								//pour ne pas perdre le temps restant de la tache en suspend
+								if(this.mapTacheUnitesRestantes.get(this.tachePS) == 0)
+									this.mapTacheUnitesRestantes.put(this.tachePS,aperiodiquesEnAttente.getFirst().getC());
+								this.capaciteServer--;
+								//System.out.println("C apério : "+aperiodiquesEnAttente.getFirst().getC()+"unité courante:"+uniteCourante);
 									
+							}
+							else
+							{
+								enAttente.remove();
+								tacheEnCours = enAttente.peek().getTache();
 							}
 						}
 						else
 						{
 							enAttente.remove();
+							tacheEnCours = enAttente.peek().getTache();
 						}
 					}
 					else {
@@ -140,16 +147,23 @@ public class Polling implements Algorithme{
 			
 			
 			if(tacheEnCours != null) { //si une tache est en cours d'exe
-				uniteCourante.setIdTache(tacheEnCours.getId());
 				
+				//s'il s'agit de la tache PS, c'est le numéro de la tache apériodique que l'on prend
+				if(tacheEnCours.equals(this.tachePS)) {
+					uniteCourante.setIdTache(aperiodiquesEnAttente.getFirst().getId());
+				}
+				else {
+					uniteCourante.setIdTache(tacheEnCours.getId());
+				}
 				
 				
 				unitesRestantes = this.mapTacheUnitesRestantes.get(tacheEnCours)-1;
+				//System.out.println("u restantes: "+unitesRestantes+"unite courante: "+uniteCourante);
 				this.mapTacheUnitesRestantes.put(tacheEnCours,unitesRestantes);
 				if(unitesRestantes == 0) {//si c'était la dernière unité de temps
 					if(tacheEnCours.equals(this.tachePS)) {
 						
-						System.out.println("suppression de : "+aperiodiquesEnAttente.getFirst().getId()+"unité courante:"+uniteCourante);
+						//System.out.println("suppression de : "+aperiodiquesEnAttente.getFirst().getId()+"unité courante:"+uniteCourante);
 						aperiodiquesEnAttente.removeFirst();
 					}
 						
@@ -158,6 +172,10 @@ public class Polling implements Algorithme{
 					
 				}
 			}
+			//si aucune tache apériodique en attente, on remet a 0 la capacité du serveur
+			if(aperiodiquesEnAttente.size() == 0)
+				this.capaciteServer = 0;
+			//System.out.println("capa: "+this.capaciteServer+"unite courante: "+uniteCourante);
 			
 		}
 		
