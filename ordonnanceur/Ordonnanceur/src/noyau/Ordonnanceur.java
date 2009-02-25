@@ -1,6 +1,7 @@
 package noyau;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import algo.Algorithme;
@@ -9,7 +10,7 @@ import algo.UniteTemps;
 public class Ordonnanceur {
 	private ListeTaches liste;
 	private Algorithme algo;
-	private List<UniteTemps> result;
+	private LinkedList<UniteTemps> result;
 	private ListeTaches tachesPeriodiques;
 	private ListeTaches tachesAperiodiques;
 	
@@ -29,7 +30,7 @@ public class Ordonnanceur {
 	public void setListe(ListeTaches liste) {
 		this.liste = liste;
 	}
-	public void ordonnancer()
+	public void ordonnancer(int ppcm)
 	{
 		
 		// On remplit les deux listes
@@ -41,9 +42,36 @@ public class Ordonnanceur {
 				this.tachesAperiodiques.add(t);
 		}
 		
+		this.result = this.calculePeriodes(ppcm);
+		this.algo.initialiser(this.result, this.tachesPeriodiques, this.tachesAperiodiques);
+		for(int i = 0;i < ppcm;i++)
+			this.algo.uniteSuivante();
+		//this.result = this.algo.executer(tachesPeriodiques,tachesAperiodiques);
 		
-		this.result = this.algo.executer(tachesPeriodiques,tachesAperiodiques);
+	}
+	private LinkedList<UniteTemps> calculePeriodes(int ppcm)
+	{
+		LinkedList<UniteTemps> result = new LinkedList<UniteTemps>();
+		int periodeTemp, periodeTache;
+		Tache tacheTemp = null;
+		for(int i = 0; i < ppcm ; i++)
+			result.add(new UniteTemps(i));
+		for(Tache t : this.tachesPeriodiques)
 		
+		{
+			periodeTemp = 0;
+			tacheTemp = t;
+			periodeTache = ((Periodique)tacheTemp).getP();
+			while(periodeTemp < ppcm)
+			{
+				result.get(result.indexOf(new UniteTemps(periodeTemp))).ajouterPeriode(tacheTemp);
+				//this.periodes[periodeTemp-1][tacheTemp.getId()] = true;
+				periodeTemp += periodeTache;
+			}
+		
+			//this.mapTacheUnitesRestantes.put(t, new Integer(0));
+		}
+		return result;
 	}
 	public double tempsReponseAperiodique()
 	{
