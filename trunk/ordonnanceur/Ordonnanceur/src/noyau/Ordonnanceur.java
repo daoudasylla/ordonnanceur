@@ -1,5 +1,6 @@
 package noyau;
 
+import java.util.HashMap;
 import java.util.List;
 
 import algo.Algorithme;
@@ -62,6 +63,68 @@ public class Ordonnanceur {
 			return (tempsRep / this.tachesAperiodiques.size());
 		}
 		return 0;
+		
+	}
+	
+	public int nombrePremption() {
+		int nbrePremp = 0;
+		Tache tacheEncours = null;
+		HashMap ci = new HashMap<Tache,Integer>();
+		for(Tache t : this.liste)
+			ci.put(t,0);
+		int ciCourant = 0;
+		if(this.result != null) {
+			for(UniteTemps u : this.result) {
+				//pour chaque UT, s'il ne s'agit pas d'un temps creux ...
+				if(u.getIdTache() != 0) {
+					if(tacheEncours != null) {//si la tache est déjà en cours d'exe
+						System.out.println("---");
+						System.out.println("tache courante:"+tacheEncours.getId());
+						if(u.getIdTache() == tacheEncours.getId()) {
+							ciCourant = ((Integer)ci.get(tacheEncours)).intValue();
+							if(tacheEncours.getC() == ++ciCourant) {
+								System.out.println("ci:"+tacheEncours.getC());
+								ci.put(tacheEncours, 0);
+								tacheEncours = null;
+							}
+							else
+								ci.put(tacheEncours, ciCourant);
+								
+						}
+						else {
+							tacheEncours = this.liste.getTacheById(u.getIdTache());
+							//ciCourant = 0;
+							nbrePremp++;
+							ciCourant = ((Integer)ci.get(tacheEncours)).intValue();
+							if(tacheEncours.getC() == ++ciCourant) {
+								tacheEncours = null;
+								//ciCourant = 0;
+								ci.put(tacheEncours, 0);
+							}
+							else
+								ci.put(tacheEncours, ciCourant);
+						}
+					}
+					else if(tacheEncours == null) { //s'il s'agit d'une nouvelle tâche
+						tacheEncours = this.liste.getTacheById(u.getIdTache());
+						ciCourant = ((Integer)ci.get(tacheEncours)).intValue();
+						if(tacheEncours.getC() == ++ciCourant) {
+							tacheEncours = null;
+							//ciCourant = 0;
+							ci.put(tacheEncours, 0);
+						}
+						else
+							ci.put(tacheEncours, ciCourant);
+					}
+				}
+				//System.out.println("---");
+				System.out.println(u);
+				System.out.println(nbrePremp);
+				System.out.println("---\n\n");
+			}
+			
+		}
+		return nbrePremp;
 		
 	}
 	public String toString(){

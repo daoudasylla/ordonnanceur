@@ -43,7 +43,7 @@ public class RunMe2 {
       Ordonnanceur o = new Ordonnanceur(new RM(24),liste2);
       o.ordonnancer();
       System.out.println(o);*/
-     /* liste2.add(new Periodique(3,20,20));
+     /*liste2.add(new Periodique(3,20,20));
       liste2.add(new Periodique(2,10,10));
       liste2.add(new Periodique(2,5,5));
       Ordonnanceur o = new Ordonnanceur(new RM(20),liste2);*/
@@ -75,7 +75,11 @@ public class RunMe2 {
       liste2.add(new Aperiodique(1,14));
        Ordonnanceur o = new Ordonnanceur(new EDL(24),liste2);*/
       //liste2.add(new Aperiodique(2));
-      //Ordonnanceur o = new Ordonnanceur(new Background(24),liste2);
+      /*liste2.add(new Periodique(4,10,10));
+      liste2.add(new Periodique(2,6,6));
+      liste2.add(new Aperiodique(1,8));
+      liste2.add(new Aperiodique(2,16));
+      Ordonnanceur o = new Ordonnanceur(new Background(30),liste2);*/
       
       ////////////////////TEST POLLING SERVER///////////////////////////
       
@@ -90,6 +94,7 @@ public class RunMe2 {
       o.ordonnancer();
       System.out.println(o);
       System.out.println(o.tempsReponseAperiodique());
+      System.out.println(o.nombrePremption());
       
     }
 }

@@ -1,6 +1,4 @@
 package noyau;
-import java.text.DecimalFormat;
-import java.util.Random;
 public class Generation {
 	
 	private double[] tab; 
