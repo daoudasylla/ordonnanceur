@@ -9,14 +9,17 @@ import noyau.Periodique;
 import noyau.Tache;
 
 public class Background implements Algorithme{
+	private RM rm;
 	private PriorityQueue<PrioBackground> aperiodique;
 	private LinkedList<UniteTemps> ordonnancement;
-	private int ppcm;
-	public Background(int ppcm) {
-		this.ppcm = ppcm;
+	private Tache aperiodiqueEnCours;
+	private int tempsRestant; //pour la tache apériodique en cours
+	//private int ppcm;
+	public Background() {
+		//this.ppcm = ppcm;
 		this.aperiodique = new PriorityQueue<PrioBackground>();
 	}
-	public LinkedList<UniteTemps> executer(ListeTaches tachesPeriodiques,
+	/*public LinkedList<UniteTemps> executer(ListeTaches tachesPeriodiques,
 			ListeTaches tachesAperiodiques) {
 		//PriorityQueue<PrioBackground> fileAttente = new PriorityQueue<PrioBackground>();
 		ListeTaches periodique = new ListeTaches();
@@ -45,6 +48,37 @@ public class Background implements Algorithme{
 		}
 		
 		return this.ordonnancement;
+	}*/
+	@Override
+	public void initialiser(LinkedList<UniteTemps> ordonnancement,
+			ListeTaches tachesPeriodiques, ListeTaches tachesAperiodiques) {
+		this.aperiodiqueEnCours = null;
+		this.tempsRestant = 0;
+		rm = new RM();
+		rm.initialiser(ordonnancement, tachesPeriodiques, tachesAperiodiques);
+		for(Tache t : tachesAperiodiques) {
+			this.aperiodique.add(new PrioBackground((Aperiodique) t));
+		}
+		
+	}
+	@Override
+	public UniteTemps uniteSuivante() {
+		UniteTemps uniteCourante = rm.uniteSuivante();
+		if(uniteCourante.getIdTache() == 0) { // si un temps creux
+			if(aperiodiqueEnCours == null) { //si aucune tache apériodique n'a été mise en standby
+				if(this.aperiodique.peek() != null && this.aperiodique.peek().getTache().getR() <= uniteCourante.getIdUnite()) { //et si des taches apériodique sont en attente
+					aperiodiqueEnCours = this.aperiodique.poll().getTache();
+					tempsRestant = aperiodiqueEnCours.getC();
+				}
+			}
+			if(aperiodiqueEnCours != null) { // si une tache apériodique à déjà été en partie executée ou vient d'être lancée
+				uniteCourante.setIdTache(aperiodiqueEnCours.getId());
+				if(--tempsRestant == 0) //si la tache est terminée on la retire
+					aperiodiqueEnCours = null;
+			}
+			
+		}
+		return uniteCourante;
 	}
 
 }
