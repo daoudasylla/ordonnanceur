@@ -43,10 +43,12 @@ public class RM implements Algorithme{
 	
 		
 		for(Tache t :uniteCourante.getPeriodes()){
-			enAttente.add(new PrioRM(((Periodique)t)));
-			
-			if(this.mapTacheUnitesRestantes.get(t)>0) System.out.println("erreur impossible de finir la tache : "+t.getId());
-			else mapTacheUnitesRestantes.put(t,t.getC());
+			if(t.getC() > 0) { //si la tâche possède un Ci > 0
+				enAttente.add(new PrioRM(((Periodique)t)));
+				
+				if(this.mapTacheUnitesRestantes.get(t)>0) System.out.println("erreur impossible de finir la tache : "+t.getId());
+				else mapTacheUnitesRestantes.put(t,t.getC());
+			}
 		}
 		
 		// Si une tache en cours doit etre stoppé car réveil d'une tache prio
