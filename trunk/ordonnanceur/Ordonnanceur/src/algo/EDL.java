@@ -1,6 +1,7 @@
 package algo;
 
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 
@@ -14,6 +15,8 @@ public class EDL implements Algorithme{
 	private LinkedList<UniteTemps> ordonnancement;
 	private int ppcm;
 	private ListeTaches liste;
+	private HashMap<Tache,Integer> mapTacheUnitesRestantes;
+	private HashMap<Tache,Boolean> dejaExecutees;
 	
 	public EDL(int ppcm)
 	{
@@ -21,7 +24,8 @@ public class EDL implements Algorithme{
 		this.ordonnancement = null;
 		
 		this.liste = null;
-		
+		this.mapTacheUnitesRestantes = new HashMap<Tache,Integer>();
+		this.dejaExecutees = new HashMap<Tache,Boolean>();
 	}
 	
 	private void initOrdonnancement(){	
@@ -61,9 +65,9 @@ public class EDL implements Algorithme{
 	
 	this.calculePeriodes(tachesPeriodiques);
 	
-
 	
-	PriorityQueue<PrioEDL> enAttente = new PriorityQueue<PrioEDL>(); //taches en attentes	
+	
+	/*PriorityQueue<PrioEDL> enAttente = new PriorityQueue<PrioEDL>(); //taches en attentes	
 	
 	boolean dejaAffecte=false;
 	int unitesRestantes =0;
@@ -114,13 +118,197 @@ public class EDL implements Algorithme{
 		System.out.println(uniteCourante);
 	}*/
 	
-	// On appel EDF pour continuer le travail
+	
+	
+	
+	
+	// On effectue une premiere simulation pour récuperer le contexte d'execution d'EDF
+	LinkedList<UniteTemps> init=this.ordonnancement;
+	
 	EDF edf = new EDF(this.ppcm);
-	edf.setOrdonnancement(this.ordonnancement); // on affecte notre liste
+	edf.setOrdonnancement(init); 
+	//edf.executer(tachesPeriodiques, tachesAperiodiques);
+	this.mapTacheUnitesRestantes = edf.getMapTacheUnitesRestantes(tachesPeriodiques);
 	
-	this.ordonnancement = edf.executer(tachesPeriodiques, tachesAperiodiques);
 	
+	System.out.println("après recup contexte");
+	
+	PriorityQueue<PrioEDL> enAttente = new PriorityQueue<PrioEDL>(); //taches en attentes	
+	Tache tacheEnCours=null;
+	int unitesRestantes =0;
+	int tempsPlusTard=0;
+	boolean dejaAffecte=false;
+	for(UniteTemps uniteCourante : this.ordonnancement)
+	{
+		
+		for(Tache ape : tachesAperiodiques)
+		{			
+			
+			if(uniteCourante.getIdUnite()==((Aperiodique) ape).getR()){
+				System.out.println("u="+uniteCourante.getIdUnite()+" reveil aperio "+ape.getId());
+				if(dejaAffecte) enAttente.add(new PrioEDL(((Aperiodique) ape)));
+				else {
+					tempsPlusTard = plusTard(uniteCourante, tachesPeriodiques, tachesAperiodiques);
+					System.out.println("temps plus tard "+tempsPlusTard);
+					if(tempsPlusTard>uniteCourante.getIdUnite()){
+						dejaAffecte=true;
+						tacheEnCours = ape;
+						unitesRestantes = tacheEnCours.getC();
+						
+						
+						// On ajoute l'aperio dans la map si besoin
+						if(this.mapTacheUnitesRestantes.get(ape)==null || this.mapTacheUnitesRestantes.get(ape)==0){
+							System.out.println("ajoute aperio map "+ape.getId()+" "+unitesRestantes);
+							this.mapTacheUnitesRestantes.put(ape,unitesRestantes);						
+						}
+					}
+						
+				}
+			}
+		}
+		
+		
+		if(enAttente.peek()!=null && tacheEnCours==null){
+			tempsPlusTard = plusTard(uniteCourante, tachesPeriodiques,tachesAperiodiques);
+			tacheEnCours = enAttente.remove().getTache();
+			this.mapTacheUnitesRestantes.put(tacheEnCours,tacheEnCours.getC());	
+			dejaAffecte=true;
+		}
+		
+		
+		if(tacheEnCours!=null && tempsPlusTard>uniteCourante.getIdUnite() ){
+			
+			unitesRestantes = this.mapTacheUnitesRestantes.get(tacheEnCours)-1;
+			System.out.println("tache en cours: "+tacheEnCours.getId()+"("+unitesRestantes+")");
+			
+			this.mapTacheUnitesRestantes.put(tacheEnCours,unitesRestantes);
+			uniteCourante.setIdTache(tacheEnCours.getId());
+			
+			// Si tache aperio est finie on verifie qu'une autre peut etre commencée
+			if(unitesRestantes==0){
+				dejaAffecte=false;
+				tacheEnCours=null;				
+				
+			}else {
+				dejaAffecte=true;
+				uniteCourante.setIdTache(tacheEnCours.getId());
+				
+			}
+		}
+		
+		
+		// Si aucune aperiodique dans cette unité on affecte une perio si besoin
+		if(!dejaAffecte && tacheEnCours==null)			
+		EDF(uniteCourante, tachesPeriodiques, tachesAperiodiques);
+			
+		
+		
+	}
+	
+	
+
 	return this.ordonnancement;
 		
 	}
+	
+	
+	private void EDF(UniteTemps uniteCourante, ListeTaches tachesPeriodiques, ListeTaches tachesAperiodiques){
+		
+		System.out.println("appel methode EDF à lunite "+uniteCourante.getIdUnite());
+		LinkedList<UniteTemps> resultat= new LinkedList<UniteTemps>();
+		for(UniteTemps ut : this.ordonnancement)
+			resultat.add((UniteTemps) ut.clone());
+		
+		// On appel EDF pour continuer le travail
+		EDF edf = new EDF(this.ppcm);
+		edf.setOrdonnancement(resultat); // on affecte le contexte courant
+		edf.setMapTacheUnitesRestantes(mapTacheUnitesRestantes);
+		
+		
+		UniteTemps u = edf.executerInstantT(uniteCourante, tachesPeriodiques, tachesAperiodiques);
+		
+		
+		System.out.println("methode EDF : u="+uniteCourante.getIdUnite()+" t="+u.getIdTache());
+		uniteCourante.setIdTache(u.getIdTache());
+			
+		
+		
+	}
+	
+	// Fonction permettant d'indiquer le temps max où les taches doivent être exécutées
+	private int plusTard(UniteTemps actuel,ListeTaches tachesPeriodiques,ListeTaches tachesAperiodiques){
+		
+		// Construction de la file avec priorité qui classe les taches selon le Di le plus tard
+		/*PriorityQueue<PrioAuPlusTard> prioAuPlusTard = new PriorityQueue<PrioAuPlusTard>(); //taches en attentes	
+		
+		HashMap<Tache,Integer> deadlines = new HashMap<Tache,Integer>();
+		
+		for(Tache t : tachesPeriodiques)
+			deadlines.put(t,new Integer(0));
+		int tempsMax = this.ppcm;
+		int ecart=0;
+		
+		for(Tache t : tachesPeriodiques){				
+				deadlines.put(t, ((Periodique)t).getDi(this.ppcm-1));			
+		}
+		
+		
+		for(int i=this.ppcm-1; i>=actuel.getIdUnite();i--){
+			
+			// A chaque nouvelle valeur d'unité de temps on vérifie que la deadline ne change pas
+			// si elle change on rajoute alors la tache dans les taches en attentes
+			for(Tache t : tachesPeriodiques){
+				if(deadlines.get(t)!=((Periodique)t).getDi(i)){
+					//System.out.println(deadlines.get(t)+"!="+((Periodique)t).getDi(i));
+					prioAuPlusTard.add(new PrioAuPlusTard((Periodique)t,new UniteTemps(i)));
+					deadlines.put(t, ((Periodique)t).getDi(i));
+				}
+			}
+			
+			if(prioAuPlusTard.peek()!=null){
+				Periodique tEnCours = prioAuPlusTard.remove().getTache();
+				Periodique tAvant=tEnCours;
+				
+					
+				tempsMax = tempsMax - tEnCours.getC();
+				
+				
+				// On retire l'ensemble des executions possibles e partant de la fin
+				while(prioAuPlusTard.peek()!=null && tempsMax>0){
+					tEnCours = prioAuPlusTard.remove().getTache();		
+					ecart = tempsMax-tAvant.getDi(i);
+					tempsMax = tempsMax-ecart-tEnCours.getC();
+					tAvant = tEnCours;
+				}
+			}
+		}*/
+		
+		
+		UniteTemps dernier=null;
+		
+		LinkedList<UniteTemps> resultat= new LinkedList<UniteTemps>();
+		for(UniteTemps ut : this.ordonnancement)
+			resultat.add((UniteTemps) ut.clone());
+		
+		// On appel EDF pour continuer le travail
+		EDF edf = new EDF(this.ppcm);
+		edf.setOrdonnancement(resultat); // on affecte le contexte courant
+		edf.setMapTacheUnitesRestantes(mapTacheUnitesRestantes);
+		
+		for(int i = actuel.getIdUnite(); i < this.ppcm ; i++){
+			UniteTemps tmp =new UniteTemps(i);
+			dernier = edf.executerInstantT(tmp, tachesPeriodiques, tachesAperiodiques);
+		}
+		
+		System.out.println("DERNIER : "+dernier.getIdUnite());
+		
+		
+		
+		
+	return ppcm-dernier.getIdUnite();
+		
+	}
+	
+	
+	
 }
