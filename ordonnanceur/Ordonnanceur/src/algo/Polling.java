@@ -1,6 +1,7 @@
 package algo;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 
@@ -8,68 +9,61 @@ import noyau.Aperiodique;
 import noyau.ListeTaches;
 import noyau.Periodique;
 import noyau.Tache;
+import noyau.TachePs;
 
 public class Polling implements Algorithme{
 	
-	//private int[] ordonnancement;
+	private Iterator<UniteTemps> iterateur;
 	private LinkedList<UniteTemps> ordonnancement;
-	//private boolean[][] periodes;
+	
 	private ListeTaches periodiques;
 	private ListeTaches aperiodiques;
 	private int ppcm;
 	private HashMap<Tache,Integer> mapTacheUnitesRestantes;
 	private int capaciteServer;
 	private Tache tachePS;
+	
+	private Periodique tacheEnCours = null;
+	private int unitesRestantes = 0; //pour la tache en cours
+	private PriorityQueue<PrioRM> enAttente; //taches en attentes
+	private LinkedList<Tache> aperiodiquesEnAttente;
+	
+	private Algorithme algo;
+	private UniteTemps uniteCourante;
+	
+	
 	public Polling(int ppcm)
 	{
 		this.ppcm = ppcm;
 		this.ordonnancement = new LinkedList<UniteTemps>();
+		
 		for(int i = 0; i < this.ppcm ; i++)
 			this.ordonnancement.add(new UniteTemps(i));
 		this.periodiques = null;
 		this.aperiodiques = null;
-		this.mapTacheUnitesRestantes = new HashMap<Tache,Integer>();
+		this.mapTacheUnitesRestantes = null;
+		this.algo=null;
+		this.uniteCourante=null;
+		
+	
 	}
 	
 	/**
-	 * Initialise la liste des débuts de période des tâches
+	 * Initialise la map ac les taches
 	 */
-	private void calculePeriodes()
-	{
-		
-		int periodeTemp, periodeTache;
-		Tache tacheTemp = null;
-		for(Tache t : this.periodiques)
-		
-		{
-			periodeTemp = 0;
-			tacheTemp = t;
-			periodeTache = ((Periodique)tacheTemp).getP();
-			while(periodeTemp < this.ppcm)
-			{
-				this.ordonnancement.get(this.ordonnancement.indexOf(new UniteTemps(periodeTemp))).ajouterPeriode(tacheTemp);
-				//this.periodes[periodeTemp-1][tacheTemp.getId()] = true;
-				periodeTemp += periodeTache;
-			}
-		
+	private void initMap()
+	{				
+		for(Tache t : this.periodiques)		
 			this.mapTacheUnitesRestantes.put(t, new Integer(0));
-		}
+		for(Tache t : this.aperiodiques)		
+			this.mapTacheUnitesRestantes.put(t, new Integer(0));
+	
 	}
-	public LinkedList<UniteTemps> executer(ListeTaches tachesPeriodiques, ListeTaches tachesAperiodiques)
+	public UniteTemps uniteSuivante() 
 	{
 		
+		this.uniteCourante = this.iterateur.next();
 		
-		this.periodiques = tachesPeriodiques;
-		this.aperiodiques = tachesAperiodiques;
-		this.tachePS = this.periodiques.getLast();
-		Periodique tacheEnCours = null;
-		int unitesRestantes = 0; //pour la tache en cours
-		PriorityQueue<PrioRM> enAttente = new PriorityQueue<PrioRM>(); //taches en attentes
-		LinkedList<Tache> aperiodiquesEnAttente = new LinkedList<Tache>(); //taches apériodiques en attentes
-		this.calculePeriodes();
-		
-		for(UniteTemps uniteCourante : this.ordonnancement)
-		{
 			
 			//on regarde si une demande de tâche apériodique intervient pour cette unité courante
 			for(Tache tApe: this.aperiodiques ) {
@@ -80,6 +74,21 @@ public class Polling implements Algorithme{
 				}
 			}
 			
+			// On recupere l'unite suiavnte de la periodique
+			UniteTemps uniteAlgo = this.algo.uniteSuivante();
+			
+			// Si la tache est une tahce ps
+			if(uniteAlgo.getTache() instanceof TachePs){
+				
+				this.capaciteServer = uniteAlgo.getTache().getC();
+				this.capaciteServer--;
+				// On recup une tache aperio
+				Tache ape = aperiodiquesEnAttente.getFirst();
+				
+				this.mapTacheUnitesRestantes.put(ape,ape.getC()-1);
+				this.uniteCourante.setTache(ape);
+			}
+			
 			//on parcours la liste des débuts de périodes
 			for(Tache t :uniteCourante.getPeriodes()){
 				//si la tache t est la tache PS, on charge le serveur
@@ -87,7 +96,7 @@ public class Polling implements Algorithme{
 				
 				if(this.mapTacheUnitesRestantes.get(t)>0 && !t.equals(this.tachePS)) System.out.println("erreur impossible de finir la tache : "+t.getId() + " "+uniteCourante);
 				else this.mapTacheUnitesRestantes.put(t,t.getC());
-				if(t.equals(this.tachePS)) {
+				if(t instanceof TachePs) {
 					this.capaciteServer = this.tachePS.getC();
 					this.mapTacheUnitesRestantes.put(t,0);
 				}
@@ -109,7 +118,7 @@ public class Polling implements Algorithme{
 				if(enAttente.peek() != null) {// si des taches dans la file d'attente
 					
 					//S'il s'agit de la tache PS
-					if(enAttente.peek().getTache().equals(this.tachePS)) {
+					if(enAttente.peek().getTache() instanceof TachePs) {
 						//System.out.println("uc: "+uniteCourante);
 						//si serveur chargé
 						if(this.capaciteServer > 0) {
@@ -177,12 +186,42 @@ public class Polling implements Algorithme{
 				this.capaciteServer = 0;
 			//System.out.println("capa: "+this.capaciteServer+"unite courante: "+uniteCourante);
 			
-		}
 		
-		return this.ordonnancement;
+		
+		return uniteCourante;
 
 
 	}
+
+	@Override
+	public void initialiser(LinkedList<UniteTemps> ordonnancement,
+			ListeTaches tachesPeriodiques, ListeTaches tachesAperiodiques) {
+	
+		this.ordonnancement = ordonnancement;
+		this.periodiques = tachesPeriodiques;
+		this.aperiodiques = tachesAperiodiques;
+		this.iterateur = ordonnancement.iterator();
+		this.enAttente = new PriorityQueue<PrioRM>();
+		this.aperiodiquesEnAttente = new LinkedList<Tache>();
+		this.unitesRestantes=0;
+		this.mapTacheUnitesRestantes = new HashMap<Tache,Integer>();
+		this.initMap();
+		
+	}
+	public void setAlgo(Algorithme algo){
+		this.algo = algo;
+	}
+	
+	// retourne le temps d'execution a avoir pour les aperiodiques pendant l'unité courante
+	public int tpsExecAperiodique(){
+		int result=0;
+		for(Tache t : aperiodiquesEnAttente)
+			result += t.getC();
+		
+		return result;
+	}
+
+	
 	
 
 }

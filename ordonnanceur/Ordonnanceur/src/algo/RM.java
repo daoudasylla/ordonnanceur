@@ -66,16 +66,18 @@ public class RM implements Algorithme{
 		if(tacheEnCours == null) {
 			if(enAttente.peek() != null) {// si des taches dans la file d'attente
 				tacheEnCours = enAttente.peek().getTache();					 
-			} else {
-				uniteCourante.setIdTache(0);
+			} 
+			//plus besoin car c'est init a null pour l'unité courante
+			/*else {
+				uniteCourante.setTache(null);
 				
-			}
+			}*/
 		}
 		
 		
 		
 		if(tacheEnCours != null) { //si une tache est en cours d'exe
-			uniteCourante.setIdTache(tacheEnCours.getId());
+			uniteCourante.setTache(tacheEnCours);
 			
 			
 			

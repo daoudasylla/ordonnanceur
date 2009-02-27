@@ -42,6 +42,8 @@ public abstract class Tache{
 		Tache other = (Tache) obj;		
 		if (id != other.id)
 			return false;
+		
+		System.out.println("return true");
 		return true;
 	}
 	

@@ -64,7 +64,7 @@ public class Background implements Algorithme{
 	@Override
 	public UniteTemps uniteSuivante() {
 		UniteTemps uniteCourante = rm.uniteSuivante();
-		if(uniteCourante.getIdTache() == 0) { // si un temps creux
+		if(uniteCourante.getTache() == null) { // si un temps creux
 			if(aperiodiqueEnCours == null) { //si aucune tache apériodique n'a été mise en standby
 				if(this.aperiodique.peek() != null && this.aperiodique.peek().getTache().getR() <= uniteCourante.getIdUnite()) { //et si des taches apériodique sont en attente
 					aperiodiqueEnCours = this.aperiodique.poll().getTache();
@@ -72,7 +72,7 @@ public class Background implements Algorithme{
 				}
 			}
 			if(aperiodiqueEnCours != null) { // si une tache apériodique à déjà été en partie executée ou vient d'être lancée
-				uniteCourante.setIdTache(aperiodiqueEnCours.getId());
+				uniteCourante.setTache(aperiodiqueEnCours);
 				if(--tempsRestant == 0) //si la tache est terminée on la retire
 					aperiodiqueEnCours = null;
 			}

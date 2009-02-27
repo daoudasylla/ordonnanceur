@@ -17,7 +17,7 @@ public class PrioEDF implements Comparable{
 			return -1;
 		else if((this.tache.getDi(this.uniteActuelle)-this.uniteActuelle) > (p.getTache().getDi(this.uniteActuelle)-this.uniteActuelle))
 			return 1;
-		return 1;
+		return 0;
 	}
 	
 	public int getUniteActuelle() {

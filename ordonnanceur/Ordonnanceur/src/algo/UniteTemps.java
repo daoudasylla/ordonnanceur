@@ -10,19 +10,27 @@ public class UniteTemps {
 	//la liste des id des taches dont la période commence sur cette unité
 	private List<Tache> periodes;
 	//l'id de la tache qui occupera cette unité de temps
-	private int idTache;
+	private Tache tache;
 	private int idUnite;
 	public UniteTemps(int idUnite)
 	{
-		this.idTache = 0; // Si 0 alors la tache est un temps creux
+		this.tache = null; // Si 0 alors la tache est un temps creux
 		this.idUnite = idUnite;
 		this.periodes = new LinkedList<Tache>();
 	}
-	public int getIdTache() {
-		return idTache;
+	
+	public UniteTemps(UniteTemps ut)
+	{
+		this.tache = null; // Si 0 alors la tache est un temps creux
+		this.idUnite = ut.getIdUnite();
+		this.periodes = new LinkedList<Tache>();
 	}
-	public void setIdTache(int idTache) {
-		this.idTache = idTache;
+	
+	public Tache getTache() {
+		return tache;
+	}
+	public void setTache(Tache tache) {
+		this.tache = tache;
 	}
 	public boolean equals(Object o)
 	{
@@ -43,7 +51,7 @@ public class UniteTemps {
 		//if(this.idTache==0) temp = "Temps Creux";
 		//else {
 		
-		 temp = "unite: "+this.idUnite+" | idTache: "+this.idTache+" | Périodes: ";
+		 temp = "unite: "+this.idUnite+" | idTache: "+this.tache.getId()+" | Périodes: ";
 		
 		for(Tache t : this.periodes)		
 		temp+= t.getId()+" ";
@@ -53,4 +61,9 @@ public class UniteTemps {
 	public List<Tache> getPeriodes() {
 		return periodes;
 	}
+	
+	 public Object clone() {
+		    return new UniteTemps(this);
+		  }
+
 }
