@@ -50,9 +50,11 @@ public class UniteTemps {
 		String temp;
 		//if(this.idTache==0) temp = "Temps Creux";
 		//else {
-		
-		 temp = "unite: "+this.idUnite+" | idTache: "+this.tache.getId()+" | Périodes: ";
-		
+		if(this.tache==null)
+			temp = "Tps creux ";
+		 else 
+			 temp = "unite: "+this.idUnite+" | idTache: "+this.tache.getId()+" | Périodes: ";
+			
 		for(Tache t : this.periodes)		
 		temp+= t.getId()+" ";
 		//}

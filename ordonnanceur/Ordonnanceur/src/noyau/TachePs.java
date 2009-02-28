@@ -13,7 +13,14 @@ public class TachePs extends Periodique {
 
 	
 	public int getC(){
+		int tpsTemp = this.poll.tpsExecAperiodique();
+		//System.out.println("cpac :"+poll.getCapaciteServer());
+		if(poll.getCapaciteServer()>tpsTemp) return tpsTemp;
+		else return poll.getCapaciteServer();
 		
-		return this.poll.tpsExecAperiodique();
+	}
+	
+	public int getCapacite(){
+		return super.getC();
 	}
 }

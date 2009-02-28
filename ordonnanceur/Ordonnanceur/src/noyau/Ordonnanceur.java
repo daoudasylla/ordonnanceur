@@ -81,7 +81,7 @@ public class Ordonnanceur {
 			boolean trouve = false;
 			for(Tache t : this.tachesAperiodiques) {//pour toute les taches apériodiques
 				for(UniteTemps u : this.result) {
-					if(u.getIdTache() == t.getId() && !trouve) {//quand la tache est trouvée
+					if(u.getTache().equals(t) && !trouve) {//quand la tache est trouvée
 						tempsRep += (u.getIdUnite() - ((Aperiodique) t).getR()); //on calcul son temps de réponse
 						trouve = true;
 					}
@@ -104,11 +104,11 @@ public class Ordonnanceur {
 		if(this.result != null) {
 			for(UniteTemps u : this.result) {
 				//pour chaque UT, s'il ne s'agit pas d'un temps creux ...
-				if(u.getIdTache() != 0) {
+				if(u.getTache().getId() != 0) {
 					if(tacheEncours != null) {//si la tache est déjà en cours d'exe
 						System.out.println("---");
 						System.out.println("tache courante:"+tacheEncours.getId());
-						if(u.getIdTache() == tacheEncours.getId()) {
+						if(u.equals(tacheEncours)) {
 							ciCourant = ((Integer)ci.get(tacheEncours)).intValue();
 							if(tacheEncours.getC() == ++ciCourant) {
 								System.out.println("ci:"+tacheEncours.getC());
@@ -120,7 +120,7 @@ public class Ordonnanceur {
 								
 						}
 						else {
-							tacheEncours = this.liste.getTacheById(u.getIdTache());
+							tacheEncours = this.liste.getTacheById(u.getTache().getId());
 							//ciCourant = 0;
 							nbrePremp++;
 							ciCourant = ((Integer)ci.get(tacheEncours)).intValue();
@@ -134,7 +134,7 @@ public class Ordonnanceur {
 						}
 					}
 					else if(tacheEncours == null) { //s'il s'agit d'une nouvelle tâche
-						tacheEncours = this.liste.getTacheById(u.getIdTache());
+						tacheEncours = this.liste.getTacheById(u.getTache().getId());
 						ciCourant = ((Integer)ci.get(tacheEncours)).intValue();
 						if(tacheEncours.getC() == ++ciCourant) {
 							tacheEncours = null;

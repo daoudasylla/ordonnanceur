@@ -21,7 +21,7 @@ public class Polling implements Algorithme{
 	private int ppcm;
 	private HashMap<Tache,Integer> mapTacheUnitesRestantes;
 	private int capaciteServer;
-	private Tache tachePS;
+	private TachePs tachePS;
 	
 	private Periodique tacheEnCours = null;
 	private int unitesRestantes = 0; //pour la tache en cours
@@ -32,7 +32,7 @@ public class Polling implements Algorithme{
 	private UniteTemps uniteCourante;
 	
 	
-	public Polling(int ppcm)
+	public Polling(int ppcm, Algorithme algo)
 	{
 		this.ppcm = ppcm;
 		this.ordonnancement = new LinkedList<UniteTemps>();
@@ -42,7 +42,7 @@ public class Polling implements Algorithme{
 		this.periodiques = null;
 		this.aperiodiques = null;
 		this.mapTacheUnitesRestantes = null;
-		this.algo=null;
+		this.algo=algo;
 		this.uniteCourante=null;
 		
 	
@@ -71,23 +71,41 @@ public class Polling implements Algorithme{
 				//si c'est le cas on l'ajoute dans la liste d'attente
 				if(((Aperiodique)tApe).getR() == uniteCourante.getIdUnite()) {
 					aperiodiquesEnAttente.addLast(tApe);
+					this.mapTacheUnitesRestantes.put(tApe, tApe.getC());
 				}
 			}
 			
 			// On recupere l'unite suiavnte de la periodique
 			UniteTemps uniteAlgo = this.algo.uniteSuivante();
-			
+			Tache tacheAlgo = uniteAlgo.getTache();
 			// Si la tache est une tahce ps
-			if(uniteAlgo.getTache() instanceof TachePs){
-				
-				this.capaciteServer = uniteAlgo.getTache().getC();
+			if(tacheAlgo instanceof TachePs){
+			
+				this.capaciteServer = tacheAlgo.getC();
 				this.capaciteServer--;
+				//System.out.println("capacite :"+this.capaciteServer);
 				// On recup une tache aperio
 				Tache ape = aperiodiquesEnAttente.getFirst();
 				
-				this.mapTacheUnitesRestantes.put(ape,ape.getC()-1);
+				int unitesRestantes = this.mapTacheUnitesRestantes.get(ape)-1;
+				
+				if(unitesRestantes==0) aperiodiquesEnAttente.remove(ape);
+				this.mapTacheUnitesRestantes.put(ape,unitesRestantes);
 				this.uniteCourante.setTache(ape);
+			} else {
+				//System.out.println("dedansqq");
+				
+				this.capaciteServer = this.tachePS.getCapacite();
+				
+				if(tacheAlgo!=null){
+					this.uniteCourante.setTache(tacheAlgo);
+				}
+				
+				
+				
 			}
+			
+			/*
 			
 			//on parcours la liste des débuts de périodes
 			for(Tache t :uniteCourante.getPeriodes()){
@@ -185,12 +203,16 @@ public class Polling implements Algorithme{
 			if(aperiodiquesEnAttente.size() == 0)
 				this.capaciteServer = 0;
 			//System.out.println("capa: "+this.capaciteServer+"unite courante: "+uniteCourante);
-			
+			*/
 		
 		
 		return uniteCourante;
 
 
+	}
+
+	public int getCapaciteServer() {
+		return capaciteServer;
 	}
 
 	@Override
@@ -205,6 +227,9 @@ public class Polling implements Algorithme{
 		this.aperiodiquesEnAttente = new LinkedList<Tache>();
 		this.unitesRestantes=0;
 		this.mapTacheUnitesRestantes = new HashMap<Tache,Integer>();
+		this.algo.initialiser(ordonnancement, tachesPeriodiques, tachesAperiodiques);
+		
+		this.initTachePs();
 		this.initMap();
 		
 	}
@@ -221,6 +246,14 @@ public class Polling implements Algorithme{
 		return result;
 	}
 
+	public void initTachePs(){
+		
+		for(Tache t :this.periodiques)
+			if(t instanceof TachePs){
+				this.tachePS = (TachePs) t;
+				return;
+			}
+	}
 	
 	
 
