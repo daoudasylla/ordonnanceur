@@ -1,5 +1,9 @@
 package exe;
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.util.ArrayList;
+
+import javax.swing.BorderFactory;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -9,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollBar;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
@@ -17,6 +22,13 @@ import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.SwingUtilities;
+
+import noyau.ListeTaches;
+
+import vue.AjouterAperiodique;
+import vue.AjouterPeriodique;
+import vue.BoutonsListener;
+import vue.UneditableTableModel;
 
 
 /**
@@ -42,7 +54,7 @@ public class Programme extends javax.swing.JFrame {
 		}
 	}
 
-	private JTable tachesPeriodiques;
+	private JTable ensembleTaches;
 	private JButton boutonAjoutAperio;
 	private JButton boutonSuppr;
 	private JMenuItem jMenuItem2;
@@ -55,6 +67,14 @@ public class Programme extends javax.swing.JFrame {
 	private JComboBox listePeriodiques;
 	private JLabel jLabel1;
 	private JButton ajoutPerio;
+	private UneditableTableModel tableModel;
+	private ArrayList<String[]> datasListeTaches;
+	
+	private AjouterPeriodique fenAjoutPerio;
+	private AjouterAperiodique fenAjoutAperio;
+	
+	private ListeTaches listeTaches;
+	
 
 	/**
 	* Auto-generated main method to display this JFrame
@@ -71,9 +91,16 @@ public class Programme extends javax.swing.JFrame {
 	
 	public Programme() {
 		super();
+		this.fenAjoutAperio = new AjouterAperiodique(this);
+		this.fenAjoutPerio = new AjouterPeriodique(this);
+		this.listeTaches = new ListeTaches();
 		initGUI();
 	}
 	
+	public ListeTaches getListeTaches() {
+		return listeTaches;
+	}
+
 	private void initGUI() {
 		try {
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -98,34 +125,37 @@ public class Programme extends javax.swing.JFrame {
 				}
 			}
 			{
-				TableModel tachesPeriodiquesModel = 
-					new DefaultTableModel(
-							new String[][] { { "One", "Two" }, { "Three", "Four" } },
-							new String[] { "Column 1", "Column 2" });
-				tachesPeriodiques = new JTable();
-				getContentPane().add(tachesPeriodiques);
-				tachesPeriodiques.setModel(tachesPeriodiquesModel);
-				tachesPeriodiques.setBounds(85, 129, 390, 74);
+				datasListeTaches = new ArrayList<String[]>();
+				tableModel = new UneditableTableModel(datasListeTaches,new String[] { "N°", "Type", "Infos" });
+				ensembleTaches = new JTable();
+				getContentPane().add(ensembleTaches);
+				ensembleTaches.setModel(tableModel);
+				ensembleTaches.setBounds(85, 129, 390, 74);
+				ensembleTaches.setBorder(BorderFactory.createLineBorder(Color.black));
 			}
 			{
 				ajoutPerio = new JButton();
 				getContentPane().add(ajoutPerio);
 				ajoutPerio.setText("Périodique");
-				ajoutPerio.setBounds(85, 85, 113, 28);
+				ajoutPerio.setActionCommand("fenAjoutPerio");
+				ajoutPerio.setBounds(91, 91, 137, 28);
 				ajoutPerio.setIcon(new ImageIcon(getClass().getClassLoader().getResource("images/icone-plus.png")));
+				ajoutPerio.addActionListener(new BoutonsListener(this));
 			}
 			{
 				boutonAjoutAperio = new JButton();
 				getContentPane().add(boutonAjoutAperio);
+				boutonAjoutAperio.setActionCommand("fenAjoutAperio");
 				boutonAjoutAperio.setText("Aperiodique");
 				boutonAjoutAperio.setIcon(new ImageIcon(getClass().getClassLoader().getResource("images/icone-plus.png")));
-				boutonAjoutAperio.setBounds(209, 85, 115, 29);
+				boutonAjoutAperio.setBounds(239, 91, 142, 29);
+				boutonAjoutAperio.addActionListener(new BoutonsListener(this));
 			}
 			{
 				boutonSuppr = new JButton();
 				getContentPane().add(boutonSuppr);
 				boutonSuppr.setIcon(new ImageIcon(getClass().getClassLoader().getResource("images/icone-moins.png")));
-				boutonSuppr.setBounds(341, 85, 44, 29);
+				boutonSuppr.setBounds(397, 91, 44, 29);
 			}
 			{
 				jLabel1 = new JLabel();
@@ -167,6 +197,31 @@ public class Programme extends javax.swing.JFrame {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public ArrayList<String[]> getDatasListeTaches() {
+		return datasListeTaches;
+	}
+
+	public UneditableTableModel getTableModel() {
+		return tableModel;
+	}
+
+	public JTable getEnsembleTaches() {
+		return ensembleTaches;
+	}
+
+	public AjouterPeriodique getFenAjoutPerio() {
+		return fenAjoutPerio;
+	}
+
+	public AjouterAperiodique getFenAjoutAperio() {
+		return fenAjoutAperio;
+	}
+	
+	
+	public void showError(String msg){
+		JOptionPane.showMessageDialog(this, msg);
 	}
 
 }

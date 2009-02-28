@@ -9,6 +9,8 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import exe.Programme;
+
 
 /**
 * This code was edited or generated using CloudGarden's Jigloo
@@ -28,13 +30,25 @@ public class AjouterAperiodique extends javax.swing.JDialog {
 	private JButton boutonValider;
 	private JTextField textRi;
 	private JTextField textCi;
-
-	public AjouterAperiodique(JFrame frame) {
+	private Programme fenetrePrincipale; 
+	public AjouterAperiodique(Programme frame) {
 		super(frame);
-		this.setTitle("Ajouter une tâche Apériodique");
 		initGUI();
+		this.fenetrePrincipale=frame;
+		this.setTitle("Ajouter une tâche Apériodique");
+		this.setLocationRelativeTo(this.getParent());
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		
 	}
 	
+	public JTextField getTextRi() {
+		return textRi;
+	}
+
+	public JTextField getTextCi() {
+		return textCi;
+	}
+
 	private void initGUI() {
 		try {
 			{
@@ -66,12 +80,9 @@ public class AjouterAperiodique extends javax.swing.JDialog {
 				boutonValider = new JButton();
 				getContentPane().add(boutonValider);
 				boutonValider.setText("Ajouter");
-				boutonValider.setBounds(128, 91, 50, 21);
-				boutonValider.addMouseListener(new MouseAdapter() {
-					public void mouseClicked(MouseEvent evt) {
-						boutonValiderMouseClicked(evt);
-					}
-				});
+				boutonValider.setBounds(113, 91, 72, 21);
+				boutonValider.setActionCommand("ajouterAperio");
+				boutonValider.addActionListener(new BoutonsListener(this.fenetrePrincipale));
 			}
 			this.setSize(319, 166);
 		} catch (Exception e) {
@@ -79,8 +90,6 @@ public class AjouterAperiodique extends javax.swing.JDialog {
 		}
 	}
 	
-	private void boutonValiderMouseClicked(MouseEvent evt) {
-		
-	}
+	
 
 }

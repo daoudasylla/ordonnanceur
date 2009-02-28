@@ -7,6 +7,8 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import exe.Programme;
+
 
 /**
 * This code was edited or generated using CloudGarden's Jigloo
@@ -28,13 +30,29 @@ public class AjouterPeriodique extends javax.swing.JDialog {
 	private JTextField textDi;
 	private JTextField textPi;
 	private JTextField textCi;
-
-	public AjouterPeriodique(JFrame frame) {
+	private Programme fenetrePrincipale;
+	
+	public AjouterPeriodique(Programme frame) {
 		super(frame);
 		initGUI();
+		this.fenetrePrincipale=frame;
 		this.setTitle("Ajouter une tâche Périodique");
+		this.setLocationRelativeTo(this.getParent());
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 	
+	public JTextField getTextDi() {
+		return textDi;
+	}
+
+	public JTextField getTextPi() {
+		return textPi;
+	}
+
+	public JTextField getTextCi() {
+		return textCi;
+	}
+
 	private void initGUI() {
 		try {
 			{
@@ -77,7 +95,10 @@ public class AjouterPeriodique extends javax.swing.JDialog {
 				boutonValider = new JButton();
 				getContentPane().add(boutonValider);
 				boutonValider.setText("Ajouter");
-				boutonValider.setBounds(127, 134, 50, 21);
+				boutonValider.setBounds(113, 133, 75, 21);
+				boutonValider.setActionCommand("ajouterPerio");
+				boutonValider.addActionListener(new BoutonsListener(this.fenetrePrincipale));
+				
 			}
 			this.setSize(319, 199);
 		} catch (Exception e) {
