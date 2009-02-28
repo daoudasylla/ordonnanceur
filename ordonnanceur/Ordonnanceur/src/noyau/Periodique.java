@@ -55,4 +55,8 @@ public class Periodique extends Tache{
 	}
 	
 
+	 public Object clone() {
+		 Periodique tmp = new Periodique(this.getC(),this.getP(), this.getD());
+		    return tmp;
+	}
 }

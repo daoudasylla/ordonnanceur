@@ -21,9 +21,9 @@ public class UniteTemps {
 	
 	public UniteTemps(UniteTemps ut)
 	{
-		this.tache = null; // Si 0 alors la tache est un temps creux
+		this.tache = ut.getTache(); // Si 0 alors la tache est un temps creux
 		this.idUnite = ut.getIdUnite();
-		this.periodes = new LinkedList<Tache>();
+		this.periodes = ut.getPeriodes();
 	}
 	
 	public Tache getTache() {
