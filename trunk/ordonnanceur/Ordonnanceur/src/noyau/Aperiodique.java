@@ -1,5 +1,7 @@
 package noyau;
 
+import algo.UniteTemps;
+
 public class Aperiodique  extends Tache{
 
 	private int r;
@@ -19,6 +21,9 @@ public class Aperiodique  extends Tache{
 		this.r = r;
 	}
 	
-	
+	 public Object clone() {
+		 Aperiodique tmp = new Aperiodique(this.getC(),this.getR());
+		    return tmp;
+	}
 
 }

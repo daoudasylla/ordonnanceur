@@ -54,7 +54,7 @@ public class RunMe2 {
       liste2.add(new Periodique(2,6,6));
       liste2.add(new Periodique(3,8,8));*/
      
-      liste2.add(new Periodique(1,20,8));
+      /*liste2.add(new Periodique(1,20,8));
       liste2.add(new Periodique(4,10,10));
       liste2.add(new Periodique(2,5,4));
       Ordonnanceur o = new Ordonnanceur(new EDF(20),liste2); 
@@ -72,12 +72,17 @@ public class RunMe2 {
       liste2.add(new Periodique(2,12,12));
       liste2.add(new Aperiodique(2,7));
       liste2.add(new Aperiodique(2,5));*/
-      /*liste2.add(new Periodique(3,6,6));
+      
+      ////////////TEST EDL/////////////////////
+      
+      liste2.add(new Periodique(3,6,6));
       liste2.add(new Periodique(2,8,8));
       liste2.add(new Aperiodique(1,3));
       liste2.add(new Aperiodique(2,9));
       liste2.add(new Aperiodique(1,14));
-       Ordonnanceur o = new Ordonnanceur(new EDL(24),liste2);*/
+      Ordonnanceur o = new Ordonnanceur(new EDL(24),liste2);
+      o.ordonnancer(24);
+      System.out.println(o);
       //liste2.add(new Aperiodique(2));
       /*liste2.add(new Periodique(4,10,10));
       liste2.add(new Periodique(2,6,6));
