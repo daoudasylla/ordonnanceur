@@ -17,13 +17,19 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollBar;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.SwingUtilities;
 
+import noyau.Aperiodique;
 import noyau.ListeTaches;
+import noyau.Ordonnanceur;
+import noyau.Periodique;
+import noyau.Tache;
 
 import vue.AjouterAperiodique;
 import vue.AjouterPeriodique;
@@ -61,6 +67,10 @@ public class Programme extends javax.swing.JFrame {
 	private JMenuItem jMenuItem1;
 	private JMenu jMenu1;
 	private JMenuBar jMenuBar1;
+	private JLabel jLabel3;
+	private JLabel jLabel4;
+	private JTextField textPPCM;
+	private JButton boutonLancer;
 	private JSeparator jSeparator1;
 	private JComboBox listeAperio;
 	private JLabel jLabel2;
@@ -74,37 +84,45 @@ public class Programme extends javax.swing.JFrame {
 	private AjouterAperiodique fenAjoutAperio;
 	
 	private ListeTaches listeTaches;
+	private Ordonnanceur ordo;
+	
 	
 
 	/**
 	* Auto-generated main method to display this JFrame
 	*/
-	public static void main(String[] args) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				Programme inst = new Programme();
-				inst.setLocationRelativeTo(null);
-				inst.setVisible(true);
-			}
-		});
-	}
+
 	
 	public Programme() {
 		super();
-		this.fenAjoutAperio = new AjouterAperiodique(this);
-		this.fenAjoutPerio = new AjouterPeriodique(this);
+		
 		this.listeTaches = new ListeTaches();
+		
 		initGUI();
 	}
 	
+	public JComboBox getListeAperio() {
+		return listeAperio;
+	}
+
+	public JComboBox getListePeriodiques() {
+		return listePeriodiques;
+	}
+
 	public ListeTaches getListeTaches() {
 		return listeTaches;
 	}
 
+	public void setFenetres(){
+		this.fenAjoutAperio = new AjouterAperiodique(this);
+		this.fenAjoutPerio = new AjouterPeriodique(this);
+	}
 	private void initGUI() {
 		try {
+			
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 			getContentPane().setLayout(null);
+			this.setIconImage(new ImageIcon(getClass().getClassLoader().getResource("images/icone.gif")).getImage());
 			{
 				jMenuBar1 = new JMenuBar();
 				setJMenuBar(jMenuBar1);
@@ -154,8 +172,11 @@ public class Programme extends javax.swing.JFrame {
 			{
 				boutonSuppr = new JButton();
 				getContentPane().add(boutonSuppr);
+				boutonSuppr.setActionCommand("supprTache");
 				boutonSuppr.setIcon(new ImageIcon(getClass().getClassLoader().getResource("images/icone-moins.png")));
 				boutonSuppr.setBounds(397, 91, 44, 29);
+				boutonSuppr.addActionListener(new BoutonsListener(this));
+				
 			}
 			{
 				jLabel1 = new JLabel();
@@ -166,7 +187,7 @@ public class Programme extends javax.swing.JFrame {
 			{
 				ComboBoxModel listePeriodiquesModel = 
 					new DefaultComboBoxModel(
-							new String[] { "Item One", "Item Two" });
+							new String[] { "RM", "EDF" });
 				listePeriodiques = new JComboBox();
 				getContentPane().add(listePeriodiques);
 				listePeriodiques.setModel(listePeriodiquesModel);
@@ -181,7 +202,7 @@ public class Programme extends javax.swing.JFrame {
 			{
 				ComboBoxModel listeAperioModel = 
 					new DefaultComboBoxModel(
-							new String[] { "Item One", "Item Two" });
+							new String[] { "Background", "Polling", "EDL" });
 				listeAperio = new JComboBox();
 				getContentPane().add(listeAperio);
 				listeAperio.setModel(listeAperioModel);
@@ -192,11 +213,44 @@ public class Programme extends javax.swing.JFrame {
 				getContentPane().add(jSeparator1);
 				jSeparator1.setBounds(12, 224, 536, 10);
 			}
+			{
+				jLabel3 = new JLabel();
+				getContentPane().add(jLabel3);
+				jLabel3.setText("Simulation d'Ordonnancement temps réel");
+				jLabel3.setBounds(60, 17, 438, 58);
+				jLabel3.setFont(new java.awt.Font("Georgia",1,20));
+				jLabel3.setHorizontalAlignment(SwingConstants.CENTER);
+			}
+			{
+				boutonLancer = new JButton();
+				getContentPane().add(boutonLancer);
+				boutonLancer.setText("Valider");
+				boutonLancer.setBounds(201, 394, 123, 35);
+				boutonLancer.setIcon(new ImageIcon(getClass().getClassLoader().getResource("images/valider.gif")));
+				boutonLancer.setActionCommand("lancerSimulation");
+				boutonLancer.addActionListener(new BoutonsListener(this));
+			
+			}
+			{
+				jLabel4 = new JLabel();
+				getContentPane().add(jLabel4);
+				jLabel4.setText("PPCM");
+				jLabel4.setBounds(90, 359, 27, 14);
+			}
+			{
+				textPPCM = new JTextField();
+				getContentPane().add(textPPCM);
+				textPPCM.setBounds(221, 356, 59, 20);
+			}
 			pack();
-			this.setSize(568, 482);
+			this.setSize(568, 503);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public JTextField getTextPPCM() {
+		return textPPCM;
 	}
 
 	public ArrayList<String[]> getDatasListeTaches() {
@@ -222,6 +276,45 @@ public class Programme extends javax.swing.JFrame {
 	
 	public void showError(String msg){
 		JOptionPane.showMessageDialog(this, msg);
+	}
+	
+	public Integer getSelectedTache() {
+		int sRow = ensembleTaches.getSelectedRow();
+		if(sRow!=-1)
+			return sRow;
+		else return null;
+	}
+	
+	public void retirerTache(int id){
+		int index=-1;
+		for(Tache t : listeTaches)
+			if(t.getId()==id) index=listeTaches.indexOf(t);
+		
+		if(index!=-1) listeTaches.remove(index);
+	}
+	
+	public boolean tachesPeriodiquesPresentes(){
+		
+		for(Tache t : listeTaches)
+			if(t instanceof Periodique) return true;
+			
+		return false;
+	}
+	
+public boolean tachesAperiodiquesPresentes(){
+		
+		for(Tache t : listeTaches)
+			if(t instanceof Aperiodique) return true;
+			
+		return false;
+	}
+
+	public Ordonnanceur getOrdo() {
+		return ordo;
+	}
+	
+	public void setOrdo(Ordonnanceur ordo) {
+		this.ordo = ordo;
 	}
 
 }

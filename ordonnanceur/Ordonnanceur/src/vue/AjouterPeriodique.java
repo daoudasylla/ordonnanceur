@@ -34,8 +34,9 @@ public class AjouterPeriodique extends javax.swing.JDialog {
 	
 	public AjouterPeriodique(Programme frame) {
 		super(frame);
-		initGUI();
 		this.fenetrePrincipale=frame;
+		initGUI();
+		
 		this.setTitle("Ajouter une tâche Périodique");
 		this.setLocationRelativeTo(this.getParent());
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
