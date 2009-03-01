@@ -33,8 +33,9 @@ public class AjouterAperiodique extends javax.swing.JDialog {
 	private Programme fenetrePrincipale; 
 	public AjouterAperiodique(Programme frame) {
 		super(frame);
-		initGUI();
 		this.fenetrePrincipale=frame;
+		initGUI();
+		
 		this.setTitle("Ajouter une tâche Apériodique");
 		this.setLocationRelativeTo(this.getParent());
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
