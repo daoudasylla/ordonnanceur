@@ -80,8 +80,7 @@ public class Polling implements Algorithme{
 			Tache tacheAlgo = uniteAlgo.getTache();
 			// Si la tache est une tahce ps
 			if(tacheAlgo instanceof TachePs){
-			
-				if(aperiodiquesEnAttente.peek()!=null){
+				if(aperiodiquesEnAttente.peek()!=null && this.capaciteServer>0){
 					this.capaciteServer = tacheAlgo.getC();
 					this.capaciteServer--;
 					//System.out.println("capacite :"+this.capaciteServer);
@@ -93,7 +92,7 @@ public class Polling implements Algorithme{
 					if(unitesRestantes==0) aperiodiquesEnAttente.remove(ape);
 					this.mapTacheUnitesRestantes.put(ape,unitesRestantes);
 					this.uniteCourante.setTache(ape);
-				}
+				} 
 			} else {
 				//System.out.println("dedansqq");
 				
@@ -106,6 +105,8 @@ public class Polling implements Algorithme{
 				
 				
 			}
+			System.out.println(uniteAlgo.getIdUnite()+" ="+capaciteServer);
+			
 			
 			/*
 			
@@ -243,7 +244,7 @@ public class Polling implements Algorithme{
 	public int tpsExecAperiodique(){
 		int result=0;
 		for(Tache t : aperiodiquesEnAttente)
-			result += t.getC();
+			result += mapTacheUnitesRestantes.get(t);
 		
 		return result;
 	}
