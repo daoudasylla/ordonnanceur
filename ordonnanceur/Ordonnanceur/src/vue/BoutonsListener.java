@@ -141,7 +141,7 @@ public class BoutonsListener implements ActionListener {
 		else if(commande.equals("supprTache")){
 			if(this.fenetrePrincipale.getSelectedTache()==null) this.fenetrePrincipale.showError("Veuillez sélectionner une tache !");
 			else {
-				int  id = (Integer) this.fenetrePrincipale.getEnsembleTaches().getValueAt((int)this.fenetrePrincipale.getSelectedTache(), 0);
+				int  id = Integer.parseInt((String) this.fenetrePrincipale.getEnsembleTaches().getValueAt((int)this.fenetrePrincipale.getSelectedTache(), 0));
 				
 				this.fenetrePrincipale.retirerTache(id);
 				this.fenetrePrincipale.getDatasListeTaches().remove((int)this.fenetrePrincipale.getSelectedTache());
