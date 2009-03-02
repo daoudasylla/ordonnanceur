@@ -31,6 +31,7 @@ import noyau.Ordonnanceur;
 import noyau.Periodique;
 import noyau.Tache;
 
+import vue.AffichageGraphe;
 import vue.AjouterAperiodique;
 import vue.AjouterPeriodique;
 import vue.BoutonsListener;
@@ -82,6 +83,7 @@ public class Programme extends javax.swing.JFrame {
 	
 	private AjouterPeriodique fenAjoutPerio;
 	private AjouterAperiodique fenAjoutAperio;
+	private AffichageGraphe fenAffGraphe;
 	
 	private ListeTaches listeTaches;
 	private Ordonnanceur ordo;
@@ -116,6 +118,7 @@ public class Programme extends javax.swing.JFrame {
 	public void setFenetres(){
 		this.fenAjoutAperio = new AjouterAperiodique(this);
 		this.fenAjoutPerio = new AjouterPeriodique(this);
+		this.fenAffGraphe = new AffichageGraphe(this);
 	}
 	private void initGUI() {
 		try {
@@ -123,6 +126,7 @@ public class Programme extends javax.swing.JFrame {
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 			getContentPane().setLayout(null);
 			this.setIconImage(new ImageIcon(getClass().getClassLoader().getResource("images/icone.gif")).getImage());
+			this.setResizable(false);
 			{
 				jMenuBar1 = new JMenuBar();
 				setJMenuBar(jMenuBar1);
@@ -166,7 +170,7 @@ public class Programme extends javax.swing.JFrame {
 				boutonAjoutAperio.setActionCommand("fenAjoutAperio");
 				boutonAjoutAperio.setText("Aperiodique");
 				boutonAjoutAperio.setIcon(new ImageIcon(getClass().getClassLoader().getResource("images/icone-plus.png")));
-				boutonAjoutAperio.setBounds(239, 91, 142, 29);
+				boutonAjoutAperio.setBounds(242, 91, 135, 27);
 				boutonAjoutAperio.addActionListener(new BoutonsListener(this));
 			}
 			{
@@ -225,7 +229,7 @@ public class Programme extends javax.swing.JFrame {
 				boutonLancer = new JButton();
 				getContentPane().add(boutonLancer);
 				boutonLancer.setText("Valider");
-				boutonLancer.setBounds(201, 394, 123, 35);
+				boutonLancer.setBounds(201, 397, 123, 42);
 				boutonLancer.setIcon(new ImageIcon(getClass().getClassLoader().getResource("images/valider.gif")));
 				boutonLancer.setActionCommand("lancerSimulation");
 				boutonLancer.addActionListener(new BoutonsListener(this));
@@ -243,7 +247,7 @@ public class Programme extends javax.swing.JFrame {
 				textPPCM.setBounds(221, 356, 59, 20);
 			}
 			pack();
-			this.setSize(568, 503);
+			this.setSize(568, 516);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -315,6 +319,10 @@ public boolean tachesAperiodiquesPresentes(){
 	
 	public void setOrdo(Ordonnanceur ordo) {
 		this.ordo = ordo;
+	}
+
+	public AffichageGraphe getFenAffGraphe() {
+		return fenAffGraphe;
 	}
 
 }

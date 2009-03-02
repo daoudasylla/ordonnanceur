@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 
 import algo.EDF;
 import algo.RM;
+import algo.UniteTemps;
 
 import noyau.Aperiodique;
 import noyau.Ordonnanceur;
@@ -84,13 +85,27 @@ public class BoutonsListener implements ActionListener {
 					switch(this.fenetrePrincipale.getListePeriodiques().getSelectedIndex()){
 						case 0: // RM
 							ordo = new Ordonnanceur(new RM(),this.fenetrePrincipale.getListeTaches());
-							this.fenetrePrincipale.setOrdo(ordo);
+							//this.fenetrePrincipale.setOrdo(ordo);
+							ordo.ordonnancer(ppcm);				
+							
+							this.fenetrePrincipale.getFenAffGraphe().initGUI(ordo.getResult(), this.fenetrePrincipale.getDatasListeTaches().size(), ppcm);
+							this.fenetrePrincipale.getFenAffGraphe().setVisible(true);
 						break;
 						case 1: // EDF
 							ordo = new Ordonnanceur(new EDF(ppcm),this.fenetrePrincipale.getListeTaches());
-							this.fenetrePrincipale.setOrdo(ordo);
+							ordo.ordonnancer(ppcm);				
+							
+							this.fenetrePrincipale.getFenAffGraphe().initGUI(ordo.getResult(), this.fenetrePrincipale.getDatasListeTaches().size(), ppcm);
+							this.fenetrePrincipale.getFenAffGraphe().setVisible(true);
+						
 						break;
 					}
+				}
+				else {
+					
+					
+					
+					
 				}
 				
 				

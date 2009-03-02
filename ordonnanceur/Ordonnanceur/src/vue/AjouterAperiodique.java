@@ -25,6 +25,16 @@ import exe.Programme;
 * LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
 */
 public class AjouterAperiodique extends javax.swing.JDialog {
+
+	{
+		//Set Look & Feel
+		try {
+			javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	private JLabel jLabel1;
 	private JLabel jLabel2;
 	private JButton boutonValider;
