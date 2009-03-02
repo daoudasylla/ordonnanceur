@@ -12,6 +12,11 @@ public class TachePs extends Periodique {
 	}
 
 	
+	public void setPoll(Polling poll) {
+		this.poll = poll;
+	}
+
+
 	public int getC(){
 		int tpsTemp = this.poll.tpsExecAperiodique();
 		//System.out.println("cpac :"+poll.getCapaciteServer());

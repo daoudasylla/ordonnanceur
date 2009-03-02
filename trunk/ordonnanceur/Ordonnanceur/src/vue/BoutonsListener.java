@@ -6,7 +6,11 @@ import java.awt.event.ActionListener;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 
+import algo.Algorithme;
+import algo.Background;
 import algo.EDF;
+import algo.EDL;
+import algo.Polling;
 import algo.RM;
 import algo.UniteTemps;
 
@@ -15,6 +19,7 @@ import noyau.ListeTaches;
 import noyau.Ordonnanceur;
 import noyau.Periodique;
 import noyau.Tache;
+import noyau.TachePs;
 
 import exe.Programme;
 
@@ -33,6 +38,30 @@ public class BoutonsListener implements ActionListener {
 		else if(commande.equals("fenAjoutAperio")){
 			this.fenetrePrincipale.getFenAjoutAperio().setVisible(true);
 		}	
+		
+		else if(commande.equals("validerCreationTachePS")){
+			
+			try {
+				// Recuperation des valeurs	
+				Integer di = Integer.parseInt(this.fenetrePrincipale.getFenCreationPS().getTextDi().getText());
+				Integer pi = Integer.parseInt(this.fenetrePrincipale.getFenCreationPS().getTextPi().getText());
+				
+				
+				TachePs perio = new TachePs(0,pi,di,null);
+				
+				
+				this.fenetrePrincipale.getListeTaches().add(perio);
+				this.fenetrePrincipale.getDatasListeTaches().add(new String[]{""+perio.getId(),"Périodique (PS)","Di="+di+",Pi="+pi});
+				this.fenetrePrincipale.getEnsembleTaches().repaint();
+				this.fenetrePrincipale.getFenCreationPS().dispose();
+				}
+			catch(Exception e){
+				this.fenetrePrincipale.showError("Erreur lors de la saisie");
+			}
+		}	
+		
+	
+		
 		else if(commande.equals("ajouterPerio")){
 			
 			
@@ -127,33 +156,71 @@ public class BoutonsListener implements ActionListener {
 				boolean tachesPerioPresentes = this.fenetrePrincipale.tachesPeriodiquesPresentes();
 				boolean tachesAperioPresentes = this.fenetrePrincipale.tachesAperiodiquesPresentes();
 				int ppcm = Integer.parseInt(this.fenetrePrincipale.getTextPPCM().getText());			
-				Ordonnanceur ordo;
-				// On lance la simulation avec les algorithmes demandées
+				Ordonnanceur ordo=null;
+				boolean errors=false;
+				
+				
+				
+				/*#####################
+				 * PERIODIQUES SEULEMENT
+				 #####################*/
 				if(!tachesAperioPresentes){
 					switch(this.fenetrePrincipale.getListePeriodiques().getSelectedIndex()){
 						case 0: // RM
 							ordo = new Ordonnanceur(new RM(),this.fenetrePrincipale.getListeTaches());
-							//this.fenetrePrincipale.setOrdo(ordo);
-							ordo.ordonnancer(ppcm);				
+										
 							
-							this.fenetrePrincipale.getFenAffGraphe().initGUI(ordo.getResult(), this.fenetrePrincipale.getDatasListeTaches().size(), ppcm);
-							this.fenetrePrincipale.getFenAffGraphe().setVisible(true);
 						break;
 						case 1: // EDF
 							ordo = new Ordonnanceur(new EDF(ppcm),this.fenetrePrincipale.getListeTaches());
-							ordo.ordonnancer(ppcm);				
+										
 							
-							this.fenetrePrincipale.getFenAffGraphe().initGUI(ordo.getResult(), this.fenetrePrincipale.getDatasListeTaches().size(), ppcm);
-							this.fenetrePrincipale.getFenAffGraphe().setVisible(true);
-						
+							
 						break;
 					}
 				}
 				else {
+				/*#####################
+				 * APERIO + PERIO
+				 #####################*/	
+					Algorithme algoPeriodique=null;
+					Algorithme algoAPeriodique=null;
+					switch(this.fenetrePrincipale.getListePeriodiques().getSelectedIndex()){
+					case 0: algoPeriodique = new RM(); break;
+					case 1: algoPeriodique = new EDF(ppcm); break;
+					}
+					
+					switch(this.fenetrePrincipale.getListeAperio().getSelectedIndex()){
+					case 0: algoAPeriodique = new Background(); break;
+					case 1: algoAPeriodique = new Polling(ppcm,algoPeriodique); break;
+					case 2: algoAPeriodique = new EDL(ppcm); break;
+					}
+					
+					// Si algo Polling, verif existence tache PS					
+					if(algoAPeriodique instanceof Polling){
+						if(this.fenetrePrincipale.getTachePS()==null){
+							this.fenetrePrincipale.getFenCreationPS().setVisible(true);
+							errors=true;
+						}
+						else {
+							this.fenetrePrincipale.getTachePS().setPoll((Polling) algoAPeriodique);
+						}
+					}
+					if(!errors)
+					ordo = new Ordonnanceur(algoAPeriodique,this.fenetrePrincipale.getListeTaches());
+								
 					
 					
 					
+				}
+				if(!errors){
 					
+					if(this.fenetrePrincipale.getTachePS()!=null)
+						System.out.println("tache ps presente");
+					ordo.ordonnancer(ppcm);	
+					this.fenetrePrincipale.getFenAffGraphe().initGUI(ordo.getResult(), this.fenetrePrincipale.getListeTaches().size(), ppcm);
+					this.fenetrePrincipale.getFenAffGraphe().setVisible(true);
+					System.out.println(ordo);
 				}
 				
 				

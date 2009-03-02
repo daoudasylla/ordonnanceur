@@ -9,8 +9,10 @@ import javax.swing.JPanel;
 
 import exe.Programme;
 
+import noyau.Aperiodique;
 import noyau.Periodique;
 import noyau.Tache;
+import noyau.TachePs;
 
 import algo.UniteTemps;
 public class Graphe extends JPanel {
@@ -43,10 +45,27 @@ public class Graphe extends JPanel {
 		repereColor = Color.black;
 		graduationColor=Color.gray;
 		int i=1;
+		
+		
+		// Si tache PS présente on entre dans la correspondance en derniere tache
+		TachePs tachePs = this.fenetrePrincipale.getTachePS();
+		if(tachePs!=null){
+			correspondance.put(tachePs.getId(),this.nbreTaches);		
+		}
+		
 		for(Tache t : this.fenetrePrincipale.getListeTaches()){
+				int id = t.getId();
+				int idTacheGraph = i;
 				
-					if(!correspondance.containsKey(t.getId())){
-					correspondance.put(t.getId(),i);
+				
+				
+				// Si algo polling ne pas afficher les autres taches aperio que ps
+				if(tachePs!=null){
+					if(t instanceof Aperiodique) idTacheGraph=correspondance.get(tachePs.getId());
+				}
+				
+					if(!correspondance.containsKey(id)){
+					correspondance.put(id,idTacheGraph);
 					i++;					
 					}
 			}
@@ -114,6 +133,16 @@ public class Graphe extends JPanel {
 					g.drawString("P", xTemps(xPeriode),yTache(tacheDansGraphe)-ESPACEMENT_LIGNE+10);
 
 					}
+			}
+			
+			// Trcage des dates de reveil pour les aperio
+			if(t instanceof Aperiodique){
+				int xReveil=((Aperiodique)t).getR();	
+				
+				g.setColor(Color.BLUE);
+				g.drawLine(xTemps(xReveil),yTache(tacheDansGraphe),xTemps(xReveil),yTache(tacheDansGraphe)-ESPACEMENT_LIGNE+15);//axe verti
+				g.drawString("R", xTemps(xReveil),yTache(tacheDansGraphe)-ESPACEMENT_LIGNE+10);
+
 			}
 		}
 		
