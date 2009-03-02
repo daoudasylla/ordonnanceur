@@ -11,8 +11,10 @@ import algo.RM;
 import algo.UniteTemps;
 
 import noyau.Aperiodique;
+import noyau.ListeTaches;
 import noyau.Ordonnanceur;
 import noyau.Periodique;
+import noyau.Tache;
 
 import exe.Programme;
 
@@ -32,19 +34,65 @@ public class BoutonsListener implements ActionListener {
 			this.fenetrePrincipale.getFenAjoutAperio().setVisible(true);
 		}	
 		else if(commande.equals("ajouterPerio")){
-			// Recuperation des valeurs			
-			Integer ci = Integer.parseInt(this.fenetrePrincipale.getFenAjoutPerio().getTextCi().getText());
-			Integer di = Integer.parseInt(this.fenetrePrincipale.getFenAjoutPerio().getTextDi().getText());
-			Integer pi = Integer.parseInt(this.fenetrePrincipale.getFenAjoutPerio().getTextPi().getText());
 			
 			
-			Periodique perio = new Periodique(ci,di,pi);
-			Integer id = new Integer(perio.getId());
+			/*########################################
+			# MANUEL
+			#########################################*/
+			if(this.fenetrePrincipale.getFenAjoutPerio().getOnglets().getSelectedIndex()==0){
 			
-			this.fenetrePrincipale.getListeTaches().add(perio);
-			this.fenetrePrincipale.getDatasListeTaches().add(new String[]{id.toString(),"Périodique","Ci="+ci+",Di="+di+",Pi="+pi});
-			this.fenetrePrincipale.getEnsembleTaches().repaint();
-			this.fenetrePrincipale.getFenAjoutPerio().dispose();
+				
+				try {
+					// Recuperation des valeurs	
+					Integer ci = Integer.parseInt(this.fenetrePrincipale.getFenAjoutPerio().getTextCi().getText());
+					Integer di = Integer.parseInt(this.fenetrePrincipale.getFenAjoutPerio().getTextDi().getText());
+					Integer pi = Integer.parseInt(this.fenetrePrincipale.getFenAjoutPerio().getTextPi().getText());
+					
+					
+					Periodique perio = new Periodique(ci,pi,di);
+					Integer id = new Integer(perio.getId());
+					
+					this.fenetrePrincipale.getListeTaches().add(perio);
+					this.fenetrePrincipale.getDatasListeTaches().add(new String[]{id.toString(),"Périodique","Ci="+ci+",Di="+di+",Pi="+pi});
+					this.fenetrePrincipale.getEnsembleTaches().repaint();
+					this.fenetrePrincipale.getFenAjoutPerio().dispose();
+					}
+				catch(Exception e){
+					this.fenetrePrincipale.showError("Erreur lors de la saisie");
+				}
+				
+			} else {
+			/*########################################
+			# AUTO=generation
+			#########################################*/
+			
+				try {
+					// Recuperation des valeurs			
+					Integer nbTaches = Integer.parseInt(this.fenetrePrincipale.getFenAjoutPerio().getTextNbreTaches().getText());
+					Double up = Double.parseDouble(this.fenetrePrincipale.getFenAjoutPerio().getTextUp().getText().replace(",","."));
+				
+					this.fenetrePrincipale.getGeneration().setNbreTaches(nbTaches);
+					ListeTaches liste = this.fenetrePrincipale.getGeneration().genererTachesPeriodiques(up);
+					
+					for(Tache t:liste){
+						Periodique p = (Periodique) t;
+						this.fenetrePrincipale.getListeTaches().add(p);
+						this.fenetrePrincipale.getDatasListeTaches().add(new String[]{""+p.getId(),"Périodique","Ci="+p.getC()+",Di="+p.getD()+",Pi="+p.getP()});
+						
+					}
+					
+					this.fenetrePrincipale.getEnsembleTaches().repaint();
+					this.fenetrePrincipale.getFenAjoutPerio().dispose();
+					
+					
+				}
+				catch(Exception e){
+					this.fenetrePrincipale.showError("Erreur lors de la saisie");
+					e.printStackTrace();
+				}
+				
+					
+			}
 		}
 		else if(commande.equals("ajouterAperio")){
 			// Recuperation des valeurs			

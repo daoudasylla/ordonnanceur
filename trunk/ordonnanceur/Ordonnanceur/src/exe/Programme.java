@@ -26,6 +26,7 @@ import javax.swing.table.TableModel;
 import javax.swing.SwingUtilities;
 
 import noyau.Aperiodique;
+import noyau.Generation;
 import noyau.ListeTaches;
 import noyau.Ordonnanceur;
 import noyau.Periodique;
@@ -87,7 +88,7 @@ public class Programme extends javax.swing.JFrame {
 	
 	private ListeTaches listeTaches;
 	private Ordonnanceur ordo;
-	
+	private Generation generation;
 	
 
 	/**
@@ -99,7 +100,7 @@ public class Programme extends javax.swing.JFrame {
 		super();
 		
 		this.listeTaches = new ListeTaches();
-		
+		this.generation = new Generation();
 		initGUI();
 	}
 	
@@ -323,6 +324,10 @@ public boolean tachesAperiodiquesPresentes(){
 
 	public AffichageGraphe getFenAffGraphe() {
 		return fenAffGraphe;
+	}
+
+	public Generation getGeneration() {
+		return generation;
 	}
 
 }

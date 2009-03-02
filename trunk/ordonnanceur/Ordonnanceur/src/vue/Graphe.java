@@ -7,12 +7,17 @@ import java.util.LinkedList;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import exe.Programme;
+
+import noyau.Periodique;
+import noyau.Tache;
+
 import algo.UniteTemps;
 public class Graphe extends JPanel {
 	Font clockFaceFont;
 	Color repereColor;
 	Color graduationColor;
-	static int LONGUEUR_LIGNE=650;
+	static int LONGUEUR_LIGNE=850;
 	static int ESPACEMENT_LIGNE=50;
 	static int xDepart = 100;
 	static int yDepart = 20;
@@ -20,18 +25,15 @@ public class Graphe extends JPanel {
 	private int ppcm;
 	private LinkedList<UniteTemps> liste;
 	private HashMap<Integer,Integer> correspondance;
+	private Programme fenetrePrincipale;
 	
-	public Graphe(LinkedList<UniteTemps> liste,int nbreTaches, int ppcm){
+	public Graphe(Programme frame,LinkedList<UniteTemps> liste,int nbreTaches, int ppcm){
 		this.nbreTaches=nbreTaches;
 		this.ppcm=ppcm;
 		this.liste=liste;
 		this.correspondance = new HashMap<Integer,Integer>();
+		this.fenetrePrincipale=frame;
 		
-		String tmp="Affichage du résultat de l'ordonnanceur\n";
-		for(UniteTemps ut : this.liste){
-			tmp += ut+"\n";
-		}
-		System.out.println(tmp);
 		init();
 		
 	}
@@ -41,13 +43,12 @@ public class Graphe extends JPanel {
 		repereColor = Color.black;
 		graduationColor=Color.gray;
 		int i=1;
-			for(UniteTemps ut : this.liste){
-				if(ut.getTache()!=null){
-					if(!correspondance.containsKey(ut.getTache().getId())){
-					correspondance.put(ut.getTache().getId(),i);
-					i++;
+		for(Tache t : this.fenetrePrincipale.getListeTaches()){
+				
+					if(!correspondance.containsKey(t.getId())){
+					correspondance.put(t.getId(),i);
+					i++;					
 					}
-				}
 			}
 		}
 	public void plotrepere(Graphics g) {
@@ -73,15 +74,49 @@ public class Graphe extends JPanel {
 	public void tracebar (int tache, int temps,Graphics g){
 		int espacement_graduation = espaceGraduationTps();
 		g.setColor(Color.green);
-		g.fill3DRect(xTemps(temps),yTache(tache)-Graphe.ESPACEMENT_LIGNE,espacement_graduation,Graphe.ESPACEMENT_LIGNE,false);
+		g.fill3DRect(xTemps(temps),yTache(tache)-Graphe.ESPACEMENT_LIGNE+15,espacement_graduation,Graphe.ESPACEMENT_LIGNE-15,false);
 	}
 	public void tracegraphe(Graphics g){
 		
 		
 		for(UniteTemps ut : this.liste){
-			if(ut.getTache()!=null)
-			tracebar (this.correspondance.get(ut.getTache().getId()), ut.getIdUnite(),g);
+			if(ut.getTache()!=null){
+				int tacheDansGraphe = this.correspondance.get(ut.getTache().getId());
+				
+				// Tracage de l'unité de temps
+				tracebar (tacheDansGraphe, ut.getIdUnite(),g);
+				
+			}
 		}
+		
+		// Tracage des deadlines et periodes
+		
+		for(Tache t : this.fenetrePrincipale.getListeTaches()){
+			int xDead=0;
+			int xPeriode=0;
+			
+			int tacheDansGraphe = this.correspondance.get(t.getId());
+			
+			if(t instanceof Periodique){
+				
+				while(xDead<=ppcm){
+				xDead += ((Periodique)t).getD();
+				g.setColor(Color.red);
+				g.drawLine(xTemps(xDead),yTache(tacheDansGraphe),xTemps(xDead),yTache(tacheDansGraphe)-ESPACEMENT_LIGNE+15);//axe verti
+				g.drawString("D", xTemps(xDead),yTache(tacheDansGraphe)-ESPACEMENT_LIGNE+10);
+
+				}
+				
+				while(xPeriode<=ppcm){
+					xPeriode += ((Periodique)t).getP();
+					g.setColor(Color.MAGENTA);
+					g.drawLine(xTemps(xPeriode),yTache(tacheDansGraphe),xTemps(xPeriode),yTache(tacheDansGraphe)-ESPACEMENT_LIGNE+15);//axe verti
+					g.drawString("P", xTemps(xPeriode),yTache(tacheDansGraphe)-ESPACEMENT_LIGNE+10);
+
+					}
+			}
+		}
+		
 		
 		
 		

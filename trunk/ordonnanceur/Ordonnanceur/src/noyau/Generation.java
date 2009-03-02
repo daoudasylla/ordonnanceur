@@ -10,12 +10,16 @@ public class Generation {
 	        return (int) Math.floor(Math.random()*(max+1-min)+min);
 	    }
 
-		public Generation(int nbre){
-		    this.nbre = nbre;	    
+		public Generation(){
+		    	    
 		}
 		    
 	    
-	    public ListeTaches genererTachesPeriodiques(double up){
+	    public void setNbreTaches(int nbre) {
+			this.nbre = nbre;
+		}
+
+		public ListeTaches genererTachesPeriodiques(double up){
 	    	
 	    	
     	  this.up = up;    	
