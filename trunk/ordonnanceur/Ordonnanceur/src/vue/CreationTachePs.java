@@ -32,9 +32,9 @@ public class CreationTachePs extends javax.swing.JDialog {
 	private JTextField textDi;
 	private JTextField textPi;
 	private Programme fenetrePrincipale;
-	
+	private JTextField textCapacite;
+	private JLabel jLabel3;
 
-	
 	public CreationTachePs(Programme frame) {
 		super(frame);
 		this.fenetrePrincipale=frame;
@@ -76,10 +76,21 @@ public class CreationTachePs extends javax.swing.JDialog {
 				boutonValider.addActionListener(new BoutonsListener(this.fenetrePrincipale));
 				getContentPane().add(boutonValider);
 				boutonValider.setText("Valider");
-				boutonValider.setBounds(95, 75, 82, 21);
+				boutonValider.setBounds(95, 118, 82, 21);
+			}
+			{
+				jLabel3 = new JLabel();
+				getContentPane().add(jLabel3);
+				jLabel3.setText("Capacité du serveur :");
+				jLabel3.setBounds(24, 82, 104, 14);
+			}
+			{
+				textCapacite = new JTextField();
+				getContentPane().add(textCapacite);
+				textCapacite.setBounds(177, 75, 41, 20);
 			}
 			pack();
-			this.setSize(270, 134);
+			this.setSize(270, 182);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -91,6 +102,10 @@ public class CreationTachePs extends javax.swing.JDialog {
 
 	public JTextField getTextPi() {
 		return textPi;
+	}
+
+	public JTextField getTextCapacite() {
+		return textCapacite;
 	}
 
 }

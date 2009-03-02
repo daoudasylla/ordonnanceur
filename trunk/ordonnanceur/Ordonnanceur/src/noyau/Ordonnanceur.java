@@ -49,8 +49,6 @@ public class Ordonnanceur {
 		
 		this.result = this.calculePeriodes(ppcm);
 		
-		for(UniteTemps t :this.result)
-			System.out.println(t);
 		
 		
 		this.algo.initialiser(this.result, this.tachesPeriodiques, this.tachesAperiodiques);

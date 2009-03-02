@@ -45,9 +45,10 @@ public class BoutonsListener implements ActionListener {
 				// Recuperation des valeurs	
 				Integer di = Integer.parseInt(this.fenetrePrincipale.getFenCreationPS().getTextDi().getText());
 				Integer pi = Integer.parseInt(this.fenetrePrincipale.getFenCreationPS().getTextPi().getText());
+				Integer ci = Integer.parseInt(this.fenetrePrincipale.getFenCreationPS().getTextCapacite().getText());
+					
 				
-				
-				TachePs perio = new TachePs(0,pi,di,null);
+				TachePs perio = new TachePs(ci,pi,di,null);
 				
 				
 				this.fenetrePrincipale.getListeTaches().add(perio);
