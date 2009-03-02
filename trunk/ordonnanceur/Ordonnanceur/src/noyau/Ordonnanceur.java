@@ -73,6 +73,12 @@ public class Ordonnanceur {
 		}
 		return result;
 	}
+	public LinkedList<UniteTemps> getResult() {
+		return result;
+	}
+	public void setResult(LinkedList<UniteTemps> result) {
+		this.result = result;
+	}
 	public double tempsReponseAperiodique()
 	{
 		if(this.result != null)

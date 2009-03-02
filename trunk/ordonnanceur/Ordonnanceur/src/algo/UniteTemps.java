@@ -48,8 +48,7 @@ public class UniteTemps {
 	public String toString()
 	{
 		String temp;
-		//if(this.idTache==0) temp = "Temps Creux";
-		//else {
+		
 		if(this.tache==null)
 			temp = "Tps creux ";
 		 else 
@@ -57,7 +56,7 @@ public class UniteTemps {
 			
 		for(Tache t : this.periodes)		
 		temp+= t.getId()+" ";
-		//}
+		
 		return temp;
 	}
 	public List<Tache> getPeriodes() {
