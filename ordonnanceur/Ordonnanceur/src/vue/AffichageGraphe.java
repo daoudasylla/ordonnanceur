@@ -54,8 +54,9 @@ public class AffichageGraphe extends javax.swing.JFrame {
 			thisLayout.setVgap(5);
 			
 			getContentPane().setLayout(thisLayout);
+			getContentPane().removeAll();
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-			Graphe panel = new Graphe(liste,nbTaches,24);
+			Graphe panel = new Graphe(this.fenetrePrincipale,liste,nbTaches,ppcm);
 			getContentPane().add("Center", panel);
 			
 			setSize(Graphe.LONGUEUR_LIGNE+150, Graphe.xDepart+((nbTaches+1)*Graphe.ESPACEMENT_LIGNE)+50);
