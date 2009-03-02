@@ -81,17 +81,19 @@ public class Polling implements Algorithme{
 			// Si la tache est une tahce ps
 			if(tacheAlgo instanceof TachePs){
 			
-				this.capaciteServer = tacheAlgo.getC();
-				this.capaciteServer--;
-				//System.out.println("capacite :"+this.capaciteServer);
-				// On recup une tache aperio
-				Tache ape = aperiodiquesEnAttente.getFirst();
-				
-				int unitesRestantes = this.mapTacheUnitesRestantes.get(ape)-1;
-				
-				if(unitesRestantes==0) aperiodiquesEnAttente.remove(ape);
-				this.mapTacheUnitesRestantes.put(ape,unitesRestantes);
-				this.uniteCourante.setTache(ape);
+				if(aperiodiquesEnAttente.peek()!=null){
+					this.capaciteServer = tacheAlgo.getC();
+					this.capaciteServer--;
+					//System.out.println("capacite :"+this.capaciteServer);
+					// On recup une tache aperio
+					Tache ape = aperiodiquesEnAttente.getFirst();
+					
+					int unitesRestantes = this.mapTacheUnitesRestantes.get(ape)-1;
+					
+					if(unitesRestantes==0) aperiodiquesEnAttente.remove(ape);
+					this.mapTacheUnitesRestantes.put(ape,unitesRestantes);
+					this.uniteCourante.setTache(ape);
+				}
 			} else {
 				//System.out.println("dedansqq");
 				

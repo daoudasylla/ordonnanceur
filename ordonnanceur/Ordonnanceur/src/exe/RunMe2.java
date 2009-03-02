@@ -95,7 +95,7 @@ public class RunMe2 {
       //liste2.add(new Periodique(2,6,6));
       //liste2.add(new Periodique(1,4,4));
       //liste2.add(new Periodique(2,5,5));
-      liste2.add(new Aperiodique(2,5));
+      liste2.add(new Aperiodique(3,5));
       //liste2.add(new Aperiodique(1,8));
       //liste2.add(new Aperiodique(2,12));
       //liste2.add(new Aperiodique(1,19));
