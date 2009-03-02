@@ -12,7 +12,7 @@ public class Aperiodique  extends Tache{
 
 	public String toString() {
 		
-		return "Ci : "+super.getC();
+		return "Ci : "+super.getC()+ " Ri :"+this.r;
 	}
 	public int getR() {
 		return r;

@@ -75,7 +75,7 @@ public class RunMe2 {
       
       ////////////TEST EDL/////////////////////
       
-      liste2.add(new Periodique(3,6,6));
+      /*liste2.add(new Periodique(3,6,6));
       liste2.add(new Periodique(2,8,8));
       liste2.add(new Aperiodique(1,3));
       liste2.add(new Aperiodique(2,9));
@@ -91,16 +91,16 @@ public class RunMe2 {
       Ordonnanceur o = new Ordonnanceur(new Background(),liste2);
       */
       ////////////////////TEST POLLING SERVER///////////////////////////
-      /*
-      liste2.add(new Periodique(2,6,6));
-      liste2.add(new Periodique(1,4,4));
+      
+      //liste2.add(new Periodique(2,6,6));
+      //liste2.add(new Periodique(1,4,4));
       //liste2.add(new Periodique(2,5,5));
-      liste2.add(new Aperiodique(2,2));
-      liste2.add(new Aperiodique(1,8));
-      liste2.add(new Aperiodique(2,12));
-      liste2.add(new Aperiodique(1,19));
+      liste2.add(new Aperiodique(2,5));
+      //liste2.add(new Aperiodique(1,8));
+      //liste2.add(new Aperiodique(2,12));
+      //liste2.add(new Aperiodique(1,19));
       Polling poll = new Polling(25, new RM());
-      liste2.add(new TachePs(2,5,0,poll));
+      liste2.add(new TachePs(2,6,10,poll));
        Ordonnanceur o = new Ordonnanceur(poll,liste2);
       o.ordonnancer(25);
       System.out.println(o);

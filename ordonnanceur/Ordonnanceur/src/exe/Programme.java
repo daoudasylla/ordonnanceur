@@ -31,11 +31,13 @@ import noyau.ListeTaches;
 import noyau.Ordonnanceur;
 import noyau.Periodique;
 import noyau.Tache;
+import noyau.TachePs;
 
 import vue.AffichageGraphe;
 import vue.AjouterAperiodique;
 import vue.AjouterPeriodique;
 import vue.BoutonsListener;
+import vue.CreationTachePs;
 import vue.UneditableTableModel;
 
 
@@ -85,9 +87,10 @@ public class Programme extends javax.swing.JFrame {
 	private AjouterPeriodique fenAjoutPerio;
 	private AjouterAperiodique fenAjoutAperio;
 	private AffichageGraphe fenAffGraphe;
+	private CreationTachePs fenCreationPS;
 	
 	private ListeTaches listeTaches;
-	private Ordonnanceur ordo;
+
 	private Generation generation;
 	
 
@@ -101,6 +104,7 @@ public class Programme extends javax.swing.JFrame {
 		
 		this.listeTaches = new ListeTaches();
 		this.generation = new Generation();
+		this.setTitle("Simulation d'ordonnancement en temps réel");
 		initGUI();
 	}
 	
@@ -120,6 +124,7 @@ public class Programme extends javax.swing.JFrame {
 		this.fenAjoutAperio = new AjouterAperiodique(this);
 		this.fenAjoutPerio = new AjouterPeriodique(this);
 		this.fenAffGraphe = new AffichageGraphe(this);
+		this.fenCreationPS = new CreationTachePs(this);
 	}
 	private void initGUI() {
 		try {
@@ -314,13 +319,6 @@ public boolean tachesAperiodiquesPresentes(){
 		return false;
 	}
 
-	public Ordonnanceur getOrdo() {
-		return ordo;
-	}
-	
-	public void setOrdo(Ordonnanceur ordo) {
-		this.ordo = ordo;
-	}
 
 	public AffichageGraphe getFenAffGraphe() {
 		return fenAffGraphe;
@@ -330,4 +328,17 @@ public boolean tachesAperiodiquesPresentes(){
 		return generation;
 	}
 
+	public CreationTachePs getFenCreationPS() {
+		return fenCreationPS;
+	}
+	
+
+
+	public TachePs getTachePS(){
+		
+		for(Tache t:this.listeTaches){
+			if(t instanceof TachePs) return (TachePs) t;
+		}
+		return null;
+	}
 }

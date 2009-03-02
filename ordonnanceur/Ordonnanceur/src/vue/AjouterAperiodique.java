@@ -6,6 +6,8 @@ import javax.swing.JButton;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
@@ -41,6 +43,9 @@ public class AjouterAperiodique extends javax.swing.JDialog {
 	private JTextField textRi;
 	private JTextField textCi;
 	private Programme fenetrePrincipale; 
+	private JPanel Automatique;
+	private JTabbedPane jTabbedPane1;
+	private JPanel Manuel;
 	public AjouterAperiodique(Programme frame) {
 		super(frame);
 		this.fenetrePrincipale=frame;
@@ -66,34 +71,51 @@ public class AjouterAperiodique extends javax.swing.JDialog {
 				getContentPane().setLayout(null);
 			}
 			{
-				jLabel1 = new JLabel();
-				getContentPane().add(jLabel1);
-				jLabel1.setText("Temps d'execution (Ci) :");
-				jLabel1.setBounds(12, 27, 129, 19);
-			}
-			{
-				jLabel2 = new JLabel();
-				getContentPane().add(jLabel2);
-				jLabel2.setText("Réveil (Ri) :");
-				jLabel2.setBounds(12, 61, 62, 14);
-			}
-			{
-				textCi = new JTextField();
-				getContentPane().add(textCi);
-				textCi.setBounds(170, 26, 59, 21);
-			}
-			{
-				textRi = new JTextField();
-				getContentPane().add(textRi);
-				textRi.setBounds(170, 58, 59, 21);
-			}
-			{
 				boutonValider = new JButton();
 				getContentPane().add(boutonValider);
 				boutonValider.setText("Ajouter");
 				boutonValider.setBounds(113, 91, 72, 21);
 				boutonValider.setActionCommand("ajouterAperio");
 				boutonValider.addActionListener(new BoutonsListener(this.fenetrePrincipale));
+			}
+			{
+				jTabbedPane1 = new JTabbedPane();
+				getContentPane().add(jTabbedPane1);
+				jTabbedPane1.setBounds(0, 0, 311, 85);
+				{
+					Manuel = new JPanel();
+					jTabbedPane1.addTab("Manuel", null, Manuel, null);
+					Manuel.setName("Manuel");
+					Manuel.setBounds(0, 19, 309, 68);
+					Manuel.setLayout(null);
+					{
+						jLabel1 = new JLabel();
+						Manuel.add(jLabel1);
+						jLabel1.setText("Temps d'execution (Ci) :");
+						jLabel1.setBounds(12, 8, 129, 19);
+					}
+					{
+						jLabel2 = new JLabel();
+						Manuel.add(jLabel2);
+						jLabel2.setText("Réveil (Ri) :");
+						jLabel2.setBounds(12, 42, 62, 14);
+					}
+					{
+						textCi = new JTextField();
+						Manuel.add(textCi);
+						textCi.setBounds(170, 7, 59, 21);
+					}
+					{
+						textRi = new JTextField();
+						Manuel.add(textRi);
+						textRi.setBounds(170, 39, 59, 21);
+					}
+				}
+				{
+					Automatique = new JPanel();
+					jTabbedPane1.addTab("Automatique", null, Automatique, null);
+					Automatique.setLayout(null);
+				}
 			}
 			this.setSize(319, 166);
 		} catch (Exception e) {

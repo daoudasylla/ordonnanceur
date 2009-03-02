@@ -5,6 +5,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 import algo.Algorithme;
+import algo.Background;
+import algo.EDF;
+import algo.EDL;
+import algo.Polling;
+import algo.RM;
 import algo.UniteTemps;
 
 public class Ordonnanceur {
@@ -43,6 +48,11 @@ public class Ordonnanceur {
 		}
 		
 		this.result = this.calculePeriodes(ppcm);
+		
+		for(UniteTemps t :this.result)
+			System.out.println(t);
+		
+		
 		this.algo.initialiser(this.result, this.tachesPeriodiques, this.tachesAperiodiques);
 		for(int i = 0;i < ppcm;i++)
 			this.algo.uniteSuivante();
@@ -162,7 +172,14 @@ public class Ordonnanceur {
 		
 	}
 	public String toString(){
-		String tmp="Affichage du résultat de l'ordonnanceur\n";
+		String nomAlgo="";
+		if(algo instanceof RM) nomAlgo="RM";
+		else if(algo instanceof EDF) nomAlgo="EDF";
+		else if(algo instanceof Polling) nomAlgo="Polling";
+		else if(algo instanceof Background) nomAlgo="Background";
+		else if(algo instanceof EDL) nomAlgo="EDL";
+
+		String tmp="Affichage du résultat de l'ordonnanceur pour l'algo "+nomAlgo+"\n";
 		for(UniteTemps ut : this.result){
 			tmp += ut+"\n";
 		}
