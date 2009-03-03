@@ -74,7 +74,7 @@ public class AjouterAperiodique extends javax.swing.JDialog {
 				boutonValider = new JButton();
 				getContentPane().add(boutonValider);
 				boutonValider.setText("Ajouter");
-				boutonValider.setBounds(113, 91, 72, 21);
+				boutonValider.setBounds(113, 112, 72, 21);
 				boutonValider.setActionCommand("ajouterAperio");
 				boutonValider.addActionListener(new BoutonsListener(this.fenetrePrincipale));
 			}
@@ -88,6 +88,7 @@ public class AjouterAperiodique extends javax.swing.JDialog {
 					Manuel.setName("Manuel");
 					Manuel.setBounds(0, 19, 309, 68);
 					Manuel.setLayout(null);
+					Manuel.setPreferredSize(new java.awt.Dimension(306, 84));
 					{
 						jLabel1 = new JLabel();
 						Manuel.add(jLabel1);
@@ -115,14 +116,20 @@ public class AjouterAperiodique extends javax.swing.JDialog {
 					Automatique = new JPanel();
 					jTabbedPane1.addTab("Automatique", null, Automatique, null);
 					Automatique.setLayout(null);
+					Automatique.setPreferredSize(new java.awt.Dimension(306, 78));
 				}
 			}
-			this.setSize(319, 166);
+			this.setSize(319, 175);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	
+	public void effacerChamps(){
+		this.textCi.setText("");
+		this.textRi.setText("");
+		
+	}
+
 
 }

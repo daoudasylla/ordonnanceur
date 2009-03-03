@@ -1,6 +1,10 @@
 package exe;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -14,7 +18,9 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -38,6 +44,7 @@ import vue.AjouterAperiodique;
 import vue.AjouterPeriodique;
 import vue.BoutonsListener;
 import vue.CreationTachePs;
+import vue.MenuListener;
 import vue.UneditableTableModel;
 
 
@@ -79,6 +86,13 @@ public class Programme extends javax.swing.JFrame {
 	private JComboBox listeAperio;
 	private JLabel jLabel2;
 	private JComboBox listePeriodiques;
+	private JMenuItem menuTestEDF;
+	private JMenuItem menuTestEDL;
+	private JMenuItem menuTestPS;
+	private JMenuItem menuTestBG;
+	private JMenuItem menuTestRM;
+	private JMenu jMenu2;
+	private JScrollPane jScrollPane1;
 	private JLabel jLabel1;
 	private JButton ajoutPerio;
 	private UneditableTableModel tableModel;
@@ -151,15 +165,46 @@ public class Programme extends javax.swing.JFrame {
 						jMenuItem2.setText("Quitter");
 					}
 				}
-			}
-			{
-				datasListeTaches = new ArrayList<String[]>();
-				tableModel = new UneditableTableModel(datasListeTaches,new String[] { "N°", "Type", "Infos" });
-				ensembleTaches = new JTable();
-				getContentPane().add(ensembleTaches);
-				ensembleTaches.setModel(tableModel);
-				ensembleTaches.setBounds(85, 129, 390, 74);
-				ensembleTaches.setBorder(BorderFactory.createLineBorder(Color.black));
+				{
+					jMenu2 = new JMenu();
+					jMenuBar1.add(jMenu2);
+					jMenu2.setText("Jeux de tests");
+					{
+						menuTestRM = new JMenuItem();
+						menuTestRM.setActionCommand("testRM");
+						menuTestRM.addActionListener(new MenuListener(this));
+						jMenu2.add(menuTestRM);
+						menuTestRM.setText("RM");
+					}
+					{
+						menuTestEDF = new JMenuItem();
+						menuTestEDF.setActionCommand("testEDF");
+						menuTestEDF.addActionListener(new MenuListener(this));
+						jMenu2.add(menuTestEDF);
+						menuTestEDF.setText("EDF");
+					}
+					{
+						menuTestBG = new JMenuItem();
+						menuTestBG.setActionCommand("testBG");
+						menuTestBG.addActionListener(new MenuListener(this));
+						jMenu2.add(menuTestBG);
+						menuTestBG.setText("Background");
+					}
+					{
+						menuTestPS = new JMenuItem();
+						menuTestPS.setActionCommand("testPS");
+						menuTestPS.addActionListener(new MenuListener(this));
+						jMenu2.add(menuTestPS);
+						menuTestPS.setText("PollingServer");
+					}
+					{
+						menuTestEDL = new JMenuItem();
+						menuTestEDL.setActionCommand("testEDL");
+						menuTestEDL.addActionListener(new MenuListener(this));
+						jMenu2.add(menuTestEDL);
+						menuTestEDL.setText("EDL");
+					}
+				}
 			}
 			{
 				ajoutPerio = new JButton();
@@ -252,6 +297,30 @@ public class Programme extends javax.swing.JFrame {
 				getContentPane().add(textPPCM);
 				textPPCM.setBounds(221, 356, 59, 20);
 			}
+			{
+				jScrollPane1 = new JScrollPane();
+				getContentPane().add(jScrollPane1);
+				jScrollPane1.setBounds(83, 147, 387, 81);
+				jScrollPane1.getVerticalScrollBar().setAutoscrolls(true);
+				jScrollPane1.setAutoscrolls(true);
+				{
+					datasListeTaches = new ArrayList<String[]>();
+					tableModel = new UneditableTableModel(datasListeTaches,new String[] { "N°", "Type", "Infos" });
+					ensembleTaches = new JTable();	
+					ensembleTaches.setLayout(null);
+					
+					
+					ensembleTaches.setModel(tableModel);
+					ensembleTaches.setBounds(87, 172, 370, 49);
+					ensembleTaches.setBorder(BorderFactory.createLineBorder(Color.black));
+					ensembleTaches.getTableHeader().setBounds(1, 1, 348, 22);
+					ensembleTaches.setPreferredSize(new java.awt.Dimension(401, 80));
+					ensembleTaches.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+					ensembleTaches.getTableHeader().setPreferredSize(new java.awt.Dimension(378, 19));
+					jScrollPane1.setViewportView(ensembleTaches);
+				}
+			}
+
 			pack();
 			this.setSize(568, 516);
 		} catch (Exception e) {
@@ -340,5 +409,29 @@ public boolean tachesAperiodiquesPresentes(){
 			if(t instanceof TachePs) return (TachePs) t;
 		}
 		return null;
+	}
+
+	public JScrollPane getJScrollPane1() {
+		return jScrollPane1;
+	}
+	
+	public void remplirTaches(){
+		String titre="";
+		String infos="";
+		for(Tache t: this.listeTaches){
+			if(t instanceof TachePs){
+				titre = "Périodique (PS)";
+				infos = "Capacite="+((TachePs)t).getCapacite()+",Pi="+((Periodique)t).getP();
+			}else if(t instanceof Periodique){
+				titre = "Périodique";
+				infos = "Di="+((Periodique)t).getD()+",Pi="+((Periodique)t).getP();
+			}
+			else if(t instanceof Aperiodique){
+				titre = "Apériodique";
+				infos = "Ci="+((Aperiodique)t).getC()+",Ri="+((Aperiodique)t).getR();
+			}
+			
+			this.getDatasListeTaches().add(new String[]{""+t.getId(),titre,infos});
+		}
 	}
 }
