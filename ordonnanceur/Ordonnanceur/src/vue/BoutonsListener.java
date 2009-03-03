@@ -209,6 +209,7 @@ public class BoutonsListener implements ActionListener {
 						}
 						else {
 							this.fenetrePrincipale.getTachePS().setPoll((Polling) algoAPeriodique);
+							
 						}
 					}
 					if(!errors)
@@ -219,11 +220,13 @@ public class BoutonsListener implements ActionListener {
 					
 				}
 				if(!errors){
-					
+					// On ajuste le nbre de taches à afficher si PS est présent (pas d'aff des aperiodiques, seulement PS)
+					int nbreTaches=this.fenetrePrincipale.getListeTaches().size();
 					if(this.fenetrePrincipale.getTachePS()!=null)
-						System.out.println("tache ps presente");
+						nbreTaches = this.fenetrePrincipale.nbreTachesPeriodiques();
+					
 					ordo.ordonnancer(ppcm);	
-					this.fenetrePrincipale.getFenAffGraphe().initGUI(ordo.getResult(), this.fenetrePrincipale.getListeTaches().size(), ppcm);
+					this.fenetrePrincipale.getFenAffGraphe().initGUI(ordo.getResult(), nbreTaches, ppcm);
 					this.fenetrePrincipale.getFenAffGraphe().setVisible(true);
 					System.out.println(ordo);
 				}

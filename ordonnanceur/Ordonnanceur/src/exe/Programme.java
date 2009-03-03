@@ -434,4 +434,12 @@ public boolean tachesAperiodiquesPresentes(){
 			this.getDatasListeTaches().add(new String[]{""+t.getId(),titre,infos});
 		}
 	}
+	
+	public int nbreTachesPeriodiques(){
+		int nbre=0;
+		for(Tache t: this.listeTaches)
+			 if(t instanceof Periodique)
+				 nbre++;
+		return nbre;
+	}
 }
