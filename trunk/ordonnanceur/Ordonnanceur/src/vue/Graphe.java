@@ -158,10 +158,19 @@ public class Graphe extends JPanel {
 		g.setColor(graduationColor);
 		plotgraduation(Graphe.xDepart,Graphe.yDepart,g);
 		
+		if(this.fenetrePrincipale.getTachePS()==null){
 		
-		for(Integer i : correspondance.keySet())
-			setNomsTaches(correspondance.get(i), "Tache n°"+i, g);
-		
+			for(Integer i : correspondance.keySet())
+				setNomsTaches(correspondance.get(i), "Tache n°"+i, g);
+		} else {
+			// Affichage de la tache PS
+			setNomsTaches(correspondance.get(this.nbreTaches), "Tache PS", g);
+			int idTachePS = correspondance.get(this.nbreTaches);
+			
+			for(Integer i : correspondance.keySet())
+				if(correspondance.get(i)!=idTachePS)
+				setNomsTaches(correspondance.get(i), "Tache n°"+i, g);
+		}
 		
 		tracegraphe(g);
 		
