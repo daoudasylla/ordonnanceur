@@ -9,15 +9,16 @@ import noyau.Periodique;
 import noyau.Tache;
 
 public class Background implements Algorithme{
-	private RM rm;
+	private Algorithme algo;
 	private PriorityQueue<PrioBackground> aperiodique;
 	private LinkedList<UniteTemps> ordonnancement;
 	private Tache aperiodiqueEnCours;
 	private int tempsRestant; //pour la tache apériodique en cours
 	//private int ppcm;
-	public Background() {
+	public Background(Algorithme algo) {
 		//this.ppcm = ppcm;
 		this.aperiodique = new PriorityQueue<PrioBackground>();
+		this.algo =algo;
 	}
 	/*public LinkedList<UniteTemps> executer(ListeTaches tachesPeriodiques,
 			ListeTaches tachesAperiodiques) {
@@ -54,8 +55,8 @@ public class Background implements Algorithme{
 			ListeTaches tachesPeriodiques, ListeTaches tachesAperiodiques) {
 		this.aperiodiqueEnCours = null;
 		this.tempsRestant = 0;
-		rm = new RM();
-		rm.initialiser(ordonnancement, tachesPeriodiques, tachesAperiodiques);
+		
+		this.algo.initialiser(ordonnancement, tachesPeriodiques, tachesAperiodiques);
 		for(Tache t : tachesAperiodiques) {
 			this.aperiodique.add(new PrioBackground((Aperiodique) t));
 		}
@@ -63,7 +64,7 @@ public class Background implements Algorithme{
 	}
 	@Override
 	public UniteTemps uniteSuivante() {
-		UniteTemps uniteCourante = rm.uniteSuivante();
+		UniteTemps uniteCourante = this.algo.uniteSuivante();
 		if(uniteCourante.getTache() == null) { // si un temps creux
 			if(aperiodiqueEnCours == null) { //si aucune tache apériodique n'a été mise en standby
 				if(this.aperiodique.peek() != null && this.aperiodique.peek().getTache().getR() <= uniteCourante.getIdUnite()) { //et si des taches apériodique sont en attente
