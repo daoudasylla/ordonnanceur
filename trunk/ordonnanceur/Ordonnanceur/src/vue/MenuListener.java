@@ -72,7 +72,7 @@ public class MenuListener implements ActionListener {
 				this.fenetrePrincipale.getListeTaches().add(new Aperiodique(1,19));
 				this.fenetrePrincipale.getListeTaches().add(new TachePs(2,5,5,null));
 				this.fenetrePrincipale.getListePeriodiques().setSelectedIndex(0); 
-				this.fenetrePrincipale.getListePeriodiques().disable();
+				//this.fenetrePrincipale.getListePeriodiques().disable();
 				this.fenetrePrincipale.getListeAperio().setSelectedIndex(1); 
 				this.fenetrePrincipale.getListeAperio().disable();
 				this.fenetrePrincipale.getTextPPCM().setText("24");
