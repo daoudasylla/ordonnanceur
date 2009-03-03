@@ -222,13 +222,13 @@ public class BoutonsListener implements ActionListener {
 				if(!errors){
 					// On ajuste le nbre de taches à afficher si PS est présent (pas d'aff des aperiodiques, seulement PS)
 					int nbreTaches=this.fenetrePrincipale.getListeTaches().size();
-					if(this.fenetrePrincipale.getTachePS()!=null)
+					if(this.fenetrePrincipale.getTachePS()!=null || (this.fenetrePrincipale.getListeAperio().getSelectedIndex()==2 && tachesAperioPresentes))
 						nbreTaches = this.fenetrePrincipale.nbreTachesPeriodiques();
 					
 					ordo.ordonnancer(ppcm);	
 					this.fenetrePrincipale.getFenAffGraphe().initGUI(ordo.getResult(), nbreTaches, ppcm);
 					this.fenetrePrincipale.getFenAffGraphe().setVisible(true);
-					System.out.println(ordo);
+					
 				}
 				
 				
