@@ -80,17 +80,18 @@ public class EDF implements Algorithme{
 		int unitesRestantes = 0; //pour la tache en cours
 		
 			
-		System.out.println("debut EDF ---------------------");		
+		//System.out.println("debut EDF ---------------------");		
 		
-			System.out.println("Unité en cours : "+uniteCourante.getIdUnite());
+			//System.out.println("Unité en cours : "+uniteCourante.getIdUnite());
 			
 			for(Tache t :this.uniteCourante.getPeriodes()){
-				
-				System.out.println("ajout en attente de :"+t.getId());
-				this.enAttente.add(new PrioEDF(((Periodique)t),this.uniteCourante.getIdUnite()));
-				
-				if(this.mapTacheUnitesRestantes.get(t)>0) System.out.println("erreur impossible de finir la tache : "+t.getId()+" "+this.mapTacheUnitesRestantes.get(t));
-				else {this.mapTacheUnitesRestantes.put(t,t.getC());
+				if(t.getC() > 0) { //si la tâche possède un Ci > 0
+					//System.out.println("ajout en attente de :"+t.getId());
+					this.enAttente.add(new PrioEDF(((Periodique)t),this.uniteCourante.getIdUnite()));
+					
+					if(this.mapTacheUnitesRestantes.get(t)>0) System.out.println("erreur impossible de finir la tache : "+t.getId()+" "+this.mapTacheUnitesRestantes.get(t));
+					else {this.mapTacheUnitesRestantes.put(t,t.getC());
+					}
 				}
 			}
 			
@@ -100,7 +101,7 @@ public class EDF implements Algorithme{
 				if(tPrio != null){
 					
 					if((this.tacheEnCours.getDi(this.uniteCourante.getIdUnite())-this.uniteCourante.getIdUnite())>(tPrio.getDi(this.uniteCourante.getIdUnite())-this.uniteCourante.getIdUnite())){
-						System.out.println((this.tacheEnCours.getD()-this.uniteCourante.getIdUnite())+">"+(tPrio.getD()-this.uniteCourante.getIdUnite()));
+						//System.out.println((this.tacheEnCours.getD()-this.uniteCourante.getIdUnite())+">"+(tPrio.getD()-this.uniteCourante.getIdUnite()));
 						this.tacheEnCours = tPrio;
 					}
 				}
@@ -119,7 +120,7 @@ public class EDF implements Algorithme{
 				
 				// Si une tache n'est pas deja affecté (algo EDL)
 				if(uniteCourante.getTache()==null){
-					System.out.println("association tache "+tacheEnCours.getId());
+					//System.out.println("association tache "+tacheEnCours.getId());
 					uniteCourante.setTache(this.tacheEnCours);
 													
 					unitesRestantes = this.mapTacheUnitesRestantes.get(this.tacheEnCours)-1;
@@ -132,7 +133,7 @@ public class EDF implements Algorithme{
 				}
 			}
 			
-		System.out.println(uniteCourante);
+		//System.out.println(uniteCourante);
 			
 			
 		
@@ -160,12 +161,12 @@ public class EDF implements Algorithme{
 		
 		// On recupere la tache qui a été arreté grace à la map
 		
-		System.out.print("\tetat de la file :");
+		/*System.out.print("\tetat de la file :");
 		for(PrioEDF prio : enAttente)
 			System.out.print(prio.getTache().getId()+", ");
 		
 		System.out.println();
-			
+			*/
 		
 		UniteTemps uniteCourante = this.ordonnancement.get(this.ordonnancement.indexOf(new UniteTemps(instantT)));
 			
@@ -174,7 +175,7 @@ public class EDF implements Algorithme{
 					
 					for(Tache t :uniteCourante.getPeriodes()){
 						
-						System.out.println("\tajout en attente de :"+t.getId());
+						//System.out.println("\tajout en attente de :"+t.getId());
 						enAttente.add(new PrioEDF(((Periodique)t),uniteCourante.getIdUnite()));
 						
 						if(this.mapTacheUnitesRestantes.get(t)>0) System.out.println("erreur impossible de finir la tache : "+t.getId()+" "+this.mapTacheUnitesRestantes.get(t));
@@ -198,7 +199,7 @@ public class EDF implements Algorithme{
 					if(tacheEnCours == null) {
 						if(enAttente.peek() != null) {// si des taches dans la file d'attente
 							tacheEnCours = enAttente.peek().getTache();	
-							System.out.println("\tEdf:nouvelle tache en cours : "+tacheEnCours.getId());
+							//System.out.println("\tEdf:nouvelle tache en cours : "+tacheEnCours.getId());
 						} 
 					}
 					
@@ -225,7 +226,7 @@ public class EDF implements Algorithme{
 					}
 					
 					
-				System.out.println("\tFin EDF : "+uniteCourante);		
+				//System.out.println("\tFin EDF : "+uniteCourante);		
 						
 				
 		
@@ -268,7 +269,7 @@ public class EDF implements Algorithme{
 				//tacheEnCours=(Periodique)t;
 				if(t instanceof Periodique){
 				enAttente.add(new PrioEDF(((Periodique)t),actuel.getIdUnite()));
-				System.out.println("\tajout de "+t.getId()+" unite restantes ="+this.mapTacheUnitesRestantes.get(t));
+				//System.out.println("\tajout de "+t.getId()+" unite restantes ="+this.mapTacheUnitesRestantes.get(t));
 				}
 			}
 		
