@@ -212,10 +212,11 @@ public class EDL implements Algorithme{
 				Periodique tEnCours = prioAuPlusTard.remove().getTache();
 				int debutAvant=0;
 				
-					
-				tempsMax = tempsMax - tEnCours.getC();
+				if(!dejaExecutee(tEnCours)){	
+				tempsMax = tempsMax - this.mapTacheUnitesRestantes.get(tEnCours);
 				System.out.println("\t\ttempsMax - tEnCours.getC() "+tempsMax);
 				debutAvant = tempsMax;
+				}
 				// On retire l'ensemble des executions possibles e partant de la fin
 				while(prioAuPlusTard.peek()!=null && tempsMax>0){
 					tEnCours = prioAuPlusTard.remove().getTache();	

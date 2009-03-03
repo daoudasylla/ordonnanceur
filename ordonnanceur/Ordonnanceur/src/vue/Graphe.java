@@ -47,11 +47,11 @@ public class Graphe extends JPanel {
 		int i=1;
 		
 		
-		// Si tache PS présente on entre dans la correspondance en derniere tache
+		// Si tache PS présente on l'entre dans la correspondance en derniere tache
 		TachePs tachePs = this.fenetrePrincipale.getTachePS();
 		if(tachePs!=null){
 			correspondance.put(tachePs.getId(),this.nbreTaches);		
-		}
+		}		
 		
 		for(Tache t : this.fenetrePrincipale.getListeTaches()){
 				int id = t.getId();
@@ -63,6 +63,13 @@ public class Graphe extends JPanel {
 				if(tachePs!=null){
 					if(t instanceof Aperiodique) idTacheGraph=correspondance.get(tachePs.getId());
 				}
+				
+				// Si algo EDL pareil
+				if(this.fenetrePrincipale.getListeAperio().getSelectedIndex()==2 && this.fenetrePrincipale.tachesAperiodiquesPresentes()){
+					if(t instanceof Aperiodique) idTacheGraph=this.nbreTaches+1;
+					
+				}
+					
 				
 					if(!correspondance.containsKey(id)){
 					correspondance.put(id,idTacheGraph);
@@ -158,17 +165,30 @@ public class Graphe extends JPanel {
 		g.setColor(graduationColor);
 		plotgraduation(Graphe.xDepart,Graphe.yDepart,g);
 		
-		if(this.fenetrePrincipale.getTachePS()==null){
+		if(this.fenetrePrincipale.getTachePS()!=null){
 		
-			for(Integer i : correspondance.keySet())
-				setNomsTaches(correspondance.get(i), "Tache n°"+i, g);
-		} else {
 			// Affichage de la tache PS
 			setNomsTaches(correspondance.get(this.nbreTaches), "Tache PS", g);
 			int idTachePS = correspondance.get(this.nbreTaches);
 			
 			for(Integer i : correspondance.keySet())
 				if(correspondance.get(i)!=idTachePS)
+				setNomsTaches(correspondance.get(i), "Tache n°"+i, g);
+		} else if(this.fenetrePrincipale.getListeAperio().getSelectedIndex()==2 && this.fenetrePrincipale.tachesAperiodiquesPresentes()){
+			
+			// Affichage de la tache PS
+			setNomsTaches(this.nbreTaches+1, "Tache EDL", g);
+			int idTacheEDL = this.nbreTaches+1;
+			
+			
+			for(Integer i : correspondance.keySet())
+				if(correspondance.get(i)!=idTacheEDL)
+				setNomsTaches(correspondance.get(i), "Tache n°"+i, g);
+			
+		} else {
+
+			
+			for(Integer i : correspondance.keySet())
 				setNomsTaches(correspondance.get(i), "Tache n°"+i, g);
 		}
 		

@@ -44,6 +44,7 @@ import vue.AjouterAperiodique;
 import vue.AjouterPeriodique;
 import vue.BoutonsListener;
 import vue.CreationTachePs;
+import vue.ListeListener;
 import vue.MenuListener;
 import vue.UneditableTableModel;
 
@@ -259,6 +260,7 @@ public class Programme extends javax.swing.JFrame {
 					new DefaultComboBoxModel(
 							new String[] { "Background", "Polling", "EDL" });
 				listeAperio = new JComboBox();
+				listeAperio.addItemListener(new ListeListener(this));
 				getContentPane().add(listeAperio);
 				listeAperio.setModel(listeAperioModel);
 				listeAperio.setBounds(221, 306, 103, 21);
