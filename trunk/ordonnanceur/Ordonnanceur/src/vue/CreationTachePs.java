@@ -27,9 +27,7 @@ import exe.Programme;
 */
 public class CreationTachePs extends javax.swing.JDialog {
 	private JLabel jLabel1;
-	private JLabel jLabel2;
 	private JButton boutonValider;
-	private JTextField textDi;
 	private JTextField textPi;
 	private Programme fenetrePrincipale;
 	private JTextField textCapacite;
@@ -55,20 +53,9 @@ public class CreationTachePs extends javax.swing.JDialog {
 				jLabel1.setBounds(24, 16, 62, 14);
 			}
 			{
-				jLabel2 = new JLabel();
-				getContentPane().add(jLabel2);
-				jLabel2.setText("DeadLine (Di) :");
-				jLabel2.setBounds(24, 47, 71, 14);
-			}
-			{
 				textPi = new JTextField();
 				getContentPane().add(textPi);
 				textPi.setBounds(177, 14, 41, 19);
-			}
-			{
-				textDi = new JTextField();
-				getContentPane().add(textDi);
-				textDi.setBounds(177, 45, 41, 19);
 			}
 			{
 				boutonValider = new JButton();
@@ -76,29 +63,26 @@ public class CreationTachePs extends javax.swing.JDialog {
 				boutonValider.addActionListener(new BoutonsListener(this.fenetrePrincipale));
 				getContentPane().add(boutonValider);
 				boutonValider.setText("Valider");
-				boutonValider.setBounds(95, 118, 82, 21);
+				boutonValider.setBounds(86, 76, 82, 21);
 			}
 			{
 				jLabel3 = new JLabel();
 				getContentPane().add(jLabel3);
 				jLabel3.setText("Capacité du serveur :");
-				jLabel3.setBounds(24, 82, 104, 14);
+				jLabel3.setBounds(24, 51, 104, 14);
 			}
 			{
 				textCapacite = new JTextField();
 				getContentPane().add(textCapacite);
-				textCapacite.setBounds(177, 75, 41, 20);
+				textCapacite.setBounds(177, 48, 41, 20);
 			}
 			pack();
-			this.setSize(270, 182);
+			this.setSize(270, 135);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public JTextField getTextDi() {
-		return textDi;
-	}
 
 	public JTextField getTextPi() {
 		return textPi;
@@ -106,6 +90,11 @@ public class CreationTachePs extends javax.swing.JDialog {
 
 	public JTextField getTextCapacite() {
 		return textCapacite;
+	}
+	
+	public void effacerChamps(){
+		this.textCapacite.setText("");		
+		this.textPi.setText("");
 	}
 
 }

@@ -33,9 +33,11 @@ public class BoutonsListener implements ActionListener {
 	public void actionPerformed(ActionEvent arg0) {
 		String commande = arg0.getActionCommand();
 		if(commande.equals("fenAjoutPerio")){
+			this.fenetrePrincipale.getFenAjoutPerio().effacerChamps();
 			this.fenetrePrincipale.getFenAjoutPerio().setVisible(true);
 		}
 		else if(commande.equals("fenAjoutAperio")){
+			this.fenetrePrincipale.getFenAjoutAperio().effacerChamps();
 			this.fenetrePrincipale.getFenAjoutAperio().setVisible(true);
 		}	
 		
@@ -43,16 +45,15 @@ public class BoutonsListener implements ActionListener {
 			
 			try {
 				// Recuperation des valeurs	
-				Integer di = Integer.parseInt(this.fenetrePrincipale.getFenCreationPS().getTextDi().getText());
 				Integer pi = Integer.parseInt(this.fenetrePrincipale.getFenCreationPS().getTextPi().getText());
 				Integer ci = Integer.parseInt(this.fenetrePrincipale.getFenCreationPS().getTextCapacite().getText());
-					
+				Integer di=pi;	
 				
 				TachePs perio = new TachePs(ci,pi,di,null);
 				
 				
 				this.fenetrePrincipale.getListeTaches().add(perio);
-				this.fenetrePrincipale.getDatasListeTaches().add(new String[]{""+perio.getId(),"Périodique (PS)","Di="+di+",Pi="+pi});
+				this.fenetrePrincipale.getDatasListeTaches().add(new String[]{""+perio.getId(),"Périodique (PS)","Capacite="+ci+",Pi="+pi});
 				this.fenetrePrincipale.getEnsembleTaches().repaint();
 				this.fenetrePrincipale.getFenCreationPS().dispose();
 				}
@@ -110,8 +111,10 @@ public class BoutonsListener implements ActionListener {
 						this.fenetrePrincipale.getDatasListeTaches().add(new String[]{""+p.getId(),"Périodique","Ci="+p.getC()+",Di="+p.getD()+",Pi="+p.getP()});
 						
 					}
-					
 					this.fenetrePrincipale.getEnsembleTaches().repaint();
+					//this.fenetrePrincipale.getJScrollPane1().revalidate();
+					//this.fenetrePrincipale.getJScrollPane1().repaint();
+					
 					this.fenetrePrincipale.getFenAjoutPerio().dispose();
 					
 					
@@ -140,7 +143,8 @@ public class BoutonsListener implements ActionListener {
 		}
 		else if(commande.equals("supprTache")){
 			if(this.fenetrePrincipale.getSelectedTache()==null) this.fenetrePrincipale.showError("Veuillez sélectionner une tache !");
-			else {
+			else if(this.fenetrePrincipale.getDatasListeTaches().size()==0) { }
+			else{
 				int  id = Integer.parseInt((String) this.fenetrePrincipale.getEnsembleTaches().getValueAt((int)this.fenetrePrincipale.getSelectedTache(), 0));
 				
 				this.fenetrePrincipale.retirerTache(id);

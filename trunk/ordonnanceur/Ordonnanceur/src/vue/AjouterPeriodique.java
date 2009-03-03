@@ -184,4 +184,10 @@ public class AjouterPeriodique extends javax.swing.JDialog {
 		return textNbreTaches;
 	}
 
+	public void effacerChamps(){
+		this.textCi.setText("");
+		this.textDi.setText("");
+		this.textPi.setText("");
+	}
+
 }
