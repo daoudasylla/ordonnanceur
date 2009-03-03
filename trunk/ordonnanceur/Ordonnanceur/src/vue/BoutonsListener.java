@@ -196,7 +196,7 @@ public class BoutonsListener implements ActionListener {
 					}
 					
 					switch(this.fenetrePrincipale.getListeAperio().getSelectedIndex()){
-					case 0: algoAPeriodique = new Background(); break;
+					case 0: algoAPeriodique = new Background(algoPeriodique); break;
 					case 1: algoAPeriodique = new Polling(ppcm,algoPeriodique); break;
 					case 2: algoAPeriodique = new EDL(ppcm); break;
 					}
