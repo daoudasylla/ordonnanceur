@@ -143,7 +143,7 @@ public class EDL implements Algorithme{
 	
 	private void EDF(){
 		
-		System.out.println("appel methode EDF à lunite "+uniteCourante.getIdUnite());
+		//System.out.println("appel methode EDF à lunite "+uniteCourante.getIdUnite());
 		LinkedList<UniteTemps> resultat= new LinkedList<UniteTemps>();
 		for(UniteTemps ut : this.ordonnancement)
 			resultat.add((UniteTemps) ut.clone());
@@ -165,7 +165,7 @@ public class EDL implements Algorithme{
 	// Fonction permettant d'indiquer le temps max où les taches doivent être exécutées
 	private int plusTard(UniteTemps actuel,ListeTaches tachesPeriodiques,ListeTaches tachesAperiodiques){
 		
-		System.out.println("dans plus tard pour unite "+actuel.getIdUnite());
+		//System.out.println("dans plus tard pour unite "+actuel.getIdUnite());
 		UniteTemps dernier=null;
 		
 		LinkedList<UniteTemps> resultat= new LinkedList<UniteTemps>();

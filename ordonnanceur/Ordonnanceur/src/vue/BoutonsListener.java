@@ -140,7 +140,8 @@ public class BoutonsListener implements ActionListener {
 			this.fenetrePrincipale.getDatasListeTaches().add(new String[]{id.toString(),"Apériodique","Ci="+ci+",Ri="+ri});
 			this.fenetrePrincipale.getEnsembleTaches().repaint();
 			this.fenetrePrincipale.getFenAjoutAperio().dispose();
-			this.fenetrePrincipale.getListeAperio().enable();
+			
+			
 
 		}
 		else if(commande.equals("supprTache")){
@@ -216,8 +217,15 @@ public class BoutonsListener implements ActionListener {
 							
 						}
 					}
+					
+					if(algoPeriodique instanceof RM && algoAPeriodique instanceof EDL){
+						errors = true;
+						this.fenetrePrincipale.showError("EDL ne peux fonctionner qu'avec EDF !");
+					}
+					
 					if(!errors)
 					ordo = new Ordonnanceur(algoAPeriodique,this.fenetrePrincipale.getListeTaches());
+					
 					if(!algoAPeriodique.ordonnancable(this.fenetrePrincipale.getListeTaches().getUp(),this.fenetrePrincipale.getListeTaches().getUs(),this.fenetrePrincipale.getListeTaches().getNPerio())) {
 						errors = true;
 						this.fenetrePrincipale.showError("Algorithme non ordonnancable !");

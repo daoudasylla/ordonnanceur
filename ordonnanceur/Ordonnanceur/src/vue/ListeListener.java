@@ -39,8 +39,10 @@ public class ListeListener implements ItemListener {
 		
 		if(this.fenetrePrincipale.tachesAperiodiquesPresentes()){
 			if(fenetrePrincipale.getListeAperio().getSelectedIndex()==0){
-				fenetrePrincipale.getListePeriodiques().setSelectedIndex(0);
 				this.fenetrePrincipale.getListePeriodiques().enable();
+				fenetrePrincipale.getListePeriodiques().setSelectedIndex(0);
+				
+				
 				//this.fenetrePrincipale.getListePeriodiques().disable();
 			}
 			else if(fenetrePrincipale.getListeAperio().getSelectedIndex()==2){
@@ -49,6 +51,7 @@ public class ListeListener implements ItemListener {
 			}
 			else {
 				this.fenetrePrincipale.getListePeriodiques().enable();
+				fenetrePrincipale.getListePeriodiques().setSelectedIndex(0);
 			}
 		}
 	}
