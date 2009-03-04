@@ -168,8 +168,8 @@ public class Graphe extends JPanel {
 		if(this.fenetrePrincipale.getTachePS()!=null){
 		
 			// Affichage de la tache PS
-			setNomsTaches(correspondance.get(this.nbreTaches), "Tache PS", g);
-			int idTachePS = correspondance.get(this.nbreTaches);
+			setNomsTaches(correspondance.get(this.fenetrePrincipale.getTachePS().getId()), "Tache PS", g);
+			int idTachePS = correspondance.get(this.fenetrePrincipale.getTachePS().getId());
 			
 			for(Integer i : correspondance.keySet())
 				if(correspondance.get(i)!=idTachePS)
