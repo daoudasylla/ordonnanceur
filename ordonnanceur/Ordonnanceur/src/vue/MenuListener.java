@@ -51,11 +51,10 @@ public class MenuListener implements ActionListener {
 		}	
 		else if(commande.equals("testBG")){
 				this.fenetrePrincipale.getListeTaches().clear();
+				this.fenetrePrincipale.getListeTaches().add(new Periodique(4,10,10));
 				this.fenetrePrincipale.getListeTaches().add(new Periodique(2,6,6));
-				this.fenetrePrincipale.getListeTaches().add(new Periodique(2,8,8));
-				this.fenetrePrincipale.getListeTaches().add(new Periodique(2,12,12));
-				this.fenetrePrincipale.getListeTaches().add(new Aperiodique(2,7));
-				this.fenetrePrincipale.getListeTaches().add(new Aperiodique(2,5));
+				this.fenetrePrincipale.getListeTaches().add(new Aperiodique(1,1));
+				this.fenetrePrincipale.getListeTaches().add(new Aperiodique(2,12));
 				this.fenetrePrincipale.getListePeriodiques().setSelectedIndex(0); 
 				//this.fenetrePrincipale.getListePeriodiques().disable();
 				this.fenetrePrincipale.getListeAperio().setSelectedIndex(0); 
