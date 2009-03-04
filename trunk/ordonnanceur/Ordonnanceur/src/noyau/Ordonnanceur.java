@@ -38,24 +38,27 @@ public class Ordonnanceur {
 	}
 	public void ordonnancer(int ppcm)
 	{
-		this.ppcm = ppcm;
-		// On remplit les deux listes
-		for(Tache t : liste) {
-			if(t instanceof Periodique) {
-				this.tachesPeriodiques.add(t);
+		//if(this.algo.ordonnancable(this.liste.getUp(),this.liste.getUs(),this.liste.getNPerio())) {
+			
+			this.ppcm = ppcm;
+			// On remplit les deux listes
+			for(Tache t : liste) {
+				if(t instanceof Periodique) {
+					this.tachesPeriodiques.add(t);
+				}
+				else
+					this.tachesAperiodiques.add(t);
 			}
-			else
-				this.tachesAperiodiques.add(t);
-		}
-		
-		this.result = this.calculePeriodes(ppcm);
-		
-		
-		
-		this.algo.initialiser(this.result, this.tachesPeriodiques, this.tachesAperiodiques);
-		for(int i = 0;i < ppcm;i++)
-			this.algo.uniteSuivante();
+			
+			this.result = this.calculePeriodes(ppcm);
+			
+			
+			
+			this.algo.initialiser(this.result, this.tachesPeriodiques, this.tachesAperiodiques);
+			for(int i = 0;i < ppcm;i++)
+				this.algo.uniteSuivante();
 		//this.result = this.algo.executer(tachesPeriodiques,tachesAperiodiques);
+		//}
 		
 	}
 	private LinkedList<UniteTemps> calculePeriodes(int ppcm)
@@ -116,9 +119,9 @@ public class Ordonnanceur {
 					nbreTpsCreux++;
 				}
 			}
-				
+			return this.ppcm - nbreTpsCreux;	
 		}
-		return this.ppcm - nbreTpsCreux;
+		return 0;
 	}
 	public double txPremption() {
 		double nbrePremp = 0;
@@ -185,10 +188,10 @@ public class Ordonnanceur {
 				//System.out.println(nbrePremp);
 				//System.out.println("---\n\n");
 			}
-			
+			return nbrePremp/nbreTache;
 		}
 		//System.out.println("nb tache:"+nbreTache);
-		return nbrePremp/nbreTache;
+		return 0;
 		
 	}
 	public String toString(){

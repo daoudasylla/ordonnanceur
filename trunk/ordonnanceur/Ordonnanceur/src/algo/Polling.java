@@ -257,7 +257,12 @@ public class Polling implements Algorithme{
 				return;
 			}
 	}
-	
+	public boolean ordonnancable(double up, double us,int n) {
+
+		//return true;
+		System.out.println("pup+us"+(up + us)+"<= "+((n+1)*((java.lang.Math.pow(2,(1/(double)(n+1))))-1)));
+		return (up + us) <= ((n+1)*((java.lang.Math.pow(2,(1/(double)(n+1))))-1));
+	}
 	
 
 }

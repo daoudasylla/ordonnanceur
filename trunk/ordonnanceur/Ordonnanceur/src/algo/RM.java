@@ -92,6 +92,12 @@ public class RM implements Algorithme{
 		return uniteCourante;
 		
 	}
+
+	@Override
+	public boolean ordonnancable(double up, double us,int n) {
+
+		return up <= (n*((java.lang.Math.pow(2,(1/(double)n)))-1));
+	}
 	
 
 }
