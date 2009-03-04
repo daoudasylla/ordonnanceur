@@ -262,8 +262,7 @@ public class Programme extends javax.swing.JFrame {
 				ComboBoxModel listeAperioModel = 
 					new DefaultComboBoxModel(
 							new String[] { "Background", "Polling", "EDL" });
-				listeAperio = new JComboBox();
-				listeAperio.addItemListener(new ListeListener(this));
+				listeAperio = new JComboBox();				
 				getContentPane().add(listeAperio);
 				listeAperio.setModel(listeAperioModel);
 				listeAperio.setBounds(221, 306, 103, 21);
@@ -323,11 +322,11 @@ public class Programme extends javax.swing.JFrame {
 					ensembleTaches.getTableHeader().setPreferredSize(new java.awt.Dimension(378, 19));
 					jScrollPane1.setViewportView(ensembleTaches);
 					jScrollPane1.setPreferredSize(new java.awt.Dimension(700, 400));
-					ensembleTaches.setPreferredSize(new java.awt.Dimension(367, 57));
+					ensembleTaches.setPreferredSize(new java.awt.Dimension(367, 438));
 
 				}
 			}
-			this.listeAperio.disable();
+			
 			pack();
 			this.setSize(568, 516);
 		} catch (Exception e) {
