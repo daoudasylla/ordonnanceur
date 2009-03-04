@@ -121,27 +121,32 @@ public class BoutonsListener implements ActionListener {
 				}
 				catch(Exception e){
 					this.fenetrePrincipale.showError("Erreur lors de la saisie");
-					e.printStackTrace();
+					
 				}
 				
 					
 			}
 		}
 		else if(commande.equals("ajouterAperio")){
+			try {
 			// Recuperation des valeurs			
-			Integer ci = Integer.parseInt(this.fenetrePrincipale.getFenAjoutAperio().getTextCi().getText());
-			Integer ri = Integer.parseInt(this.fenetrePrincipale.getFenAjoutAperio().getTextRi().getText());
+				Integer ci = Integer.parseInt(this.fenetrePrincipale.getFenAjoutAperio().getTextCi().getText());
+				Integer ri = Integer.parseInt(this.fenetrePrincipale.getFenAjoutAperio().getTextRi().getText());
+				
+				
+				Aperiodique aperio = new Aperiodique(ci,ri);
+				Integer id = new Integer(aperio.getId());
+				
+				this.fenetrePrincipale.getListeTaches().add(aperio);
+				this.fenetrePrincipale.getDatasListeTaches().add(new String[]{id.toString(),"Apériodique","Ci="+ci+",Ri="+ri});
+				this.fenetrePrincipale.getEnsembleTaches().repaint();
+				this.fenetrePrincipale.getFenAjoutAperio().dispose();
+				
+		}
+		catch(Exception e){
+			this.fenetrePrincipale.showError("Erreur lors de la saisie");
 			
-			
-			Aperiodique aperio = new Aperiodique(ci,ri);
-			Integer id = new Integer(aperio.getId());
-			
-			this.fenetrePrincipale.getListeTaches().add(aperio);
-			this.fenetrePrincipale.getDatasListeTaches().add(new String[]{id.toString(),"Apériodique","Ci="+ci+",Ri="+ri});
-			this.fenetrePrincipale.getEnsembleTaches().repaint();
-			this.fenetrePrincipale.getFenAjoutAperio().dispose();
-			
-			
+		}
 
 		}
 		else if(commande.equals("supprTache")){
@@ -242,6 +247,9 @@ public class BoutonsListener implements ActionListener {
 					
 					ordo.ordonnancer(ppcm);	
 					this.fenetrePrincipale.getFenAffGraphe().initGUI(ordo.getResult(), nbreTaches, ppcm);
+					this.fenetrePrincipale.getFenAffGraphe().setValeurTaux(""+ordo.txPremption());
+					this.fenetrePrincipale.getFenAffGraphe().setAttenteMoy(""+ordo.tempsReponseAperiodique());
+					this.fenetrePrincipale.getFenAffGraphe().setTpsCpu(""+ordo.tempsCPU());
 					this.fenetrePrincipale.getFenAffGraphe().setVisible(true);
 					
 				}
