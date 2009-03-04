@@ -40,11 +40,15 @@ public class ListeListener implements ItemListener {
 		if(this.fenetrePrincipale.tachesAperiodiquesPresentes()){
 			if(fenetrePrincipale.getListeAperio().getSelectedIndex()==0){
 				fenetrePrincipale.getListePeriodiques().setSelectedIndex(0);
-				this.fenetrePrincipale.getListePeriodiques().disable();
+				this.fenetrePrincipale.getListePeriodiques().enable();
+				//this.fenetrePrincipale.getListePeriodiques().disable();
 			}
-			if(fenetrePrincipale.getListeAperio().getSelectedIndex()==2){
+			else if(fenetrePrincipale.getListeAperio().getSelectedIndex()==2){
 				fenetrePrincipale.getListePeriodiques().setSelectedIndex(1);
 				this.fenetrePrincipale.getListePeriodiques().disable();
+			}
+			else {
+				this.fenetrePrincipale.getListePeriodiques().enable();
 			}
 		}
 	}

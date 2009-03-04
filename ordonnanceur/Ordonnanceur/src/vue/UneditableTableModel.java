@@ -31,8 +31,9 @@ public class UneditableTableModel extends AbstractTableModel{
 	public String getColumnName(int c) {
 		return columnNames[c];
 	}
-	 
+	/* 
 	public boolean isCellEditable(int row, int col) {
 	            return false;
 	}
+	*/
 }
