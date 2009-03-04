@@ -158,6 +158,8 @@ public class Programme extends javax.swing.JFrame {
 					jMenu1.setText("Menu");
 					{
 						jMenuItem1 = new JMenuItem();
+						jMenuItem1.setActionCommand("lancerSimulation");
+						jMenuItem1.addActionListener(new BoutonsListener(this));
 						jMenu1.add(jMenuItem1);
 						jMenuItem1.setText("Ordonnancer");
 					}
@@ -320,9 +322,12 @@ public class Programme extends javax.swing.JFrame {
 					ensembleTaches.setPreferredSize(new java.awt.Dimension(383, 57));
 					ensembleTaches.getTableHeader().setPreferredSize(new java.awt.Dimension(378, 19));
 					jScrollPane1.setViewportView(ensembleTaches);
+					jScrollPane1.setPreferredSize(new java.awt.Dimension(700, 400));
+					ensembleTaches.setPreferredSize(new java.awt.Dimension(367, 57));
+
 				}
 			}
-
+			this.listeAperio.disable();
 			pack();
 			this.setSize(568, 516);
 		} catch (Exception e) {

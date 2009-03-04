@@ -1,0 +1,22 @@
+[Box:  - ::algo]
+X=635
+Y=40
+
+[Box:  - ::exe]
+X=225
+Y=40
+
+[Box:  - ::noyau]
+X=430
+Y=40
+
+[Box:  - ::vue]
+X=20
+Y=40
+
+[Diagram: ]
+OffsetX=0
+OffsetY=0
+Visibility=0
+ShowAssoc=1
+

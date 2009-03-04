@@ -85,7 +85,7 @@ public class BoutonsListener implements ActionListener {
 					
 					this.fenetrePrincipale.getListeTaches().add(perio);
 					this.fenetrePrincipale.getDatasListeTaches().add(new String[]{id.toString(),"Périodique","Ci="+ci+",Di="+di+",Pi="+pi});
-					this.fenetrePrincipale.getEnsembleTaches().repaint();
+					this.fenetrePrincipale.getJScrollPane1().repaint();
 					this.fenetrePrincipale.getFenAjoutPerio().dispose();
 					}
 				catch(Exception e){
@@ -111,9 +111,9 @@ public class BoutonsListener implements ActionListener {
 						this.fenetrePrincipale.getDatasListeTaches().add(new String[]{""+p.getId(),"Périodique","Ci="+p.getC()+",Di="+p.getD()+",Pi="+p.getP()});
 						
 					}
-					this.fenetrePrincipale.getEnsembleTaches().repaint();
+					this.fenetrePrincipale.getEnsembleTaches().revalidate();
 					//this.fenetrePrincipale.getJScrollPane1().revalidate();
-					//this.fenetrePrincipale.getJScrollPane1().repaint();
+					this.fenetrePrincipale.getJScrollPane1().repaint();
 					
 					this.fenetrePrincipale.getFenAjoutPerio().dispose();
 					
@@ -140,6 +140,8 @@ public class BoutonsListener implements ActionListener {
 			this.fenetrePrincipale.getDatasListeTaches().add(new String[]{id.toString(),"Apériodique","Ci="+ci+",Ri="+ri});
 			this.fenetrePrincipale.getEnsembleTaches().repaint();
 			this.fenetrePrincipale.getFenAjoutAperio().dispose();
+			this.fenetrePrincipale.getListeAperio().enable();
+
 		}
 		else if(commande.equals("supprTache")){
 			if(this.fenetrePrincipale.getSelectedTache()==null) this.fenetrePrincipale.showError("Veuillez sélectionner une tache !");
@@ -150,6 +152,8 @@ public class BoutonsListener implements ActionListener {
 				this.fenetrePrincipale.retirerTache(id);
 				this.fenetrePrincipale.getDatasListeTaches().remove((int)this.fenetrePrincipale.getSelectedTache());
 				this.fenetrePrincipale.getEnsembleTaches().repaint();
+				
+				if(!this.fenetrePrincipale.tachesAperiodiquesPresentes()) this.fenetrePrincipale.getListeAperio().disable();
 			}
 		}
 		else if(commande.equals("lancerSimulation")){

@@ -25,7 +25,7 @@ import java.awt.GridLayout;
 * THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
 * LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
 */
-public class AffichageGraphe extends javax.swing.JFrame {
+public class AffichageGraphe extends javax.swing.JDialog {
 
 	{
 		//Set Look & Feel
@@ -40,7 +40,8 @@ public class AffichageGraphe extends javax.swing.JFrame {
 	private Programme fenetrePrincipale; 
 	
 	public AffichageGraphe(Programme frame) {
-		super();
+		super(frame);
+		this.setModal(true);
 		this.fenetrePrincipale=frame;
 		this.setTitle("Graphe d'ordonnancement");
 		
