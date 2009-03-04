@@ -1,4 +1,5 @@
 package exe;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
@@ -302,7 +303,7 @@ public class Programme extends javax.swing.JFrame {
 			{
 				jScrollPane1 = new JScrollPane();
 				getContentPane().add(jScrollPane1);
-				jScrollPane1.setBounds(83, 147, 387, 81);
+				jScrollPane1.setBounds(83, 136, 387, 81);
 				jScrollPane1.getVerticalScrollBar().setAutoscrolls(true);
 				jScrollPane1.setAutoscrolls(true);
 				{
@@ -316,8 +317,7 @@ public class Programme extends javax.swing.JFrame {
 					ensembleTaches.setBounds(87, 172, 370, 49);
 					ensembleTaches.setBorder(BorderFactory.createLineBorder(Color.black));
 					ensembleTaches.getTableHeader().setBounds(1, 1, 348, 22);
-					ensembleTaches.setPreferredSize(new java.awt.Dimension(401, 80));
-					ensembleTaches.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+					ensembleTaches.setPreferredSize(new java.awt.Dimension(383, 57));
 					ensembleTaches.getTableHeader().setPreferredSize(new java.awt.Dimension(378, 19));
 					jScrollPane1.setViewportView(ensembleTaches);
 				}

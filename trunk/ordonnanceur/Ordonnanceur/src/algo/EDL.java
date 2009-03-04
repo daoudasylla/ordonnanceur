@@ -61,13 +61,13 @@ public class EDL implements Algorithme{
 		{			
 			
 			if(uniteCourante.getIdUnite()==((Aperiodique) ape).getR()){
-				//System.out.println("u="+uniteCourante.getIdUnite()+" reveil aperio "+ape.getId());
+				System.out.println("u="+uniteCourante.getIdUnite()+" reveil aperio "+ape.getId());
 				if(dejaAffecte) enAttente.add(new PrioEDL(((Aperiodique) ape)));
 				else {
-					//System.out.println("dans else");
+					System.out.println("dans else");
 					int tempsMax = plusTard(uniteCourante, this.periodiques, this.aperiodiques);
 					
-					//System.out.println("temps plus tard "+tempsMax);
+					System.out.println("temps plus tard "+tempsMax);
 					if(this.uniteCourante.getIdUnite()<tempsMax){
 						dejaAffecte=true;
 						this.tacheEnCours = ape;
@@ -102,11 +102,11 @@ public class EDL implements Algorithme{
 			
 			// Verif que y a un temps creux
 			int tempsMax = plusTard(uniteCourante, this.periodiques, this.aperiodiques);
-			//System.out.println("temps plus tard "+tempsMax);
+			System.out.println("temps plus tard "+tempsMax);
 			if(this.uniteCourante.getIdUnite()<tempsMax){
 			
 					this.unitesRestantes = this.mapTacheUnitesRestantes.get(this.tacheEnCours)-1;
-					//System.out.println("tache en cours: "+tacheEnCours.getId()+"("+unitesRestantes+")");
+					System.out.println("tache en cours: "+tacheEnCours.getId()+"("+unitesRestantes+")");
 					
 					this.mapTacheUnitesRestantes.put(this.tacheEnCours,this.unitesRestantes);
 					this.uniteCourante.setTache(this.tacheEnCours);
@@ -143,7 +143,7 @@ public class EDL implements Algorithme{
 	
 	private void EDF(){
 		
-		//System.out.println("appel methode EDF à lunite "+uniteCourante.getIdUnite());
+		System.out.println("appel methode EDF à lunite "+uniteCourante.getIdUnite());
 		LinkedList<UniteTemps> resultat= new LinkedList<UniteTemps>();
 		for(UniteTemps ut : this.ordonnancement)
 			resultat.add((UniteTemps) ut.clone());
@@ -151,9 +151,6 @@ public class EDL implements Algorithme{
 		// On appel EDF pour continuer le travail
 		EDF edf = new EDF(this.ppcm);
 		edf.setContexte(resultat, this.periodiques, this.aperiodiques, this.mapTacheUnitesRestantes, this.uniteCourante);
-		//edf.setOrdonnancement(resultat); // on affecte le contexte courant
-		//edf.setMapTacheUnitesRestantes(mapTacheUnitesRestantes);
-		
 		
 		UniteTemps u = edf.executerInstantT(uniteCourante);
 		
@@ -168,7 +165,7 @@ public class EDL implements Algorithme{
 	// Fonction permettant d'indiquer le temps max où les taches doivent être exécutées
 	private int plusTard(UniteTemps actuel,ListeTaches tachesPeriodiques,ListeTaches tachesAperiodiques){
 		
-		//System.out.println("dans plus tard pour unite "+actuel.getIdUnite());
+		System.out.println("dans plus tard pour unite "+actuel.getIdUnite());
 		UniteTemps dernier=null;
 		
 		LinkedList<UniteTemps> resultat= new LinkedList<UniteTemps>();
@@ -188,7 +185,7 @@ public class EDL implements Algorithme{
 		
 		for(Tache t : tachesPeriodiques){				
 				deadlines.put(t, 0);	
-				//System.out.println("dead pr "+t.getId()+"="+((Periodique)t).getDi(this.ppcm-1));
+				System.out.println("dead pr "+t.getId()+"="+((Periodique)t).getDi(this.ppcm-1));
 		}
 		
 		
@@ -197,12 +194,12 @@ public class EDL implements Algorithme{
 			// A chaque nouvelle valeur d'unité de temps on vérifie que la deadline ne change pas
 			// si elle change on rajoute alors la tache dans les taches en attentes
 			
-			//System.out.println("\t\t i="+i);
+			System.out.println("\t\t i="+i);
 			for(Tache t : tachesPeriodiques){
 				if(deadlines.get(t)!=((Periodique)t).getDi(i)){
-					//System.out.println("nvelle dead pr "+t.getId()+"="+((Periodique)t).getDi(i));
+					System.out.println("nvelle dead pr "+t.getId()+"="+((Periodique)t).getDi(i));
 					
-					//System.out.println(deadlines.get(t)+"!="+((Periodique)t).getDi(i));
+					System.out.println(deadlines.get(t)+"!="+((Periodique)t).getDi(i));
 					prioAuPlusTard.add(new PrioAuPlusTard((Periodique)t,new UniteTemps(i)));
 					deadlines.put(t, ((Periodique)t).getDi(i));
 				}
@@ -212,10 +209,21 @@ public class EDL implements Algorithme{
 				Periodique tEnCours = prioAuPlusTard.remove().getTache();
 				int debutAvant=0;
 				
-				if(!dejaExecutee(tEnCours)){	
-				tempsMax = tempsMax - this.mapTacheUnitesRestantes.get(tEnCours);
-				//System.out.println("\t\ttempsMax - tEnCours.getC() "+tempsMax);
+				// Si il existe un ecart entre la deadline et le début de la tache au plus tard d'avant
+				if(tEnCours.getDi(i)<tempsMax)
+				ecart = tempsMax-tEnCours.getDi(i);
+				
+				else
+				ecart=0;
+				
+				if(!dejaExecutee(tEnCours) && tEnCours.getDi(i)==tEnCours.getDi(actuel.getIdUnite())){	
+				tempsMax = tempsMax - ecart -this.mapTacheUnitesRestantes.get(tEnCours);
+				System.out.println("\t\tcalcul : tempsMax - tEnCours.getC()("+tEnCours.getId()+") "+tempsMax);
 				debutAvant = tempsMax;
+				}else if(!dejaExecutee(tEnCours))  {
+					tempsMax = tempsMax - ecart- tEnCours.getC();
+					System.out.println("\t\tcalcul : tempsMax - tEnCours.getC()("+tEnCours.getId()+") "+tempsMax);
+					
 				}
 				// On retire l'ensemble des executions possibles e partant de la fin
 				while(prioAuPlusTard.peek()!=null && tempsMax>0){
@@ -227,21 +235,26 @@ public class EDL implements Algorithme{
 					else
 					ecart=0;
 					
-					if(!dejaExecutee(tEnCours)){
-					//System.out.println("tache pas encore executee "+tEnCours.getId());
+					if(!dejaExecutee(tEnCours)&& tEnCours.getDi(i)==tEnCours.getDi(actuel.getIdUnite())){
+					System.out.println("tache pas encore executee "+tEnCours.getId());
 						if(this.mapTacheUnitesRestantes.get(tEnCours)>0 && tEnCours.getDi(i)==tEnCours.getDi(actuel.getIdUnite()))
 							tempsMax = tempsMax-ecart-this.mapTacheUnitesRestantes.get(tEnCours);
 						else
 							tempsMax = tempsMax-ecart-tEnCours.getC();
 							
-						//System.out.println("\t\t tempsMax-ecart-tEnCours.getC() "+tempsMax);
+						System.out.println("\t\t tempsMax-ecart-tEnCours.getC()("+tEnCours.getId()+") "+tempsMax);
 						debutAvant = tempsMax;
+					}else {
+						tempsMax = tempsMax-ecart-tEnCours.getC();
+						System.out.println("tache DEJA executee "+tEnCours.getId()+ "ou Di(i):"+tEnCours.getDi(i)+"!="+tEnCours.getDi(actuel.getIdUnite()));
+						System.out.println("\t\t tempsMax-ecart-tEnCours.getC()("+tEnCours.getId()+") "+tempsMax);
+						
 					}
 				}
 			}
 		}
 		
-		//System.out.println("Temps max :"+tempsMax);
+		System.out.println("Temps max :"+tempsMax);
 		
 		
 		
@@ -272,10 +285,12 @@ public class EDL implements Algorithme{
 	
 	public boolean dejaExecutee(Tache t){
 		
+		
 		int tempsTotal = 0;
 		for(int i=0;i<this.uniteCourante.getIdUnite();i++){
 			
 			Tache temp = this.ordonnancement.get(this.ordonnancement.indexOf(new UniteTemps(i))).getTache();
+			if(temp==null) return false;
 			if(temp.equals(t)){
 				
 				if(((Periodique)temp).getDi(i)==((Periodique)temp).getDi(this.uniteCourante.getIdUnite()))
