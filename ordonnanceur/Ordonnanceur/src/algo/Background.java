@@ -81,5 +81,9 @@ public class Background implements Algorithme{
 		}
 		return uniteCourante;
 	}
+	public boolean ordonnancable(double up, double us,int n) {
+
+		return this.algo.ordonnancable(up, us, n);
+	}
 
 }

@@ -9,4 +9,5 @@ public interface Algorithme {
 	//public LinkedList<UniteTemps> executer(ListeTaches tachesPeriodiques, ListeTaches tachesAperiodiques);
 	public void initialiser(LinkedList<UniteTemps> ordonnancement, ListeTaches tachesPeriodiques, ListeTaches tachesAperiodiques);
 	public UniteTemps uniteSuivante();
+	public boolean ordonnancable(double up,double us,int n);
 }

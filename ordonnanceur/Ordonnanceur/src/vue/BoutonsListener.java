@@ -214,7 +214,8 @@ public class BoutonsListener implements ActionListener {
 					}
 					if(!errors)
 					ordo = new Ordonnanceur(algoAPeriodique,this.fenetrePrincipale.getListeTaches());
-								
+					if(!algoAPeriodique.ordonnancable(this.fenetrePrincipale.getListeTaches().getUp(),this.fenetrePrincipale.getListeTaches().getUs(),this.fenetrePrincipale.getListeTaches().getNPerio()))
+						errors = true;
 					
 					
 					

@@ -274,6 +274,10 @@ public class EDF implements Algorithme{
 			}
 		
 	}
+	public boolean ordonnancable(double up, double us,int n) {
+
+		return up <= 1;
+	}
 
 	
 
