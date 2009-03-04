@@ -93,22 +93,26 @@ public class Ordonnanceur {
 	}
 	public double tempsReponseAperiodique()
 	{
-		if(this.result != null)
-		{
-			double tempsRep = 0;
-			boolean trouve = false;
-			for(Tache t : this.tachesAperiodiques) {//pour toute les taches apériodiques
-				for(UniteTemps u : this.result) {
-					if(u.getTache() != null && u.getTache().equals(t) && !trouve) {//quand la tache est trouvée
-						tempsRep += (u.getIdUnite() - ((Aperiodique) t).getR()); //on calcul son temps de réponse
-						trouve = true;
+		if(this.tachesAperiodiques.size() != 0) {
+			if(this.result != null)
+			{
+				double tempsRep = 0.0;
+				boolean trouve = false;
+				for(Tache t : this.tachesAperiodiques) {//pour toute les taches apériodiques
+					for(UniteTemps u : this.result) {
+						if(u.getTache() != null && u.getTache().equals(t) && !trouve) {//quand la tache est trouvée
+							System.out.println("test");
+							tempsRep += (u.getIdUnite() - ((Aperiodique) t).getR()); //on calcul son temps de réponse
+							trouve = true;
+						}
 					}
+					trouve = false;
 				}
-				trouve = false;
+				return (tempsRep / this.tachesAperiodiques.size());
 			}
-			return (tempsRep / this.tachesAperiodiques.size());
+			
 		}
-		return 0;
+		return 0.0;
 		
 	}
 	public int tempsCPU() {
