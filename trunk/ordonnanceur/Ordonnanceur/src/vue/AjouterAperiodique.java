@@ -43,7 +43,6 @@ public class AjouterAperiodique extends javax.swing.JDialog {
 	private JTextField textRi;
 	private JTextField textCi;
 	private Programme fenetrePrincipale; 
-	private JPanel Automatique;
 	private JTabbedPane jTabbedPane1;
 	private JPanel Manuel;
 	public AjouterAperiodique(Programme frame) {
@@ -88,7 +87,7 @@ public class AjouterAperiodique extends javax.swing.JDialog {
 					Manuel.setName("Manuel");
 					Manuel.setBounds(0, 19, 309, 68);
 					Manuel.setLayout(null);
-					Manuel.setPreferredSize(new java.awt.Dimension(306, 84));
+					Manuel.setPreferredSize(new java.awt.Dimension(306, 79));
 					{
 						jLabel1 = new JLabel();
 						Manuel.add(jLabel1);
@@ -111,12 +110,6 @@ public class AjouterAperiodique extends javax.swing.JDialog {
 						Manuel.add(textRi);
 						textRi.setBounds(170, 39, 59, 21);
 					}
-				}
-				{
-					Automatique = new JPanel();
-					jTabbedPane1.addTab("Automatique", null, Automatique, null);
-					Automatique.setLayout(null);
-					Automatique.setPreferredSize(new java.awt.Dimension(306, 78));
 				}
 			}
 			this.setSize(319, 175);
