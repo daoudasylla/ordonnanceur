@@ -18,6 +18,7 @@ public class Ordonnanceur {
 	private LinkedList<UniteTemps> result;
 	private ListeTaches tachesPeriodiques;
 	private ListeTaches tachesAperiodiques;
+	private int ppcm;
 	
 	
 	//private int ppcm;
@@ -37,7 +38,7 @@ public class Ordonnanceur {
 	}
 	public void ordonnancer(int ppcm)
 	{
-		
+		this.ppcm = ppcm;
 		// On remplit les deux listes
 		for(Tache t : liste) {
 			if(t instanceof Periodique) {
@@ -107,11 +108,23 @@ public class Ordonnanceur {
 		return 0;
 		
 	}
-	
-	public int nombrePremption() {
-		int nbrePremp = 0;
+	public int tempsCPU() {
+		int nbreTpsCreux = 0;
+		if(this.result != null) {
+			for(UniteTemps u : this.result) {
+				if(u.getTache() == null) {
+					nbreTpsCreux++;
+				}
+			}
+				
+		}
+		return this.ppcm - nbreTpsCreux;
+	}
+	public double txPremption() {
+		double nbrePremp = 0;
+		double nbreTache = 0;
 		Tache tacheEncours = null;
-		HashMap ci = new HashMap<Tache,Integer>();
+		HashMap<Tache,Integer> ci = new HashMap<Tache,Integer>();
 		for(Tache t : this.liste)
 			ci.put(t,0);
 		int ciCourant = 0;
@@ -127,7 +140,9 @@ public class Ordonnanceur {
 							if(tacheEncours.getC() == ++ciCourant) {
 								//System.out.println("ci:"+tacheEncours.getC());
 								ci.put(tacheEncours, 0);
+								//System.out.println("a-tache en cours:"+tacheEncours.getId()+" ut:"+u.getIdUnite()+" ci:"+ciCourant);
 								tacheEncours = null;
+								nbreTache++; //la tache est finis on la comptabilise
 							}
 							else
 								ci.put(tacheEncours, ciCourant);
@@ -139,9 +154,12 @@ public class Ordonnanceur {
 							nbrePremp++;
 							ciCourant = ((Integer)ci.get(tacheEncours)).intValue();
 							if(tacheEncours.getC() == ++ciCourant) {
+								//System.out.println("c-tache en cours:"+tacheEncours.getId()+" ut:"+u.getIdUnite()+" ci:"+ciCourant);
+								ci.put(tacheEncours, 0);
 								tacheEncours = null;
 								//ciCourant = 0;
-								ci.put(tacheEncours, 0);
+								nbreTache++;
+								
 							}
 							else
 								ci.put(tacheEncours, ciCourant);
@@ -151,9 +169,12 @@ public class Ordonnanceur {
 						tacheEncours = this.liste.getTacheById(u.getTache().getId());
 						ciCourant = ((Integer)ci.get(tacheEncours)).intValue();
 						if(tacheEncours.getC() == ++ciCourant) {
+							//System.out.println("b-tache en cours:"+tacheEncours.getId()+" ut:"+u.getIdUnite()+" ci:"+ciCourant);
+							ci.put(tacheEncours, 0);
 							tacheEncours = null;
 							//ciCourant = 0;
-							ci.put(tacheEncours, 0);
+							
+							nbreTache++;
 						}
 						else
 							ci.put(tacheEncours, ciCourant);
@@ -166,7 +187,8 @@ public class Ordonnanceur {
 			}
 			
 		}
-		return nbrePremp;
+		//System.out.println("nb tache:"+nbreTache);
+		return nbrePremp/nbreTache;
 		
 	}
 	public String toString(){

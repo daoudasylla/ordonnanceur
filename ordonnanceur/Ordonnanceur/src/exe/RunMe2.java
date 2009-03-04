@@ -101,12 +101,13 @@ public class RunMe2 {
       liste2.add(new Aperiodique(2,12));
       liste2.add(new Aperiodique(1,19));
      Polling poll = new Polling(25, new RM());
-      liste2.add(new TachePs(2,6,10,poll));
+      liste2.add(new TachePs(2,5,10,poll));
        Ordonnanceur o = new Ordonnanceur(poll,liste2);
       o.ordonnancer(25);
       System.out.println(o);
       System.out.println(o.tempsReponseAperiodique());
-      System.out.println(o.nombrePremption());
+      System.out.println(o.txPremption());
+      System.out.println(o.tempsCPU());
       
     }
 }
